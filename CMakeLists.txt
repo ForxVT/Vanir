@@ -1,0 +1,36 @@
+# ----------------------------------------------------------------
+# CMake build file for the Vanir project.
+# ----------------------------------------------------------------
+cmake_minimum_required(VERSION 3.13)
+
+project(Vanir)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../../Build/Lib/Vanir/${AESIR_CONFIGURATION})
+
+set(VANIR_INCLUDES ${PROJECT_SOURCE_DIR}/../)
+if(UNIX AND NOT APPLE)
+    set(VANIR_LIBRARIES ${VANIR_LIBRARIES} stdc++fs)
+endif()
+
+add_library(Vanir
+        ${PROJECT_SOURCE_DIR}/Utils/Dirent/Dirent.h
+        ${PROJECT_SOURCE_DIR}/Callback.h
+        ${PROJECT_SOURCE_DIR}/Factory.h
+        ${PROJECT_SOURCE_DIR}/FactoryRegister.h
+        ${PROJECT_SOURCE_DIR}/File.h
+        ${PROJECT_SOURCE_DIR}/FileUtils.cpp
+        ${PROJECT_SOURCE_DIR}/FileUtils.h
+        ${PROJECT_SOURCE_DIR}/GenericFactory.h
+        ${PROJECT_SOURCE_DIR}/Invokable.h
+        ${PROJECT_SOURCE_DIR}/Logger.cpp
+        ${PROJECT_SOURCE_DIR}/Logger.h
+        ${PROJECT_SOURCE_DIR}/Macros.h
+        ${PROJECT_SOURCE_DIR}/MathsUtils.cpp
+        ${PROJECT_SOURCE_DIR}/MathsUtils.h
+        ${PROJECT_SOURCE_DIR}/Singleton.h
+        ${PROJECT_SOURCE_DIR}/StringUtils.cpp
+        ${PROJECT_SOURCE_DIR}/StringUtils.h)
+
+target_include_directories(Vanir PUBLIC ${VANIR_INCLUDES})
+target_link_libraries(Vanir LINK_PUBLIC ${VANIR_LIBRARIES})
