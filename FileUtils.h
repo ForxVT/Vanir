@@ -9,9 +9,6 @@ namespace Vanir
     class FileUtils
     {
     public:
-        FileUtils();
-        ~FileUtils();
-
         static bool FileExist(const std::string& path);
         static bool FolderExist(const std::string& path);
         static std::string GetExtension(const std::string& name);

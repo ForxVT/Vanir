@@ -21,16 +21,6 @@
 
 namespace Vanir
 {
-    FileUtils::FileUtils()
-    {
-
-    }
-
-    FileUtils::~FileUtils()
-    {
-
-    }
-
     bool FileUtils::FileExist(const std::string& path)
     {
         std::ifstream file(path);

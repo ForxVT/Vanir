@@ -5,14 +5,13 @@
 
 namespace Vanir
 {
-    // TODO: double-checked locking thread-safe singleton.
     template <typename T>
     class Singleton
     {
     public:
-        static std::shared_ptr<T> GetInstance()
+        static T& GetInstance()
         {
-            static std::shared_ptr<T> instance(new T);
+            static T instance();
 
             return instance;
         }
