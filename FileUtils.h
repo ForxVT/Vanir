@@ -18,10 +18,6 @@ namespace Vanir
         static void AddFile(const std::string& path, std::vector<std::string> text);
         static std::string ReadFile(const std::string& path);
         static std::string GetRootDirectory();
-        static std::vector<File> ScanDirectory(const std::string& path = ".");
-#ifdef PLATFORM_WINDOWS
-        static int AlphabeticSorting(const void *a, const void *b);
-#endif
         static bool StringEndsWith(const std::string& value, const std::string& ending);
     };
 

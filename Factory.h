@@ -25,6 +25,7 @@ namespace Vanir
     Factory<BaseType>* Factory<BaseType>::GetInstance()
     {
         static Factory<BaseType> factory;
+
         return &factory;
     }
 

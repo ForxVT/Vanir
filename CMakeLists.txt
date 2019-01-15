@@ -6,6 +6,9 @@ cmake_minimum_required(VERSION 3.13)
 project(Vanir)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../../Build/Lib/Vanir/${AESIR_CONFIGURATION})
 
 set(VANIR_INCLUDES ${PROJECT_SOURCE_DIR}/../)
@@ -14,7 +17,6 @@ if(UNIX AND NOT APPLE)
 endif()
 
 add_library(Vanir
-        ${PROJECT_SOURCE_DIR}/Utils/Dirent/Dirent.h
         ${PROJECT_SOURCE_DIR}/Callback.h
         ${PROJECT_SOURCE_DIR}/Factory.h
         ${PROJECT_SOURCE_DIR}/FactoryRegister.h

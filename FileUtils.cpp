@@ -9,13 +9,10 @@
 #include <experimental/filesystem>
 #include <unistd.h>
 #include <cstring>
-#define AlphabeticSorting alphasort
 #else
 #include <unistd.h>
 #include <sys/stat.h>
-#define AlphabeticSorting alphasort
 #endif
-#include <Vanir/Utils/Dirent/Dirent.h>
 #include <stdio.h>
 #include <iostream>
 
@@ -135,59 +132,6 @@ namespace Vanir
 
         return current_working_dir;
     }
-
-    std::vector<File> FileUtils::ScanDirectory(const std::string& path)
-    {
-        struct dirent ** files = nullptr;
-        const auto numberOfFiles = scandir(path.c_str(), &files, nullptr, AlphabeticSorting);
-        auto fileList = std::vector<File>();
-
-        if (numberOfFiles >= 0)
-        {
-            for (auto i = 0; i < numberOfFiles; i++)
-            {
-                const auto ent = files[i];
-                File infos;
-
-                infos.Name = ent->d_name;
-
-                if (infos.Name != ".")
-                {
-                    switch (ent->d_type)
-                    {
-                        case DT_REG:
-                            infos.Type = 'F';
-                            break;
-                        case DT_DIR:
-                            infos.Type = 'D';
-                            break;
-                        case DT_LNK:
-                            infos.Type = 'L';
-                            break;
-                        default:
-                            infos.Type = 'E';
-                            break;
-                    }
-
-                    fileList.emplace_back(infos);
-                }
-            }
-
-            for (auto i = 0; i < numberOfFiles; i++)
-                free(files[i]);
-
-            free(files);
-        }
-
-        return fileList;
-    }
-
-#ifdef PLATFORM_WINDOWS
-    int FileUtils::AlphabeticSorting(const void* a, const void* b)
-    {
-        return strcoll(((dirent*)a)->d_name, ((dirent*)b)->d_name);
-    }
-#endif
 
     bool FileUtils::StringEndsWith(const std::string& value, const std::string& ending)
     {
