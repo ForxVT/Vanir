@@ -23,15 +23,19 @@ namespace Vanir
         m_time = time(nullptr);
         auto time = localtime(&m_time);
         va_list args;
-        auto logText = "[" + std::to_string(time->tm_hour) + ":" + std::to_string(time->tm_min) + ":" + std::to_string(time->tm_sec) + "] " + text + "\n";
-        const auto result = logText.c_str();
+        auto hours = std::to_string(time->tm_hour);
+        auto minutes = std::to_string(time->tm_min);
+        auto seconds = std::to_string(time->tm_sec);
+        auto logText = "[" + (hours.length() == 1 ? "0" + hours : hours) + ":" +
+                (minutes.length() == 1 ? "0" + minutes : minutes) + ":" +
+                (seconds.length() == 1 ? "0" + seconds : seconds) + "] " + text + "\n";
         char fileDest[1024];
 
         va_start(args, numArgs);
-        vsprintf(fileDest, result, args);
+        vsprintf(fileDest, logText.c_str(), args);
         va_end(args);
 
-        std::cout << result;
+        std::cout << fileDest;
 
         if (m_file.is_open())
             m_file << fileDest;
@@ -44,15 +48,19 @@ namespace Vanir
         m_time = time(nullptr);
         auto time = localtime(&m_time);
         va_list args;
-        auto infoText = "[INFO | " + std::to_string(time->tm_hour) + ":" + std::to_string(time->tm_min) + ":" + std::to_string(time->tm_sec) + "] " + text + "\n";
-        const auto result = infoText.c_str();
+        auto hours = std::to_string(time->tm_hour);
+        auto minutes = std::to_string(time->tm_min);
+        auto seconds = std::to_string(time->tm_sec);
+        auto infoText = "[INFO | " + (hours.length() == 1 ? "0" + hours : hours) + ":" +
+                (minutes.length() == 1 ? "0" + minutes : minutes) + ":" +
+                (seconds.length() == 1 ? "0" + seconds : seconds) + "] " + text + "\n";
         char fileDest[1024];
 
         va_start(args, numArgs);
-        vsprintf(fileDest, result, args);
+        vsprintf(fileDest, infoText.c_str(), args);
         va_end(args);
 
-        std::cout << result;
+        std::cout << fileDest;
 
         if (m_file.is_open())
             m_file << fileDest;
@@ -65,15 +73,19 @@ namespace Vanir
         m_time = time(nullptr);
         auto time = localtime(&m_time);
         va_list args;
-        auto warningText = "[WARNING | " + std::to_string(time->tm_hour) + ":" + std::to_string(time->tm_min) + ":" + std::to_string(time->tm_sec) + "] " + text + "\n";
-        const auto result = warningText.c_str();
+        auto hours = std::to_string(time->tm_hour);
+        auto minutes = std::to_string(time->tm_min);
+        auto seconds = std::to_string(time->tm_sec);
+        auto warningText = "[WARNING | " + (hours.length() == 1 ? "0" + hours : hours) + ":" +
+                (minutes.length() == 1 ? "0" + minutes : minutes) + ":" +
+                (seconds.length() == 1 ? "0" + seconds : seconds) + "] " + text + "\n";
         char fileDest[1024];
 
         va_start(args, numArgs);
-        vsprintf(fileDest, result, args);
+        vsprintf(fileDest, warningText.c_str(), args);
         va_end(args);
 
-        std::cout << result;
+        std::cout << fileDest;
 
         if (m_file.is_open())
             m_file << fileDest;
@@ -87,15 +99,18 @@ namespace Vanir
         auto time = localtime(&m_time);
         va_list args;
         char fileDest[1024];
-        auto errorText = "[ERROR | " + std::to_string(time->tm_hour) + ":" + std::to_string(time->tm_min) + ":" + std::to_string(time->tm_sec) + "] " + text + "\n";
-
-        const auto result = errorText.c_str();
+        auto hours = std::to_string(time->tm_hour);
+        auto minutes = std::to_string(time->tm_min);
+        auto seconds = std::to_string(time->tm_sec);
+        auto errorText = "[ERROR | " + (hours.length() == 1 ? "0" + hours : hours) + ":" +
+                (minutes.length() == 1 ? "0" + minutes : minutes) + ":" +
+                (seconds.length() == 1 ? "0" + seconds : seconds) + "] " + text + "\n";
 
         va_start(args, numArgs);
-        vsprintf(fileDest, result, args);
+        vsprintf(fileDest, errorText.c_str(), args);
         va_end(args);
 
-        std::cout << result;
+        std::cout << fileDest;
 
         if (m_file.is_open())
             m_file << fileDest;
@@ -108,15 +123,20 @@ namespace Vanir
         m_time = time(nullptr);
         auto time = localtime(&m_time);
         va_list args;
-        auto logText = "[" + function + " | Line " + std::to_string(line) + " | " + std::to_string(time->tm_hour) + ":" + std::to_string(time->tm_min) + ":" + std::to_string(time->tm_sec) + "] " + text + "\n";
-        const auto result = logText.c_str();
+        auto hours = std::to_string(time->tm_hour);
+        auto minutes = std::to_string(time->tm_min);
+        auto seconds = std::to_string(time->tm_sec);
+        auto logText = "[" + function + " | Line " + std::to_string(line) + " | " +
+                (hours.length() == 1 ? "0" + hours : hours) + ":" +
+                (minutes.length() == 1 ? "0" + minutes : minutes) + ":" +
+                (seconds.length() == 1 ? "0" + seconds : seconds) + "] " + text + "\n";
         char fileDest[1024];
 
         va_start(args, numArgs);
-        vsprintf(fileDest, result, args);
+        vsprintf(fileDest, logText.c_str(), args);
         va_end(args);
 
-        std::cout << result;
+        std::cout << fileDest;
 
         if (m_file.is_open())
             m_file << fileDest;
@@ -129,15 +149,20 @@ namespace Vanir
         m_time = time(nullptr);
         auto time = localtime(&m_time);
         va_list args;
-        auto infoText = "[INFO | " + function + " | Line " + std::to_string(line) + " | " + std::to_string(time->tm_hour) + ":" + std::to_string(time->tm_min) + ":" + std::to_string(time->tm_sec) + "] " + text + "\n";
-        const auto result = infoText.c_str();
+        auto hours = std::to_string(time->tm_hour);
+        auto minutes = std::to_string(time->tm_min);
+        auto seconds = std::to_string(time->tm_sec);
+        auto infoText = "[INFO | " + function + " | Line " + std::to_string(line) + " | " +
+                (hours.length() == 1 ? "0" + hours : hours) + ":" +
+                (minutes.length() == 1 ? "0" + minutes : minutes) + ":" +
+                (seconds.length() == 1 ? "0" + seconds : seconds) + "] " + text + "\n";
         char fileDest[1024];
 
         va_start(args, numArgs);
-        vsprintf(fileDest, result, args);
+        vsprintf(fileDest, infoText.c_str(), args);
         va_end(args);
 
-        std::cout << result;
+        std::cout << fileDest;
 
         if (m_file.is_open())
             m_file << fileDest;
@@ -150,15 +175,20 @@ namespace Vanir
         m_time = time(nullptr);
         auto time = localtime(&m_time);
         va_list args;
-        auto warningText = "[WARNING | " + function + " | Line " + std::to_string(line) + " | " + std::to_string(time->tm_hour) + ":" + std::to_string(time->tm_min) + ":" + std::to_string(time->tm_sec) + "] " + text + "\n";
-        const auto result = warningText.c_str();
+        auto hours = std::to_string(time->tm_hour);
+        auto minutes = std::to_string(time->tm_min);
+        auto seconds = std::to_string(time->tm_sec);
+        auto warningText = "[WARNING | " + function + " | Line " + std::to_string(line) + " | " +
+                (hours.length() == 1 ? "0" + hours : hours) + ":" +
+                (minutes.length() == 1 ? "0" + minutes : minutes) + ":" +
+                (seconds.length() == 1 ? "0" + seconds : seconds) + "] " + text + "\n";
         char fileDest[1024];
 
         va_start(args, numArgs);
-        vsprintf(fileDest, result, args);
+        vsprintf(fileDest, warningText.c_str(), args);
         va_end(args);
 
-        std::cout << result;
+        std::cout << fileDest;
 
         if (m_file.is_open())
             m_file << fileDest;
@@ -171,15 +201,20 @@ namespace Vanir
         m_time = time(nullptr);
         auto time = localtime(&m_time);
         va_list args;
-        auto errorText = "[ERROR | " + function + " | Line " + std::to_string(line) + " | " + std::to_string(time->tm_hour) + ":" + std::to_string(time->tm_min) + ":" + std::to_string(time->tm_sec) + "] " + text + "\n";
-        const auto result = errorText.c_str();
+        auto hours = std::to_string(time->tm_hour);
+        auto minutes = std::to_string(time->tm_min);
+        auto seconds = std::to_string(time->tm_sec);
+        auto errorText = "[ERROR | " + function + " | Line " + std::to_string(line) + " | " +
+                (hours.length() == 1 ? "0" + hours : hours) + ":" +
+                (minutes.length() == 1 ? "0" + minutes : minutes) + ":" +
+                (seconds.length() == 1 ? "0" + seconds : seconds) + "] " + text + "\n";
         char fileDest[1024];
 
         va_start(args, numArgs);
-        vsprintf(fileDest, result, args);
+        vsprintf(fileDest, errorText.c_str(), args);
         va_end(args);
 
-        std::cout << result;
+        std::cout << fileDest;
 
         if (m_file.is_open())
             m_file << fileDest;
@@ -193,13 +228,11 @@ namespace Vanir
         auto logText = text + "\n";
         char fileDest[1024];
 
-        const auto result = logText.c_str();
-
         va_start(args, numArgs);
-        vsprintf(fileDest, result, args);
+        vsprintf(fileDest, logText.c_str(), args);
         va_end(args);
 
-        std::cout << result;
+        std::cout << fileDest;
 
         if (m_file.is_open())
             m_file << fileDest;
