@@ -2,7 +2,6 @@
 #include <cstdarg>
 #include <time.h>
 #include <iostream>
-#include "Logger.h"
 
 namespace Vanir
 {

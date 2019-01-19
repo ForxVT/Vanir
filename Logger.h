@@ -8,6 +8,13 @@
 #include <iostream>
 #ifdef PLATFORM_WINDOWS
 #include <fcntl.h>
+#include <codecvt>
+#include <combaseapi.h>
+#include <locale>
+#include <codecvt>
+#include <sstream>
+#include <iomanip>
+#include <algorithm>
 #endif
 
 namespace Vanir
@@ -22,13 +29,28 @@ namespace Vanir
         static void Log(Args&&... args)
         {
             ((std::cout << std::forward<Args>(args)), ...) << std::endl;
+            ((m_file << std::forward<Args>(args)), ...) << std::endl;
         }
 #ifdef PLATFORM_WINDOWS
+        template <class T>
+        static std::basic_ostream<wchar_t>& ULogConverter(T&& arg)
+        {
+            return std::wcout << arg;
+        }
+        static std::basic_ostream<wchar_t>& ULogConverter(std::string arg)
+        {
+            return std::wcout << ::Vanir::StringUtils::StringToWString(arg);
+        }
+        static std::basic_ostream<wchar_t>& ULogConverter(const char* arg)
+        {
+            return std::wcout << ::Vanir::StringUtils::StringToWString(arg);
+        }
         template <typename... Args>
         static void ULog(Args&&... args)
         {
+            ((m_file << std::forward<Args>(args)), ...) << std::endl;
             _setmode(_fileno(stdout), _O_WTEXT);
-            ((std::wcout << ::Vanir::StringUtils::StringToWString(std::forward<Args>(args))), ...) << std::endl;
+            ((ULogConverter(std::forward<Args>(args))), ...) << std::endl;
             _setmode(_fileno(stdout), _O_TEXT);
         }
 #endif
@@ -44,34 +66,28 @@ namespace Vanir
 #if defined(CONFIGURATION_DEBUG)
 #define VANIR_LOG_INFO(...) \
 { \
-    std::cout << ::Vanir::Logger::LogHeader("INFO", __FUNCTION__, __LINE__); \
-    ::Vanir::Logger::Log(__VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("INFO", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #define VANIR_LOG_WARNING(...) \
 { \
-    std::cout << ::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__); \
-    ::Vanir::Logger::Log(__VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #define VANIR_LOG_ERROR(...) \
 { \
-    std::cout << ::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__); \
-    ::Vanir::Logger::Log(__VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #else
 #define VANIR_LOG_INFO(...) \
 { \
-    std::cout << ::Vanir::Logger::LogHeader("INFO"); \
-    ::Vanir::Logger::Log(__VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("INFO"), __VA_ARGS__); \
 }
 #define VANIR_LOG_WARNING(...) \
 { \
-    std::cout << ::Vanir::Logger::LogHeader("WARNING"); \
-    ::Vanir::Logger::Log(__VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
 }
 #define VANIR_LOG_ERROR(...) \
 { \
-    std::cout << ::Vanir::Logger::LogHeader("ERROR"); \
-    ::Vanir::Logger::Log(__VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("ERROR"), __VA_ARGS__); \
 }
 #endif
 
@@ -80,34 +96,28 @@ namespace Vanir
 #if defined(CONFIGURATION_DEBUG)
 #define VANIR_ULOG_INFO(...) \
 { \
-    std::wcout << ::Vanir::StringUtils::StringToWString(::Vanir::Logger::LogHeader("INFO", __FUNCTION__, __LINE__)); \
-    ::Vanir::Logger::ULog(__VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("INFO", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #define VANIR_ULOG_WARNING(...) \
 { \
-    std::wcout << ::Vanir::StringUtils::StringToWString(::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__)); \
-    ::Vanir::Logger::ULog(__VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #define VANIR_ULOG_ERROR(...) \
 { \
-    std::wcout << ::Vanir::StringUtils::StringToWString(::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__)); \
-    ::Vanir::Logger::ULog(__VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #else
 #define VANIR_ULOG_INFO(...) \
 { \
-    std::wcout << ::Vanir::Logger::LogHeader("INFO"); \
-    ::Vanir::Logger::ULog(__VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("INFO"), __VA_ARGS__); \
 }
 #define VANIR_ULOG_WARNING(...) \
 { \
-    std::wcout << ::Vanir::Logger::LogHeader("WARNING"); \
-    ::Vanir::Logger::ULog(__VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
 }
 #define VANIR_ULOG_ERROR(...) \
 { \
-    std::wcout << ::Vanir::Logger::LogHeader("ERROR"); \
-    ::Vanir::Logger::ULog(__VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("ERROR"), __VA_ARGS__); \
 }
 #endif
 #else
