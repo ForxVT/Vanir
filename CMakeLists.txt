@@ -32,7 +32,7 @@ add_library(Vanir
         ${PROJECT_SOURCE_DIR}/MathsUtils.h
         ${PROJECT_SOURCE_DIR}/Singleton.h
         ${PROJECT_SOURCE_DIR}/StringUtils.cpp
-        ${PROJECT_SOURCE_DIR}/StringUtils.h)
+        ${PROJECT_SOURCE_DIR}/StringUtils.h LoggerColor.cpp LoggerColor.h LoggerColors.h)
 
 target_include_directories(Vanir PUBLIC ${VANIR_INCLUDES})
 target_link_libraries(Vanir LINK_PUBLIC ${VANIR_LIBRARIES})

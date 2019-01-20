@@ -5,6 +5,7 @@
 #include <string>
 #include <Vanir/Macros.h>
 #include <Vanir/StringUtils.h>
+#include <Vanir/LoggerColor.h>
 #include <iostream>
 #ifdef PLATFORM_WINDOWS
 #include <fcntl.h>
@@ -28,8 +29,8 @@ namespace Vanir
         template <typename... Args>
         static void Log(Args&&... args)
         {
-            ((std::cout << std::forward<Args>(args)), ...) << std::endl;
-            ((m_file << std::forward<Args>(args)), ...) << std::endl;
+            ((std::cout << std::forward<Args>(args)), ...) << Vanir::LoggerColor() << std::endl;
+            ((m_file << std::forward<Args>(args)), ...) << Vanir::LoggerColor() << std::endl;
         }
 #ifdef PLATFORM_WINDOWS
         template <class T>
@@ -48,10 +49,10 @@ namespace Vanir
         template <typename... Args>
         static void ULog(Args&&... args)
         {
-            ((m_file << std::forward<Args>(args)), ...) << std::endl;
             _setmode(_fileno(stdout), _O_WTEXT);
-            ((ULogConverter(std::forward<Args>(args))), ...) << std::endl;
+            ((ULogConverter(std::forward<Args>(args))), ...) << Vanir::LoggerColor() << std::endl;
             _setmode(_fileno(stdout), _O_TEXT);
+            ((m_file << std::forward<Args>(args)), ...) << Vanir::LoggerColor() << std::endl;
         }
 #endif
 
@@ -70,11 +71,11 @@ namespace Vanir
 }
 #define VANIR_LOG_WARNING(...) \
 { \
-    ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Yellow), ::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #define VANIR_LOG_ERROR(...) \
 { \
-    ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Red), ::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #else
 #define VANIR_LOG_INFO(...) \
@@ -83,11 +84,11 @@ namespace Vanir
 }
 #define VANIR_LOG_WARNING(...) \
 { \
-    ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Yellow), ::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
 }
 #define VANIR_LOG_ERROR(...) \
 { \
-    ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("ERROR"), __VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Red), ::Vanir::Logger::LogHeader("ERROR"), __VA_ARGS__); \
 }
 #endif
 
@@ -100,11 +101,11 @@ namespace Vanir
 }
 #define VANIR_ULOG_WARNING(...) \
 { \
-    ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Yellow), ::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #define VANIR_ULOG_ERROR(...) \
 { \
-    ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Red), ::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #else
 #define VANIR_ULOG_INFO(...) \
@@ -113,11 +114,11 @@ namespace Vanir
 }
 #define VANIR_ULOG_WARNING(...) \
 { \
-    ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Yellow), ::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
 }
 #define VANIR_ULOG_ERROR(...) \
 { \
-    ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("ERROR"), __VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Red), ::Vanir::Logger::LogHeader("ERROR"), __VA_ARGS__); \
 }
 #endif
 #else

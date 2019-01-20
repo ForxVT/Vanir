@@ -111,4 +111,12 @@ namespace Vanir
         std::transform(text.begin(), text.end(), text.begin(), ::tolower);
     }
 
+    bool StringUtils::StringEndsWith(const std::string& value, const std::string& ending)
+    {
+        if (ending.size() > value.size())
+            return false;
+
+        return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+    }
+
 } /* Namespace Vanir. */

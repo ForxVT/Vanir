@@ -15,6 +15,8 @@
 #endif
 #include <stdio.h>
 #include <iostream>
+#include "FileUtils.h"
+
 
 namespace Vanir
 {
@@ -52,7 +54,7 @@ namespace Vanir
 #endif
     }
 
-    std::string FileUtils::GetExtension(const std::string& name)
+    std::string FileUtils::GetFilePathExtension(const std::string& name)
     {
         const auto loc = name.find_last_of('.');
 
@@ -62,7 +64,7 @@ namespace Vanir
         return "";
     }
 
-    std::string FileUtils::GetWithoutExtension(const std::string& name)
+    std::string FileUtils::GetFilePathWithoutExtension(const std::string& name)
     {
         const auto loc = name.find_last_of('.');
 
@@ -133,12 +135,20 @@ namespace Vanir
         return current_working_dir;
     }
 
-    bool FileUtils::StringEndsWith(const std::string& value, const std::string& ending)
+    std::string FileUtils::GetDirectoryPathFromFilePath(const std::string &path)
     {
-        if (ending.size() > value.size())
-            return false;
+        std::string directoryPath = std::string();
+        std::string separator = "\\";
 
-        return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+        if (path.find(separator) == std::string::npos)
+            separator = "/";
+
+        const size_t i = path.rfind(separator);
+
+        if (i != std::string::npos)
+            directoryPath = path.substr(0, i);
+
+        return directoryPath;
     }
 
 } /* Namespace Vanir. */

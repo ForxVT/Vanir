@@ -25,6 +25,7 @@ namespace Vanir
         static std::string BoolToString(bool value);
         static void ToUppercase(std::string& text);
         static void ToLowercase(std::string& text);
+        static bool StringEndsWith(const std::string& value, const std::string& ending);
     };
 
 } /* Namespace Vanir. */
