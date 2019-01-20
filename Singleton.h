@@ -9,11 +9,11 @@ namespace Vanir
     class Singleton
     {
     public:
-        static T* GetInstance()
+        static std::shared_ptr<T> GetInstance()
         {
-            static T instance;
+            static std::shared_ptr<T> instance(new T);
 
-            return &instance;
+            return instance;
         }
     };
 
