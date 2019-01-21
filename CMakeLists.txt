@@ -11,7 +11,9 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/../../Build/Lib/Vanir/${CMAKE_CXX_COMPILER_ID}_${CMAKE_SIZEOF_VOID_P}_${CMAKE_BUILD_TYPE})
 
-set(VANIR_INCLUDES ${PROJECT_SOURCE_DIR}/../)
+set(VANIR_INCLUDES
+        ${PROJECT_SOURCE_DIR}/../
+        ${PROJECT_SOURCE_DIR}/../Dependencies/JSON/include/)
 if(UNIX AND NOT APPLE)
     set(VANIR_LIBRARIES ${VANIR_LIBRARIES} stdc++fs)
 endif()
@@ -32,7 +34,12 @@ add_library(Vanir
         ${PROJECT_SOURCE_DIR}/MathsUtils.h
         ${PROJECT_SOURCE_DIR}/Singleton.h
         ${PROJECT_SOURCE_DIR}/StringUtils.cpp
-        ${PROJECT_SOURCE_DIR}/StringUtils.h LoggerColor.cpp LoggerColor.h LoggerColors.h)
+        ${PROJECT_SOURCE_DIR}/StringUtils.h
+        ${PROJECT_SOURCE_DIR}/LoggerColor.cpp
+        ${PROJECT_SOURCE_DIR}/LoggerColor.h
+        ${PROJECT_SOURCE_DIR}/LoggerColors.h
+        ${PROJECT_SOURCE_DIR}/JSONFile.cpp
+        ${PROJECT_SOURCE_DIR}/JSONFile.h)
 
 target_include_directories(Vanir PUBLIC ${VANIR_INCLUDES})
 target_link_libraries(Vanir LINK_PUBLIC ${VANIR_LIBRARIES})

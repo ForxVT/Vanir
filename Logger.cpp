@@ -2,15 +2,22 @@
 #include <cstdarg>
 #include <time.h>
 #include <iostream>
+#include "FileUtils.h"
+#include "Logger.h"
+
 
 namespace Vanir
 {
     std::ofstream Logger::m_file = std::ofstream();
+    bool Logger::m_writingToFile = false;
     time_t Logger::m_time;
 
-    void Logger::Start()
+    void Logger::Start(const std::string& filepath)
     {
-        m_file.open("Logs.log", std::ofstream::out | std::ofstream::trunc);
+        if (!Vanir::FileUtils::FolderExist(Vanir::FileUtils::GetDirectoryPathFromFilePath(filepath)))
+            Vanir::FileUtils::AddFolder(Vanir::FileUtils::GetDirectoryPathFromFilePath(filepath));
+
+        m_file.open(filepath, std::ofstream::out | std::ofstream::trunc);
     }
 
     void Logger::Stop()
@@ -21,6 +28,7 @@ namespace Vanir
     std::string Logger::LogHeader(const std::string &message, const std::string &function, int line)
     {
         m_time = time(nullptr);
+
         auto time = localtime(&m_time);
         auto hours = std::to_string(time->tm_hour);
         auto minutes = std::to_string(time->tm_min);
@@ -33,6 +41,11 @@ namespace Vanir
                         (seconds.length() == 1 ? "0" + seconds : seconds) + "] ";
 
         return infoText;
+    }
+
+    bool Logger::IsWritingToFile()
+    {
+        return m_writingToFile;
     }
 
 } /* Namespace Vanir. */

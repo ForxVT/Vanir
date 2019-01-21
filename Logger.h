@@ -23,15 +23,21 @@ namespace Vanir
     class Logger
     {
     public:
-        static void Start();
+        static void Start(const std::string& filepath = "logs.log");
         static void Stop();
         static std::string LogHeader(const std::string& message, const std::string& function = std::string(), int line = -1);
         template <typename... Args>
         static void Log(Args&&... args)
         {
             ((std::cout << std::forward<Args>(args)), ...) << Vanir::LoggerColor() << std::endl;
-            ((m_file << std::forward<Args>(args)), ...) << Vanir::LoggerColor() << std::endl;
+
+            m_writingToFile = true;
+
+            ((m_file << std::forward<Args>(args)), ...) << std::endl;
+
+            m_writingToFile = false;
         }
+        static bool IsWritingToFile();
 #ifdef PLATFORM_WINDOWS
         template <class T>
         static std::basic_ostream<wchar_t>& ULogConverter(T&& arg)
@@ -52,12 +58,18 @@ namespace Vanir
             _setmode(_fileno(stdout), _O_WTEXT);
             ((ULogConverter(std::forward<Args>(args))), ...) << Vanir::LoggerColor() << std::endl;
             _setmode(_fileno(stdout), _O_TEXT);
-            ((m_file << std::forward<Args>(args)), ...) << Vanir::LoggerColor() << std::endl;
+
+            m_writingToFile = true;
+
+            ((m_file << std::forward<Args>(args)), ...) << std::endl;
+
+            m_writingToFile = false;
         }
 #endif
 
     private:
         static std::ofstream m_file;
+        static bool m_writingToFile;
         static time_t m_time;
     };
 
@@ -71,11 +83,11 @@ namespace Vanir
 }
 #define VANIR_LOG_WARNING(...) \
 { \
-    ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Yellow), ::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Yellow), ::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #define VANIR_LOG_ERROR(...) \
 { \
-    ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Red), ::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Red), ::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #else
 #define VANIR_LOG_INFO(...) \
@@ -84,11 +96,11 @@ namespace Vanir
 }
 #define VANIR_LOG_WARNING(...) \
 { \
-    ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Yellow), ::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Yellow), ::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
 }
 #define VANIR_LOG_ERROR(...) \
 { \
-    ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Red), ::Vanir::Logger::LogHeader("ERROR"), __VA_ARGS__); \
+    ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Red), ::Vanir::Logger::LogHeader("ERROR"), __VA_ARGS__); \
 }
 #endif
 
@@ -101,11 +113,11 @@ namespace Vanir
 }
 #define VANIR_ULOG_WARNING(...) \
 { \
-    ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Yellow), ::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Yellow), ::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #define VANIR_ULOG_ERROR(...) \
 { \
-    ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Red), ::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Red), ::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__), __VA_ARGS__); \
 }
 #else
 #define VANIR_ULOG_INFO(...) \
@@ -114,11 +126,11 @@ namespace Vanir
 }
 #define VANIR_ULOG_WARNING(...) \
 { \
-    ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Yellow), ::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Yellow), ::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
 }
 #define VANIR_ULOG_ERROR(...) \
 { \
-    ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Dark_Red), ::Vanir::Logger::LogHeader("ERROR"), __VA_ARGS__); \
+    ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Red), ::Vanir::Logger::LogHeader("ERROR"), __VA_ARGS__); \
 }
 #endif
 #else

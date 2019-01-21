@@ -4,15 +4,18 @@
 #include <Vanir/LoggerColors.h>
 #include <ostream>
 
-// TODO: Add linux color support with ANSI
-
 namespace Vanir
 {
     class LoggerColor
     {
     public:
-        explicit LoggerColor(LoggerColors foregroundColor = LoggerColors_White,
-                             LoggerColors backgroundColor = LoggerColors_Black);
+#ifdef PLATFORM_WINDOWS
+        explicit LoggerColor(LoggerColors foregroundColor = LoggerColors_Default,
+                             LoggerColors backgroundColor = LoggerColors_Default);
+#else
+        explicit LoggerColor(LoggerColors foregroundColor = LoggerColors_Default,
+                             LoggerColors backgroundColor = LoggerColors_Default);
+#endif
 
         friend std::ostream& operator<<(std::ostream& os, const LoggerColor& loggerColor);
         friend std::basic_ostream<wchar_t>& operator<<(std::basic_ostream<wchar_t>& os, const LoggerColor& loggerColor);
