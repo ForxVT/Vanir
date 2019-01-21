@@ -33,8 +33,8 @@ namespace Vanir
 
             return os;
 #else
-            int foregroundColor = 0;
-            int backgroundColor = 0;
+            int foregroundColor = 39;
+            int backgroundColor = 49;
 
             if (loggerColor.m_foregroundColor < 10)
                 foregroundColor = loggerColor.m_foregroundColor + 30;
