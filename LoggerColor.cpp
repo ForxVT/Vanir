@@ -19,7 +19,17 @@ namespace Vanir
         {
 #ifdef PLATFORM_WINDOWS
             HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
-            SetConsoleTextAttribute(hStdout, loggerColor.m_foregroundColor + loggerColor.m_backgroundColor);
+
+            int foregroundColor = 15;
+            int backgroundColor = 0;
+
+            if (loggerColor.m_foregroundColor != 20)
+                foregroundColor = loggerColor.m_foregroundColor;
+
+            if (loggerColor.m_backgroundColor != 20)
+                backgroundColor = loggerColor.m_backgroundColor;
+
+            SetConsoleTextAttribute(hStdout, foregroundColor + backgroundColor);
 
             return os;
 #else
@@ -52,6 +62,17 @@ namespace Vanir
 #ifdef PLATFORM_WINDOWS
             HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
             SetConsoleTextAttribute(hStdout, loggerColor.m_foregroundColor + loggerColor.m_backgroundColor);
+
+            int foregroundColor = 15;
+            int backgroundColor = 0;
+
+            if (loggerColor.m_foregroundColor != 20)
+                foregroundColor = loggerColor.m_foregroundColor;
+
+            if (loggerColor.m_backgroundColor != 20)
+                backgroundColor = loggerColor.m_backgroundColor;
+
+            SetConsoleTextAttribute(hStdout, foregroundColor + backgroundColor);
 
             return os;
 #endif
