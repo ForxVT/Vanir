@@ -39,7 +39,12 @@ add_library(Vanir
         ${PROJECT_SOURCE_DIR}/LoggerColor.h
         ${PROJECT_SOURCE_DIR}/LoggerColors.h
         ${PROJECT_SOURCE_DIR}/JSONFile.cpp
-        ${PROJECT_SOURCE_DIR}/JSONFile.h)
+        ${PROJECT_SOURCE_DIR}/JSONFile.h
+        ${PROJECT_SOURCE_DIR}/CommandLineOption.h
+        ${PROJECT_SOURCE_DIR}/CommandLineOption.cpp
+        ${PROJECT_SOURCE_DIR}/CommandLineOptionTypes.h
+        ${PROJECT_SOURCE_DIR}/CommandLineUtils.cpp
+        ${PROJECT_SOURCE_DIR}/CommandLineUtils.h)
 
 target_include_directories(Vanir PUBLIC ${VANIR_INCLUDES})
 target_link_libraries(Vanir LINK_PUBLIC ${VANIR_LIBRARIES})
