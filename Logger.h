@@ -33,7 +33,8 @@ namespace Vanir
 
             m_writingToFile = true;
 
-            ((m_file << std::forward<Args>(args)), ...) << std::endl;
+            if (m_fileOpened)
+                ((m_file << std::forward<Args>(args)), ...) << std::endl;
 
             m_writingToFile = false;
         }
@@ -61,7 +62,8 @@ namespace Vanir
 
             m_writingToFile = true;
 
-            ((m_file << std::forward<Args>(args)), ...) << std::endl;
+            if (m_fileOpened)
+                ((m_file << std::forward<Args>(args)), ...) << std::endl;
 
             m_writingToFile = false;
         }
@@ -70,6 +72,7 @@ namespace Vanir
     private:
         static std::ofstream m_file;
         static bool m_writingToFile;
+        static bool m_fileOpened;
         static time_t m_time;
     };
 

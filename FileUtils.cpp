@@ -87,8 +87,13 @@ namespace Vanir
 
     void FileUtils::AddFile(const std::string& path, const std::string& text)
     {
-        if (!Vanir::FileUtils::FolderExist(Vanir::FileUtils::GetDirectoryPathFromFilePath(path)))
-            Vanir::FileUtils::AddFolder(Vanir::FileUtils::GetDirectoryPathFromFilePath(path));
+        auto dir = Vanir::FileUtils::GetDirectoryPathFromFilePath(path);
+
+        if (!dir.empty())
+        {
+            if (!Vanir::FileUtils::FolderExist(dir))
+                Vanir::FileUtils::AddFolder(dir);
+        }
 
         std::ofstream fs;
 
