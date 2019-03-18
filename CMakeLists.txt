@@ -38,6 +38,7 @@ add_library(Vanir
         ${PROJECT_SOURCE_DIR}/LoggerColor.cpp
         ${PROJECT_SOURCE_DIR}/LoggerColor.h
         ${PROJECT_SOURCE_DIR}/LoggerColors.h
+        ${PROJECT_SOURCE_DIR}/LoggerTypes.h
         ${PROJECT_SOURCE_DIR}/JSONFile.cpp
         ${PROJECT_SOURCE_DIR}/JSONFile.h
         ${PROJECT_SOURCE_DIR}/CommandLineOption.h

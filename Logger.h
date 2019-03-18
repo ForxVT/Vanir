@@ -6,6 +6,7 @@
 #include <Vanir/Macros.h>
 #include <Vanir/StringUtils.h>
 #include <Vanir/LoggerColor.h>
+#include <Vanir/LoggerTypes.h>
 #include <iostream>
 #ifdef PLATFORM_WINDOWS
 #include <fcntl.h>
@@ -26,6 +27,7 @@ namespace Vanir
         static void Start(const std::string& filepath = "logs.log");
         static void Stop();
         static void ResetCounters();
+        static void IncreaseCounter(LoggerTypes counter);
         static std::string LogHeader(const std::string& message, const std::string& function = std::string(), int line = -1);
         template <typename... Args>
         static void Log(Args&&... args)
@@ -72,6 +74,7 @@ namespace Vanir
 
         static int ErrorCount;
         static int WarningCount;
+        static int InfoCount;
 
     private:
         static std::ofstream m_file;
@@ -83,37 +86,40 @@ namespace Vanir
 } /* Namespace Vanir. */
 
 #define VANIR_LOG_RESETCOUNTERS() ::Vanir::Logger::ResetCounters();
+#define VANIR_LOG_INCREASECOUNTER(TYPE) ::Vanir::Logger::IncreaseCounter(TYPE);
 
 #define VANIR_LOG(...) ::Vanir::Logger::Log(__VA_ARGS__);
 #if defined(CONFIGURATION_DEBUG)
 #define VANIR_LOG_INFO(...) \
 { \
     ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("INFO", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::InfoCount += 1; \
 }
 #define VANIR_LOG_WARNING(...) \
 { \
-    ::Vanir::Logger::WarningCount += 1; \
     ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Yellow), ::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::WarningCount += 1; \
 }
 #define VANIR_LOG_ERROR(...) \
 { \
-    ::Vanir::Logger::ErrorCount += 1; \
     ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Red), ::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::ErrorCount += 1; \
 }
 #else
 #define VANIR_LOG_INFO(...) \
 { \
     ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("INFO"), __VA_ARGS__); \
+    ::Vanir::Logger::InfoCount += 1; \
 }
 #define VANIR_LOG_WARNING(...) \
 { \
-    ::Vanir::Logger::WarningCount += 1; \
     ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Yellow), ::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
+    ::Vanir::Logger::WarningCount += 1; \
 }
 #define VANIR_LOG_ERROR(...) \
 { \
-    ::Vanir::Logger::ErrorCount += 1; \
     ::Vanir::Logger::Log(::Vanir::LoggerColor(::Vanir::LoggerColors_Red), ::Vanir::Logger::LogHeader("ERROR"), __VA_ARGS__); \
+    ::Vanir::Logger::ErrorCount += 1; \
 }
 #endif
 
@@ -123,31 +129,33 @@ namespace Vanir
 #define VANIR_ULOG_INFO(...) \
 { \
     ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("INFO", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::InfoCount += 1; \
 }
 #define VANIR_ULOG_WARNING(...) \
 { \
-    ::Vanir::Logger::WarningCount += 1; \
     ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Yellow), ::Vanir::Logger::LogHeader("WARNING", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::WarningCount += 1; \
 }
 #define VANIR_ULOG_ERROR(...) \
 { \
-    ::Vanir::Logger::ErrorCount += 1; \
     ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Red), ::Vanir::Logger::LogHeader("ERROR", __FUNCTION__, __LINE__), __VA_ARGS__); \
+    ::Vanir::Logger::ErrorCount += 1; \
 }
 #else
 #define VANIR_ULOG_INFO(...) \
 { \
     ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("INFO"), __VA_ARGS__); \
+    ::Vanir::Logger::InfoCount += 1; \
 }
 #define VANIR_ULOG_WARNING(...) \
 { \
-    ::Vanir::Logger::WarningCount += 1; \
     ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Yellow), ::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
+    ::Vanir::Logger::WarningCount += 1; \
 }
 #define VANIR_ULOG_ERROR(...) \
 { \
-    ::Vanir::Logger::ErrorCount += 1; \
     ::Vanir::Logger::ULog(::Vanir::LoggerColor(::Vanir::LoggerColors_Red), ::Vanir::Logger::LogHeader("ERROR"), __VA_ARGS__); \
+    ::Vanir::Logger::ErrorCount += 1; \
 }
 #endif
 #else

@@ -14,6 +14,7 @@ namespace Vanir
     bool Logger::m_fileOpened = false;
     int Logger::ErrorCount = 0;
     int Logger::WarningCount = 0;
+    int Logger::InfoCount = 0;
 
     void Logger::Start(const std::string& filepath)
     {
@@ -41,6 +42,25 @@ namespace Vanir
     {
         ErrorCount = 0;
         WarningCount = 0;
+        InfoCount = 0;
+    }
+
+    void Logger::IncreaseCounter(LoggerTypes counter)
+    {
+        switch (counter)
+        {
+            case LoggerTypes_Neutral:
+                break;
+            case LoggerTypes_Info:
+                InfoCount++;
+                break;
+            case LoggerTypes_Warning:
+                WarningCount++;
+                break;
+            case LoggerTypes_Error:
+                ErrorCount++;
+                break;
+        }
     }
 
     std::string Logger::LogHeader(const std::string &message, const std::string &function, int line)
