@@ -12,6 +12,8 @@ namespace Vanir
     bool Logger::m_writingToFile = false;
     time_t Logger::m_time;
     bool Logger::m_fileOpened = false;
+    int Logger::ErrorCount = 0;
+    int Logger::WarningCount = 0;
 
     void Logger::Start(const std::string& filepath)
     {
@@ -33,6 +35,12 @@ namespace Vanir
         m_file.close();
 
         m_fileOpened = false;
+    }
+
+    void Logger::ResetCounters()
+    {
+        ErrorCount = 0;
+        WarningCount = 0;
     }
 
     std::string Logger::LogHeader(const std::string &message, const std::string &function, int line)
