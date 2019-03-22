@@ -12,30 +12,45 @@ namespace Vanir
     bool Logger::m_writingToFile = false;
     time_t Logger::m_time;
     bool Logger::m_fileOpened = false;
+    bool Logger::m_log = true;
     int Logger::ErrorCount = 0;
     int Logger::WarningCount = 0;
     int Logger::InfoCount = 0;
 
     void Logger::Start(const std::string& filepath)
     {
-        auto dir = Vanir::FileUtils::GetDirectoryPathFromFilePath(filepath);
+        if (filepath.empty())
+            m_log = false;
 
-        if (!dir.empty())
+        if (m_log)
         {
-            if (!Vanir::FileUtils::FolderExist(dir))
-                Vanir::FileUtils::AddFolder(dir);
+            auto dir = Vanir::FileUtils::GetDirectoryPathFromFilePath(filepath);
+
+            if (!dir.empty())
+            {
+                if (!Vanir::FileUtils::FolderExist(dir))
+                    Vanir::FileUtils::AddFolder(dir);
+            }
+
+            m_file.open(filepath, std::ofstream::out | std::ofstream::trunc);
+
+            m_fileOpened = true;
         }
+    }
 
-        m_file.open(filepath, std::ofstream::out | std::ofstream::trunc);
-
-        m_fileOpened = true;
+    void Logger::StartNoLog()
+    {
+        Start(std::string());
     }
 
     void Logger::Stop()
     {
-        m_file.close();
+        if (m_log)
+        {
+            m_file.close();
 
-        m_fileOpened = false;
+            m_fileOpened = false;
+        }
     }
 
     void Logger::ResetCounters()

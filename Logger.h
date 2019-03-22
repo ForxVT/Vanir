@@ -25,6 +25,7 @@ namespace Vanir
     {
     public:
         static void Start(const std::string& filepath = "logs.log");
+        static void StartNoLog();
         static void Stop();
         static void ResetCounters();
         static void IncreaseCounter(LoggerTypes counter);
@@ -80,6 +81,7 @@ namespace Vanir
         static std::ofstream m_file;
         static bool m_writingToFile;
         static bool m_fileOpened;
+        static bool m_log;
         static time_t m_time;
     };
 
