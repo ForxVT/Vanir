@@ -15,7 +15,7 @@ set(VANIR_INCLUDES
         ${PROJECT_SOURCE_DIR}/../
         ${PROJECT_SOURCE_DIR}/../Dependencies/JSON/include/)
 if(UNIX AND NOT APPLE)
-    set(VANIR_LIBRARIES ${VANIR_LIBRARIES} stdc++fs)
+    set(VANIR_LIBRARIES stdc++fs)
 endif()
 
 add_library(Vanir

@@ -1,3 +1,5 @@
+#ifdef VANIR_USE_JSON
+
 #ifndef VANIR_SETTINGS_H
 #define VANIR_SETTINGS_H
 
@@ -21,3 +23,5 @@ namespace Vanir
 } /* Namespace Vanir. */
 
 #endif /* VANIR_SETTINGS_H. */
+
+#endif

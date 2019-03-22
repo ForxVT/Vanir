@@ -1,3 +1,5 @@
+#ifdef VANIR_USE_JSON
+
 #include <Vanir/JSONFile.h>
 #include <Vanir/FileUtils.h>
 #include <Vanir/Logger.h>
@@ -44,3 +46,5 @@ namespace Vanir
 
 
 } /* Namespace Vanir. */
+
+#endif
