@@ -2,7 +2,7 @@
 #                                                                                  #
 #  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           #
 #                                                                                  #
-#  This file is part of the Aesir project.                                         #
+#  This file is part of the Vanir project.                                         #
 #  Licensed under MIT License:                                                     #
 #                                                                                  #
 #  Permission is hereby granted, free of charge, to any person obtaining           #
