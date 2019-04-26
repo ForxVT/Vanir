@@ -36,27 +36,35 @@ namespace Vanir
     class VANIR_EXPORT Exception : public std::exception
     {
     public:
-        Exception(const std::string &type, const std::string &message, const std::string &source, const std::string &file, int line);
-        Exception(const Exception& rhs);
-        ~Exception() noexcept = default;
-
-        virtual const std::string& GetDescription() const;
+        template <typename... Args>
+        Exception(const std::string &type, const std::string &source, const std::string &file, int line, Args&&... args);
+        ~Exception() noexcept override = default;
 
         const char* what() const noexcept override;
 
     protected:
         mutable std::string m_error;
-        std::string m_type;
-        std::string m_message;
-        std::string m_source;
-        std::string m_file;
-        int m_line;
     };
+
+    template <typename... Args>
+    Exception::Exception(const std::string &type, const std::string &source, const std::string &file, int line, Args&&... args)
+    {
+        std::stringstream error;
+
+        error << "FATAL ERROR !\n\n";
+        error << "Exception type: " << type << "\n";
+        error << "Message: ";
+        ((error << std::forward<Args>(args)), ...)  << "\n";
+        error << "In Method: " << source << "\n";
+        error << "In File: " << file << " (line " << line << ")";
+
+        m_error = error.str();
+    }
 
 } /* Namespace Vanir. */
 
-#define THROW_EXCEPTION(type, message) \
-ULOG_ERROR("EXCEPTION - ", type, ": ", message); \
-throw ::Vanir::Exception(type, message, __PRETTY_FUNCTION__, __FILE__, __LINE__)
+#define THROW_EXCEPTION(type, ...) \
+ULOG_ERROR("EXCEPTION - ", type, ": ", ##__VA_ARGS__); \
+throw ::Vanir::Exception(type, __PRETTY_FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__)
 
 #endif /* VANIR_EXCEPTION_H. */

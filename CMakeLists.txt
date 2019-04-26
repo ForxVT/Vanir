@@ -44,7 +44,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-option(VANIR_SHARED "Enable this to build Vanir as a shared library (static otherwise)" ON)
+option(VANIR_SHARED "Enable this to build Vanir as a shared library (static otherwise)" OFF)
 option(VANIR_BUILD_JSON "Enable this to build the JSON utilities" OFF)
 option(VANIR_BUILD_PROFILER "Enable this to build the profiling macros" ON)
 

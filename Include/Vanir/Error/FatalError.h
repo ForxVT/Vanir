@@ -41,10 +41,10 @@ namespace Vanir
 
 } /* Namespace Vanir. */
 
-#define THROW_FATALERROR(type, message) \
+#define THROW_FATALERROR(type, ...) \
 { \
-    ULOG_ERROR("EXCEPTION - ", type, ": ", message); \
-    ::Vanir::FatalError::Popup(::Vanir::Exception(type, message, __PRETTY_FUNCTION__, __FILE__, __LINE__).GetDescription()); \
+    ULOG_ERROR("EXCEPTION - ", type, ": ", ##__VA_ARGS__); \
+    ::Vanir::FatalError::Popup(::Vanir::Exception(type, __PRETTY_FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__).what()); \
     ::Vanir::FatalError::Terminate(); \
 }
 

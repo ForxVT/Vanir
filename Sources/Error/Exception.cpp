@@ -32,42 +32,9 @@
 
 namespace Vanir
 {
-    Exception::Exception(const std::string &type,
-            const std::string &message, const std::string &source, const std::string &file, int line) :
-            m_type(type), m_message(message), m_source(source), m_file(file), m_line(line)
-    {
-
-    }
-
-    Exception::Exception(const Exception &rhs) :
-            m_type(rhs.m_type), m_message(rhs.m_message), m_source(rhs.m_source), m_file(rhs.m_file), m_line(rhs.m_line)
-    {
-
-    }
-
-    const std::string &Exception::GetDescription() const
-    {
-        if (m_error.empty())
-        {
-            std::stringstream error;
-
-            error << "FATAL ERROR !\n\n";
-            error << "Exception type: " << m_type << "\n";
-            error << "Message: " << m_message << "\n";
-            error << "In Method: " << m_source << "\n";
-
-            if (m_line > 0)
-                error << "In File: " << m_file << " (line " << m_line << ")";
-
-            m_error = error.str();
-        }
-
-        return m_error;
-    }
-
     const char *Exception::what() const noexcept
     {
-        return GetDescription().c_str();
+        return m_error.c_str();
     }
 
 } /* Namespace Vanir. */
