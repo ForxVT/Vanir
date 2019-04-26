@@ -93,7 +93,9 @@ set(VANIR_SOURCES ${VANIR_SOURCES}
         Include/Vanir/CLI/Argument.h
         Include/Vanir/CLI/ArgumentType.h
         Include/Vanir/CLI/CLI.h
+        Include/Vanir/Error/Error.h
         Include/Vanir/Error/Exception.h
+        Include/Vanir/Error/FatalError.h
         Include/Vanir/Event/ConnectionData.h
         Include/Vanir/Event/Event.h
         Include/Vanir/Event/EventHandle.h
@@ -109,9 +111,11 @@ set(VANIR_SOURCES ${VANIR_SOURCES}
         Include/Vanir/String/String.h
         Include/Vanir/Utility/Singleton.h
         Include/Vanir/Utility/Timer.h
+        Include/Vanir/Utility/Utils.h
         Sources/CLI/Argument.cpp
         Sources/CLI/CLI.cpp
         Sources/Error/Exception.cpp
+        Sources/Error/FatalError.cpp
         Sources/Event/ConnectionData.cpp
         Sources/Event/EventHandle.cpp
         Sources/Event/EventInternalData.cpp
@@ -123,7 +127,8 @@ set(VANIR_SOURCES ${VANIR_SOURCES}
         Sources/Math/Random.cpp
         Sources/Math/Xorshift.cpp
         Sources/String/String.cpp
-        Sources/Utility/Timer.cpp Include/Vanir/Error/FatalError.h Sources/Error/FatalError.cpp Include/Vanir/Error/Error.h)
+        Sources/Utility/Timer.cpp
+        Sources/Utility/Utils.cpp)
 
 if (VANIR_SHARED)
     add_library(Vanir SHARED ${VANIR_SOURCES})
