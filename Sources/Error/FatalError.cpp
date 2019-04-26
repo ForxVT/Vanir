@@ -44,7 +44,9 @@ namespace Vanir
 
     void FatalError::Popup(const std::string &message)
     {
+#ifdef _WIN32
         ::MessageBoxW(nullptr, String::StringToWString(message).c_str(), L"FATAL ERROR", MB_OK | MB_ICONERROR);
+#endif
     }
 
 } /* Namespace Vanir. */
