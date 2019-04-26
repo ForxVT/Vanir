@@ -25,57 +25,38 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_COMMON_H
-#define VANIR_COMMON_H
+#ifndef VANIR_EXCEPTION_H
+#define VANIR_EXCEPTION_H
 
-// Include commonly used STD files.
-#include <string>
-#include <vector>
-#include <map>
+#include <Vanir/Common.h>
+#include <Vanir/Logger/Logger.h>
 
-// DLL export.
-#if _WIN32
-    #if _MSC_VER && !__INTEL_COMPILER
-        #if VANIR_LIB_STATIC
-            #define VANIR_EXPORT
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __declspec(dllimport)
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #else
-        #if VANIR_LIB_SHARED
-            #define VANIR_EXPORT __attribute__((dllexport))
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __attribute__((dllimport))
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #endif
-#else
-    #define VANIR_EXPORT __attribute__((visibility ("default")))
-#endif
+namespace Vanir
+{
+    class VANIR_EXPORT Exception : public std::exception
+    {
+    public:
+        Exception(const std::string &type, const std::string &message, const std::string &source, const std::string &file, int line);
+        Exception(const Exception& rhs);
+        ~Exception() noexcept = default;
 
-#if VANIR_BUILD_PROFILER
-#include <easy/profiler.h>
+        virtual const std::string& GetDescription() const;
 
-#define PROFILE_ENABLE EASY_PROFILER_ENABLE
-#define PROFILE_DUMP(NAME) profiler::dumpBlocksToFile(NAME)
-#define PROFILE_LISTEN profiler::startListen()
-#define PROFILE_FUNCTION(NAME) EASY_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME) EASY_BLOCK(NAME)
-#define PROFILE_BLOCK_END EASY_END_BLOCK
-#else
-#define PROFILE_ENABLE
-#define PROFILE_DUMP(NAME)
-#define PROFILE_LISTEN
-#define PROFILE_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME)
-#define PROFILE_BLOCK_END
-#endif
+        const char* what() const noexcept override;
 
-#endif /* VANIR_COMMON_H. */
+    protected:
+        mutable std::string m_error;
+        std::string m_type;
+        std::string m_message;
+        std::string m_source;
+        std::string m_file;
+        int m_line;
+    };
+
+} /* Namespace Vanir. */
+
+#define THROW_EXCEPTION(type, message) \
+ULOG_ERROR("EXCEPTION - ", type, ": ", message); \
+throw ::Vanir::Exception(type, message, __PRETTY_FUNCTION__, __FILE__, __LINE__)
+
+#endif /* VANIR_EXCEPTION_H. */

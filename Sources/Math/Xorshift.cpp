@@ -25,57 +25,61 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_COMMON_H
-#define VANIR_COMMON_H
+#include <Vanir/Math/Xorshift.h>
+#include <iostream>
 
-// Include commonly used STD files.
-#include <string>
-#include <vector>
-#include <map>
+namespace Vanir
+{
+    Xorshift::Xorshift() : m_seed(0xc1f651c67c62c6e0ull)
+    {
 
-// DLL export.
-#if _WIN32
-    #if _MSC_VER && !__INTEL_COMPILER
-        #if VANIR_LIB_STATIC
-            #define VANIR_EXPORT
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __declspec(dllimport)
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #else
-        #if VANIR_LIB_SHARED
-            #define VANIR_EXPORT __attribute__((dllexport))
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __attribute__((dllimport))
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #endif
-#else
-    #define VANIR_EXPORT __attribute__((visibility ("default")))
-#endif
+    }
 
-#if VANIR_BUILD_PROFILER
-#include <easy/profiler.h>
+    Xorshift::Xorshift(std::random_device &_seed)
+    {
+        seed(_seed);
+    }
 
-#define PROFILE_ENABLE EASY_PROFILER_ENABLE
-#define PROFILE_DUMP(NAME) profiler::dumpBlocksToFile(NAME)
-#define PROFILE_LISTEN profiler::startListen()
-#define PROFILE_FUNCTION(NAME) EASY_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME) EASY_BLOCK(NAME)
-#define PROFILE_BLOCK_END EASY_END_BLOCK
-#else
-#define PROFILE_ENABLE
-#define PROFILE_DUMP(NAME)
-#define PROFILE_LISTEN
-#define PROFILE_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME)
-#define PROFILE_BLOCK_END
-#endif
+    Xorshift::Xorshift(uint32_t _seed)
+    {
+        seed(_seed);
+    }
 
-#endif /* VANIR_COMMON_H. */
+    void Xorshift::seed(std::random_device &rd)
+    {
+        m_seed = uint64_t(rd()) << 31 | uint64_t(rd());
+    }
+
+    void Xorshift::seed(uint32_t seed)
+    {
+        m_seed = seed;
+    }
+
+    void Xorshift::discard(unsigned long long n)
+    {
+        for (unsigned long long i = 0; i < n; ++i)
+            operator()();
+    }
+
+    uint32_t Xorshift::operator()()
+    {
+        uint64_t result = m_seed * 0xd989bcacc137dcd5ull;
+
+        m_seed ^= m_seed >> 11;
+        m_seed ^= m_seed << 31;
+        m_seed ^= m_seed >> 18;
+
+        return result_type(result >> 32ull);
+    }
+
+    bool operator==(Xorshift const &lhs, Xorshift const &rhs)
+    {
+        return lhs.m_seed == rhs.m_seed;
+    }
+
+    bool operator!=(Xorshift const &lhs, Xorshift const &rhs)
+    {
+        return lhs.m_seed != rhs.m_seed;
+    }
+
+} /* Namespace Vanir. */

@@ -25,57 +25,34 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_COMMON_H
-#define VANIR_COMMON_H
+#include <Vanir/Math/Math.h>
+#include <math.h>
 
-// Include commonly used STD files.
-#include <string>
-#include <vector>
-#include <map>
+namespace Vanir
+{
+    bool Math::IsOdd(int32_t number)
+    {
+        return number % 2 != 0;
+    }
 
-// DLL export.
-#if _WIN32
-    #if _MSC_VER && !__INTEL_COMPILER
-        #if VANIR_LIB_STATIC
-            #define VANIR_EXPORT
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __declspec(dllimport)
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #else
-        #if VANIR_LIB_SHARED
-            #define VANIR_EXPORT __attribute__((dllexport))
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __attribute__((dllimport))
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #endif
-#else
-    #define VANIR_EXPORT __attribute__((visibility ("default")))
-#endif
+    bool Math::IsEven(int32_t number)
+    {
+        return number % 2 == 0;
+    }
 
-#if VANIR_BUILD_PROFILER
-#include <easy/profiler.h>
+    float Math::ToDegree(float radiant)
+    {
+        return radiant * RAD2DEG;
+    }
 
-#define PROFILE_ENABLE EASY_PROFILER_ENABLE
-#define PROFILE_DUMP(NAME) profiler::dumpBlocksToFile(NAME)
-#define PROFILE_LISTEN profiler::startListen()
-#define PROFILE_FUNCTION(NAME) EASY_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME) EASY_BLOCK(NAME)
-#define PROFILE_BLOCK_END EASY_END_BLOCK
-#else
-#define PROFILE_ENABLE
-#define PROFILE_DUMP(NAME)
-#define PROFILE_LISTEN
-#define PROFILE_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME)
-#define PROFILE_BLOCK_END
-#endif
+    float Math::ToRadiant(float degree)
+    {
+        return degree * DEG2RAD;
+    }
 
-#endif /* VANIR_COMMON_H. */
+    float Math::Lerp(float alpha, float a, float b)
+    {
+        return (1.0f - alpha) * a + alpha * b;
+    }
+
+} /* Namespace Vanir. */

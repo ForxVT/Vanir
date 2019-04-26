@@ -25,57 +25,54 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_COMMON_H
-#define VANIR_COMMON_H
+#include <Vanir/Math/Random.h>
+#include <chrono>
 
-// Include commonly used STD files.
-#include <string>
-#include <vector>
-#include <map>
+namespace Vanir
+{
+    Random::Random()
+    {
+        SetSeed(static_cast<long unsigned int>(std::chrono::high_resolution_clock::now().time_since_epoch().count()));
+    }
 
-// DLL export.
-#if _WIN32
-    #if _MSC_VER && !__INTEL_COMPILER
-        #if VANIR_LIB_STATIC
-            #define VANIR_EXPORT
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __declspec(dllimport)
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #else
-        #if VANIR_LIB_SHARED
-            #define VANIR_EXPORT __attribute__((dllexport))
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __attribute__((dllimport))
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #endif
-#else
-    #define VANIR_EXPORT __attribute__((visibility ("default")))
-#endif
+    Random::Random(uint64_t seed)
+    {
+        SetSeed(seed);
+    }
 
-#if VANIR_BUILD_PROFILER
-#include <easy/profiler.h>
+    Random::~Random() = default;
 
-#define PROFILE_ENABLE EASY_PROFILER_ENABLE
-#define PROFILE_DUMP(NAME) profiler::dumpBlocksToFile(NAME)
-#define PROFILE_LISTEN profiler::startListen()
-#define PROFILE_FUNCTION(NAME) EASY_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME) EASY_BLOCK(NAME)
-#define PROFILE_BLOCK_END EASY_END_BLOCK
-#else
-#define PROFILE_ENABLE
-#define PROFILE_DUMP(NAME)
-#define PROFILE_LISTEN
-#define PROFILE_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME)
-#define PROFILE_BLOCK_END
-#endif
+    void Random::SetSeed(uint64_t seed)
+    {
+        m_seed = seed;
+        m_generator = Xorshift(m_seed);
+    }
 
-#endif /* VANIR_COMMON_H. */
+    uint64_t Random::GetSeed()
+    {
+        return m_seed;
+    }
+
+    uint32_t Random::Generate()
+    {
+        return Generate(0, UINT32_MAX);
+    }
+
+    uint32_t Random::Generate(uint32_t max)
+    {
+        return Generate(0, max);
+    }
+
+    uint32_t Random::Generate(uint32_t min, uint32_t max)
+    {
+        std::uniform_int_distribution<> distributor(min, max);
+
+        return distributor(m_generator);
+    }
+
+    void Random::Reset()
+    {
+        SetSeed(m_seed);
+    }
+
+} /* Namespace Vanir. */

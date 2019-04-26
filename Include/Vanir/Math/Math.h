@@ -25,57 +25,42 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_COMMON_H
-#define VANIR_COMMON_H
+#ifndef VANIR_MATH_H
+#define VANIR_MATH_H
 
-// Include commonly used STD files.
-#include <string>
-#include <vector>
-#include <map>
+#include <Vanir/Common.h>
 
-// DLL export.
-#if _WIN32
-    #if _MSC_VER && !__INTEL_COMPILER
-        #if VANIR_LIB_STATIC
-            #define VANIR_EXPORT
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __declspec(dllimport)
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #else
-        #if VANIR_LIB_SHARED
-            #define VANIR_EXPORT __attribute__((dllexport))
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __attribute__((dllimport))
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #endif
-#else
-    #define VANIR_EXPORT __attribute__((visibility ("default")))
-#endif
+namespace Vanir
+{
+    /// Class containing various mathematic utility methods.
+    class VANIR_EXPORT Math
+    {
+    public:
+        /// Return if a given integer is odd.
+        static bool IsOdd(int32_t number);
+        /// Return if a given integer is even.
+        static bool IsEven(int32_t number);
+        /// Return a converted float from radiant to degree.
+        static float ToDegree(float radiant);
+        /// Return a converted float from degree to radiant.
+        static float ToRadiant(float degree);
+        /// Return the interpolation of two values by an alpha (0 meaning value A, 1 meaning value B).
+        static float Lerp(float alpha, float a, float b);
+        /// Return a divided number rounded up (only working on positive numbers).
+        template<class T>
+        static constexpr T DivideAndRoundUp(T n, T d)
+        {
+            return (n + d - 1) / d;
+        }
 
-#if VANIR_BUILD_PROFILER
-#include <easy/profiler.h>
+        /// Constant for PI.
+        static constexpr float PI = 3.14159265358979323846f;
+        /// Constant to help converting radiant to degree.
+        static constexpr float RAD2DEG = 180.0f / PI;
+        /// Constant to help converting degree to radiant.
+        static constexpr float DEG2RAD = PI / 180.0f;
+    };
 
-#define PROFILE_ENABLE EASY_PROFILER_ENABLE
-#define PROFILE_DUMP(NAME) profiler::dumpBlocksToFile(NAME)
-#define PROFILE_LISTEN profiler::startListen()
-#define PROFILE_FUNCTION(NAME) EASY_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME) EASY_BLOCK(NAME)
-#define PROFILE_BLOCK_END EASY_END_BLOCK
-#else
-#define PROFILE_ENABLE
-#define PROFILE_DUMP(NAME)
-#define PROFILE_LISTEN
-#define PROFILE_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME)
-#define PROFILE_BLOCK_END
-#endif
+} /* Namespace Vanir. */
 
-#endif /* VANIR_COMMON_H. */
+#endif /* VANIR_MATH_H. */

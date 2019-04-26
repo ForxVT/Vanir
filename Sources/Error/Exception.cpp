@@ -1,3 +1,5 @@
+#include <utility>
+
 //==================================================================================//
 //                                                                                  //
 //  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           //
@@ -25,57 +27,47 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_COMMON_H
-#define VANIR_COMMON_H
+#include <Vanir/Error/Exception.h>
+#include <sstream>
 
-// Include commonly used STD files.
-#include <string>
-#include <vector>
-#include <map>
+namespace Vanir
+{
+    Exception::Exception(const std::string &type,
+            const std::string &message, const std::string &source, const std::string &file, int line) :
+            m_type(type), m_message(message), m_source(source), m_file(file), m_line(line)
+    {
 
-// DLL export.
-#if _WIN32
-    #if _MSC_VER && !__INTEL_COMPILER
-        #if VANIR_LIB_STATIC
-            #define VANIR_EXPORT
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __declspec(dllimport)
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #else
-        #if VANIR_LIB_SHARED
-            #define VANIR_EXPORT __attribute__((dllexport))
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __attribute__((dllimport))
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #endif
-#else
-    #define VANIR_EXPORT __attribute__((visibility ("default")))
-#endif
+    }
 
-#if VANIR_BUILD_PROFILER
-#include <easy/profiler.h>
+    Exception::Exception(const Exception &rhs) :
+            m_type(rhs.m_type), m_message(rhs.m_message), m_source(rhs.m_source), m_file(rhs.m_file), m_line(rhs.m_line)
+    {
 
-#define PROFILE_ENABLE EASY_PROFILER_ENABLE
-#define PROFILE_DUMP(NAME) profiler::dumpBlocksToFile(NAME)
-#define PROFILE_LISTEN profiler::startListen()
-#define PROFILE_FUNCTION(NAME) EASY_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME) EASY_BLOCK(NAME)
-#define PROFILE_BLOCK_END EASY_END_BLOCK
-#else
-#define PROFILE_ENABLE
-#define PROFILE_DUMP(NAME)
-#define PROFILE_LISTEN
-#define PROFILE_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME)
-#define PROFILE_BLOCK_END
-#endif
+    }
 
-#endif /* VANIR_COMMON_H. */
+    const std::string &Exception::GetDescription() const
+    {
+        if (m_error.empty())
+        {
+            std::stringstream error;
+
+            error << "FATAL ERROR !\n\n";
+            error << "Exception type: " << m_type << "\n";
+            error << "Message: " << m_message << "\n";
+            error << "In Method: " << m_source << "\n";
+
+            if (m_line > 0)
+                error << "In File: " << m_file << " (line " << m_line << ")";
+
+            m_error = error.str();
+        }
+
+        return m_error;
+    }
+
+    const char *Exception::what() const noexcept
+    {
+        return GetDescription().c_str();
+    }
+
+} /* Namespace Vanir. */

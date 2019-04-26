@@ -25,89 +25,117 @@
 //                                                                                  //
 //==================================================================================//
 
-#include <Vanir/Logger/Logger.h>
-#include <Vanir/FileSystem/FileSystem.h>
-#include <cstdarg>
-#include <time.h>
-#include <iostream>
+#include <Vanir/Event/EventInternalData.h>
 
 namespace Vanir
 {
-    std::ofstream Logger::m_file = std::ofstream();
-    bool Logger::m_writingToFile = false;
-    time_t Logger::m_time;
-    bool Logger::m_fileOpened = false;
-    bool Logger::m_log = true;
-    int Logger::ErrorCount = 0;
-    int Logger::WarningCount = 0;
-    int Logger::InfoCount = 0;
-
-    void Logger::Start(const std::string& filepath)
+    EventInternalData::~EventInternalData()
     {
-        std::cout << LogColor();
+        ConnectionData* conn = Connections;
 
-        if (filepath.empty())
-            m_log = false;
-
-        if (m_log)
+        while (conn != nullptr)
         {
-            auto dir = Vanir::FileSystem::GetDirectoryPathFromFilePath(filepath);
+            ConnectionData* next = conn->Next;
 
-            if (!dir.empty())
-            {
-                if (!Vanir::FileSystem::DirectoryExist(dir))
-                    Vanir::FileSystem::AddFolder(dir);
-            }
+            free(conn);
 
-            m_file.open(filepath, std::ofstream::out | std::ofstream::trunc);
+            conn = next;
+        }
 
-            m_fileOpened = true;
+        conn = FreeConnections;
+
+        while (conn != nullptr)
+        {
+            ConnectionData* next = conn->Next;
+
+            free(conn);
+
+            conn = next;
+        }
+
+        conn = NewConnections;
+
+        while (conn != nullptr)
+        {
+            ConnectionData* next = conn->Next;
+
+            free(conn);
+
+            conn = next;
         }
     }
 
-    void Logger::StartNoLog()
+    void EventInternalData::Connect(ConnectionData *conn)
     {
-        Start(std::string());
+        conn->Previous = LastConnection;
+
+        if(LastConnection != nullptr)
+            LastConnection->Next = conn;
+
+        LastConnection = conn;
+
+        if(Connections == nullptr)
+            Connections = conn;
     }
 
-    void Logger::Stop()
+    void EventInternalData::Disconnect(ConnectionData *conn)
     {
-        if (m_log)
+        conn->Deactivate();
+        conn->HandleLinks--;
+
+        if (conn->HandleLinks == 0)
+            free(conn);
+    }
+
+    void EventInternalData::Clear()
+    {
+        ConnectionData* conn = Connections;
+        while (conn != nullptr)
         {
-            m_file.close();
+            ConnectionData* next = conn->Next;
+            conn->Deactivate();
 
-            m_fileOpened = false;
+            if (conn->HandleLinks == 0)
+                free(conn);
+
+            conn = next;
         }
+
+        Connections = nullptr;
+        LastConnection = nullptr;
     }
 
-    void Logger::ResetCounters()
+    void EventInternalData::FreeHandle(ConnectionData *conn)
     {
-        ErrorCount = 0;
-        WarningCount = 0;
-        InfoCount = 0;
+        conn->HandleLinks--;
+
+        if (conn->HandleLinks == 0 && !conn->IsActive)
+            free(conn);
     }
 
-    std::string Logger::LogHeader(const std::string &message, const std::string &function, int line)
+    void EventInternalData::Free(ConnectionData *conn)
     {
-        m_time = time(nullptr);
+        if (conn->Previous != nullptr)
+            conn->Previous->Next = conn->Next;
+        else
+            Connections = conn->Next;
 
-        auto time = localtime(&m_time);
-        auto hours = std::to_string(time->tm_hour);
-        auto minutes = std::to_string(time->tm_min);
-        auto seconds = std::to_string(time->tm_sec);
-        auto infoText = "[" + message + " | " +
-                        (function.empty() ? "" : function + " | ") +
-                        (line == -1 ? "" : "Line " + std::to_string(line) + " | ") +
-                        (hours.length() == 1 ? "0" + hours : hours) + ":" +
-                        (minutes.length() == 1 ? "0" + minutes : minutes) + ":" +
-                        (seconds.length() == 1 ? "0" + seconds : seconds) + "] ";
+        if (conn->Next != nullptr)
+            conn->Next->Previous = conn->Previous;
+        else
+            LastConnection = conn->Previous;
 
-        return infoText;
+        conn->Previous = nullptr;
+        conn->Next = nullptr;
+
+        if (FreeConnections != nullptr)
+        {
+            conn->Next = FreeConnections;
+            FreeConnections->Previous = conn;
+        }
+
+        FreeConnections = conn;
+        FreeConnections->~ConnectionData();
+
     }
-
-    bool Logger::IsWritingToFile()
-    {
-        return m_writingToFile;
-    }
-
 } /* Namespace Vanir. */

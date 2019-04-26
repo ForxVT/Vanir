@@ -31,51 +31,106 @@
 #                                                                                  #
 #==================================================================================#
 
+# TODO: Better CMake handling, with install.
 cmake_minimum_required(VERSION 3.14)
 
 project(Vanir LANGUAGES CXX)
+
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake)
+
+include(Config)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+option(VANIR_SHARED "Enable this to build Vanir as a shared library (static otherwise)" ON)
 option(VANIR_BUILD_JSON "Enable this to build the JSON utilities" OFF)
+option(VANIR_BUILD_PROFILER "Enable this to build the profiling macros" ON)
 
 if (VANIR_BUILD_JSON)
     find_package(nlohmann_json 3.2.0 REQUIRED)
 endif()
 
-add_library(Vanir
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/Common.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/CommandLine/CommandLineOption.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/CommandLine/CommandLineOptionTypes.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/CommandLine/CommandLineUtils.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/Event/Callback.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/Event/Invokable.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/Factory/Factory.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/Factory/FactoryRegister.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/Factory/GenericFactory.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/File/FileUtils.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/JSON/JSONFile.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/Logger/Logger.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/Logger/LoggerColor.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/Logger/LoggerColors.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/Logger/LoggerTypes.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/Maths/MathsUtils.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/Singleton/Singleton.h
-        ${PROJECT_SOURCE_DIR}/Include/Vanir/String/StringUtils.h
-        ${PROJECT_SOURCE_DIR}/Sources/File/FileUtils.cpp
-        ${PROJECT_SOURCE_DIR}/Sources/JSON/JSONFile.cpp
-        ${PROJECT_SOURCE_DIR}/Sources/Logger/LoggerColor.cpp
-        ${PROJECT_SOURCE_DIR}/Sources/Logger/Logger.cpp
-        ${PROJECT_SOURCE_DIR}/Sources/Maths/MathsUtils.cpp
-        ${PROJECT_SOURCE_DIR}/Sources/String/StringUtils.cpp
-        ${PROJECT_SOURCE_DIR}/Sources/CommandLine/CommandLineOption.cpp
-        ${PROJECT_SOURCE_DIR}/Sources/CommandLine/CommandLineUtils.cpp)
+set(VANIR_INCLUDES ${VANIR_INCLUDES} Include/)
 
-target_include_directories(Vanir PRIVATE ${PROJECT_SOURCE_DIR}/Include/)
-
-if (VANIR_BUILD_JSON)
-    target_compile_definitions(Vanir PRIVATE VANIR_BUILD_JSON)
-    target_link_libraries(Vanir PRIVATE nlohmann_json::nlohmann_json)
+if (VANIR_BUILD_PROFILER)
+    set(VANIR_INCLUDES ${VANIR_INCLUDES} ${VANIR_EASYPROFILER_INCLUDES})
 endif()
+
+if(WIN32)
+    set(VANIR_LIBRARIES ${VANIR_LIBRARIES} rpcrt4)
+endif()
+if (VANIR_BUILD_JSON)
+    set(VANIR_LIBRARIES ${VANIR_LIBRARIES} nlohmann_json::nlohmann_json)
+endif()
+if (VANIR_BUILD_PROFILER)
+    set(VANIR_LIBRARIES ${VANIR_LIBRARIES} easy_profiler)
+endif()
+
+set(VANIR_COMPILEDEFINITIONS
+        VANIR_VERSION_MAJOR=${VANIR_VERSION_MAJOR}
+        VANIR_VERSION_MINOR=${VANIR_VERSION_MINOR}
+        VANIR_VERSION_PATCH=${VANIR_VERSION_PATCH}
+        VANIR_VERSION="${VANIR_VERSION_MAJOR}.${VANIR_VERSION_MINOR}.${VANIR_VERSION_PATCH}\\0")
+
+if (VANIR_SHARED)
+    set(VANIR_COMPILEDEFINITIONS ${VANIR_COMPILEDEFINITIONS} VANIR_LIB_SHARED)
+endif()
+if (VANIR_BUILD_JSON)
+    set(VANIR_COMPILEDEFINITIONS ${VANIR_COMPILEDEFINITIONS} VANIR_BUILD_JSON)
+endif()
+if (VANIR_BUILD_PROFILER)
+    set(VANIR_COMPILEDEFINITIONS ${VANIR_COMPILEDEFINITIONS} BUILD_WITH_EASY_PROFILER VANIR_BUILD_PROFILER)
+endif()
+
+if (WIN32)
+    set(VANIR_SOURCES ${VANIR_SOURCES} Include/Vanir/Platform/Windows/Version.rc)
+endif()
+
+set(VANIR_SOURCES ${VANIR_SOURCES}
+        Include/Vanir/Common.h
+        Include/Vanir/CLI/Argument.h
+        Include/Vanir/CLI/ArgumentType.h
+        Include/Vanir/CLI/CLI.h
+        Include/Vanir/Error/Exception.h
+        Include/Vanir/Event/ConnectionData.h
+        Include/Vanir/Event/Event.h
+        Include/Vanir/Event/EventHandle.h
+        Include/Vanir/Event/EventInternalData.h
+        Include/Vanir/FileSystem/FileSystem.h
+        Include/Vanir/JSON/JSONFile.h
+        Include/Vanir/Logger/LogColor.h
+        Include/Vanir/Logger/Logger.h
+        Include/Vanir/Logger/TerminalColor.h
+        Include/Vanir/Math/Math.h
+        Include/Vanir/Math/Random.h
+        Include/Vanir/Math/Xorshift.h
+        Include/Vanir/String/String.h
+        Include/Vanir/Utility/Singleton.h
+        Include/Vanir/Utility/Timer.h
+        Sources/CLI/Argument.cpp
+        Sources/CLI/CLI.cpp
+        Sources/Error/Exception.cpp
+        Sources/Event/ConnectionData.cpp
+        Sources/Event/EventHandle.cpp
+        Sources/Event/EventInternalData.cpp
+        Sources/FileSystem/FileSystem.cpp
+        Sources/JSON/JSONFile.cpp
+        Sources/Logger/LogColor.cpp
+        Sources/Logger/Logger.cpp
+        Sources/Math/Math.cpp
+        Sources/Math/Random.cpp
+        Sources/Math/Xorshift.cpp
+        Sources/String/String.cpp
+        Sources/Utility/Timer.cpp Include/Vanir/Error/FatalError.h Sources/Error/FatalError.cpp Include/Vanir/Error/Error.h)
+
+if (VANIR_SHARED)
+    add_library(Vanir SHARED ${VANIR_SOURCES})
+else()
+    add_library(Vanir ${VANIR_SOURCES})
+endif()
+
+target_compile_definitions(Vanir PRIVATE ${VANIR_COMPILEDEFINITIONS})
+target_include_directories(Vanir PRIVATE ${VANIR_INCLUDES})
+target_link_libraries(Vanir PRIVATE ${VANIR_LIBRARIES})

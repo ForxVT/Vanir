@@ -25,57 +25,39 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_COMMON_H
-#define VANIR_COMMON_H
+#ifndef VANIR_FILESYSTEM_H
+#define VANIR_FILESYSTEM_H
 
-// Include commonly used STD files.
-#include <string>
-#include <vector>
-#include <map>
+#include <Vanir/Common.h>
 
-// DLL export.
-#if _WIN32
-    #if _MSC_VER && !__INTEL_COMPILER
-        #if VANIR_LIB_STATIC
-            #define VANIR_EXPORT
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __declspec(dllimport)
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #else
-        #if VANIR_LIB_SHARED
-            #define VANIR_EXPORT __attribute__((dllexport))
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __attribute__((dllimport))
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #endif
-#else
-    #define VANIR_EXPORT __attribute__((visibility ("default")))
-#endif
+namespace Vanir
+{
+    /// Class containing various file utility methods.
+    class VANIR_EXPORT FileSystem
+    {
+    public:
+        /// Get the root directory of the executable where this was used.
+        static std::string GetRootDirectory();
+        /// Return the extension of a path.
+        static std::string GetExtensionFromFilePath(const std::string& path);
+        /// Return the directory path from a file path.
+        static std::string GetDirectoryPathFromFilePath(const std::string& path);
+        /// Return a path without his extension (if he has one).
+        static std::string GetPathWithoutExtension(const std::string& name);
+        /// Return if a folder exist.
+        static bool DirectoryExist(const std::string& path);
+        /// Return if a file exist.
+        static bool FileExist(const std::string& path);
+        /// Create a new folder.
+        static void AddFolder(const std::string& path);
+        /// Create a new file.
+        static void AddFile(const std::string& path, const std::string& text = "");
+        /// Create a new file with multiples lines.
+        static void AddFile(const std::string& path, std::vector<std::string> text);
+        /// Return the content of a file.
+        static std::string ReadFileToMemory(const std::string& path);
+    };
 
-#if VANIR_BUILD_PROFILER
-#include <easy/profiler.h>
+} /* Namespace Vanir. */
 
-#define PROFILE_ENABLE EASY_PROFILER_ENABLE
-#define PROFILE_DUMP(NAME) profiler::dumpBlocksToFile(NAME)
-#define PROFILE_LISTEN profiler::startListen()
-#define PROFILE_FUNCTION(NAME) EASY_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME) EASY_BLOCK(NAME)
-#define PROFILE_BLOCK_END EASY_END_BLOCK
-#else
-#define PROFILE_ENABLE
-#define PROFILE_DUMP(NAME)
-#define PROFILE_LISTEN
-#define PROFILE_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME)
-#define PROFILE_BLOCK_END
-#endif
-
-#endif /* VANIR_COMMON_H. */
+#endif /* VANIR_FILESYSTEM_H. */

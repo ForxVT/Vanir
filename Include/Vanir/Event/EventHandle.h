@@ -25,57 +25,40 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_COMMON_H
-#define VANIR_COMMON_H
+#ifndef VANIR_EVENTHANDLE_H
+#define VANIR_EVENTHANDLE_H
 
-// Include commonly used STD files.
-#include <string>
-#include <vector>
-#include <map>
+#include <Vanir/Common.h>
+#include <Vanir/Event/ConnectionData.h>
+#include <Vanir/Event/EventInternalData.h>
+#include <memory>
 
-// DLL export.
-#if _WIN32
-    #if _MSC_VER && !__INTEL_COMPILER
-        #if VANIR_LIB_STATIC
-            #define VANIR_EXPORT
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __declspec(dllimport)
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #else
-        #if VANIR_LIB_SHARED
-            #define VANIR_EXPORT __attribute__((dllexport))
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __attribute__((dllimport))
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #endif
-#else
-    #define VANIR_EXPORT __attribute__((visibility ("default")))
-#endif
+namespace Vanir
+{
+    class VANIR_EXPORT EventHandle
+    {
+    public:
+        EventHandle() = default;
 
-#if VANIR_BUILD_PROFILER
-#include <easy/profiler.h>
+        explicit EventHandle(std::shared_ptr<EventInternalData> eventData, ConnectionData* connection);
+        ~EventHandle();
 
-#define PROFILE_ENABLE EASY_PROFILER_ENABLE
-#define PROFILE_DUMP(NAME) profiler::dumpBlocksToFile(NAME)
-#define PROFILE_LISTEN profiler::startListen()
-#define PROFILE_FUNCTION(NAME) EASY_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME) EASY_BLOCK(NAME)
-#define PROFILE_BLOCK_END EASY_END_BLOCK
-#else
-#define PROFILE_ENABLE
-#define PROFILE_DUMP(NAME)
-#define PROFILE_LISTEN
-#define PROFILE_FUNCTION(NAME)
-#define PROFILE_BLOCK(NAME)
-#define PROFILE_BLOCK_END
-#endif
+        void Disconnect();
 
-#endif /* VANIR_COMMON_H. */
+        EventHandle& operator=(const EventHandle& rhs);
+
+        struct Boolean
+        {
+            int Member;
+        };
+
+        explicit operator int Boolean::*() const;
+
+    private:
+        std::shared_ptr<EventInternalData> m_eventData;
+        ConnectionData* m_connection = nullptr;
+    };
+
+} /* Namespace Vanir. */
+
+#endif /* VANIR_EVENTHANDLE_H. */

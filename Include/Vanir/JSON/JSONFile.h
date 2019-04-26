@@ -27,21 +27,26 @@
 
 #ifdef VANIR_BUILD_JSON
 
-#ifndef VANIR_JSON_JSONFILE_H
-#define VANIR_JSON_JSONFILE_H
+#ifndef VANIR_JSONFILE_H
+#define VANIR_JSONFILE_H
 
 #include <Vanir/Common.h>
 #include <nlohmann/json.hpp>
 
 namespace Vanir
 {
-    class JSONFile
+    /// Class to load JSON file to memory.
+    class VANIR_EXPORT JSONFile
     {
     public:
+        /// Load a JSON file to memory.
         void Load(const std::string& filepath);
+        /// Save a JSON file from memory.
         void Save();
+        /// Return the path of the loaded file.
         const std::string& GetFilepath() const;
 
+        /// Content of the JSON file has a nlohmann::json object.
         nlohmann::json Content;
 
     private:
@@ -50,6 +55,6 @@ namespace Vanir
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_JSON_JSONFILE_H. */
+#endif /* VANIR_JSONFILE_H. */
 
 #endif
