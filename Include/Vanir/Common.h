@@ -32,6 +32,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <unordered_map>
+#include <memory>
 
 // DLL export.
 #if _WIN32

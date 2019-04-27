@@ -49,7 +49,7 @@ namespace Vanir
         /// Return if a file exist.
         static bool FileExist(const std::string& path);
         /// Create a new folder.
-        static void AddFolder(const std::string& path);
+        static void AddDirectory(const std::string &path);
         /// Create a new file.
         static void AddFile(const std::string& path, const std::string& text = "");
         /// Create a new file with multiples lines.

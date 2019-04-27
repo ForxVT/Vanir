@@ -56,7 +56,7 @@ namespace Vanir
             if (!dir.empty())
             {
                 if (!Vanir::FileSystem::DirectoryExist(dir))
-                    Vanir::FileSystem::AddFolder(dir);
+                    Vanir::FileSystem::AddDirectory(dir);
             }
 
             m_file.open(filepath, std::ofstream::out | std::ofstream::trunc);

@@ -109,7 +109,7 @@ namespace Vanir
         return file.good();
     }
 
-    void FileSystem::AddFolder(const std::string &path)
+    void FileSystem::AddDirectory(const std::string &path)
     {
 #ifdef _WIN32
         ::CreateDirectoryA(path.c_str(), nullptr);
@@ -125,7 +125,7 @@ namespace Vanir
         if (!dir.empty())
         {
             if (!Vanir::FileSystem::DirectoryExist(dir))
-                Vanir::FileSystem::AddFolder(dir);
+                Vanir::FileSystem::AddDirectory(dir);
         }
 
         std::ofstream fs(path, std::ios::out);
@@ -137,6 +137,14 @@ namespace Vanir
 
     void FileSystem::AddFile(const std::string &path, std::vector<std::string> text)
     {
+        auto dir = Vanir::FileSystem::GetDirectoryPathFromFilePath(path);
+    
+        if (!dir.empty())
+        {
+            if (!Vanir::FileSystem::DirectoryExist(dir))
+                Vanir::FileSystem::AddDirectory(dir);
+        }
+        
         std::ofstream fs(path, std::ios::out);
 
         for (auto& i : text)
