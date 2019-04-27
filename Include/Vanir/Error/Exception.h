@@ -64,7 +64,21 @@ namespace Vanir
 } /* Namespace Vanir. */
 
 #define THROW_EXCEPTION(type, ...) \
-ULOG_ERROR("EXCEPTION - ", type, ": ", ##__VA_ARGS__); \
-throw ::Vanir::Exception(type, __PRETTY_FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__)
+{ \
+    ULOG_ERROR("EXCEPTION - ", type, ": ", ##__VA_ARGS__); \
+    throw ::Vanir::Exception(type, __PRETTY_FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__); \
+}
+
+#define THROW_ERROR(type, ...) \
+{ \
+    try \
+    { \
+        ULOG_ERROR("EXCEPTION - ", type, ": ", ##__VA_ARGS__); \
+        throw ::Vanir::Exception(type, __PRETTY_FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__); \
+    } catch(Exception const& e) \
+    { \
+        \
+    } \
+}
 
 #endif /* VANIR_EXCEPTION_H. */
