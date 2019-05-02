@@ -34,8 +34,9 @@
 #ifdef _WIN32
 // TODO: VANIR: FILE: Remove workaround when bug fixed: https://sourceforge.net/p/mingw-w64/bugs/737/
 #include <direct.h>
-#else
+#elif defined(__unix__)
 #include <experimental/filesystem>
+#include <zconf.h>
 #endif
 
 namespace Vanir

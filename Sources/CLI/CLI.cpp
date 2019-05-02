@@ -28,6 +28,9 @@
 #include <Vanir/CLI/CLI.h>
 #include <Vanir/String/String.h>
 #include <Vanir/Logger/Logger.h>
+#ifdef __unix
+#include <cstring>
+#endif
 
 namespace Vanir
 {

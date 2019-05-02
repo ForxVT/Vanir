@@ -55,6 +55,10 @@ endif()
 set(VANIR_INCLUDES ${VANIR_INCLUDES} Include/)
 
 if (VANIR_BUILD_PROFILER)
+    if (NOT VANIR_EASYPROFILER_INCLUDES)
+        message(FATAL_ERROR "You need to specify a EasyProfiler include path")
+    endif()
+
     set(VANIR_INCLUDES ${VANIR_INCLUDES} ${VANIR_EASYPROFILER_INCLUDES})
 endif()
 
