@@ -28,12 +28,14 @@
 #ifndef VANIR_GENERICFACTORY_H
 #define VANIR_GENERICFACTORY_H
 
+#include <memory>
+
 namespace Vanir
 {
     template <class BaseType, class SubType>
-    BaseType* GenericFactory()
+    std::unique_ptr<BaseType> GenericFactory()
     {
-        return new SubType;
+        return std::make_unique<SubType>();
     }
 
 } /* Namespace Vanir. */

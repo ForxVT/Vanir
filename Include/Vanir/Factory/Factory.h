@@ -40,11 +40,11 @@ namespace Vanir
         static Factory* GetInstance();
 
         template<class SubType>
-        bool Register(std::string type);
-        BaseType* Create(std::string type);
+        bool Register(const std::string &type);
+        std::unique_ptr<BaseType> Create(const std::string &type);
 
     private:
-        std::map<std::string, BaseType*(*)()> m_factorys;
+        std::map<std::string, std::unique_ptr<BaseType>(*)()> m_factorys;
     };
 
     template <class BaseType>
@@ -56,7 +56,7 @@ namespace Vanir
 
     template <class BaseType>
     template <class SubType>
-    bool Factory<BaseType>::Register(std::string type)
+    bool Factory<BaseType>::Register(const std::string &type)
     {
         if (!m_factorys[type])
             m_factorys[type] = &GenericFactory<BaseType, SubType>;
@@ -65,7 +65,7 @@ namespace Vanir
     }
 
     template <class BaseType>
-    BaseType* Factory<BaseType>::Create(std::string type)
+    std::unique_ptr<BaseType> Factory<BaseType>::Create(const std::string &type)
     {
         auto creator = m_factorys.find(type);
 
@@ -74,7 +74,7 @@ namespace Vanir
 
         auto func = creator->second;
 
-        return (BaseType*)func();
+        return func();
     }
 
 } /* Namespace Vanir. */

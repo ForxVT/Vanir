@@ -36,11 +36,11 @@ namespace Vanir
     class FactoryRegister 
     {
     public:
-        explicit FactoryRegister(std::string type);
+        explicit FactoryRegister(const std::string &type);
     };
 
     template <class BaseType, class SubType>
-    FactoryRegister<BaseType, SubType>::FactoryRegister(std::string type)
+    FactoryRegister<BaseType, SubType>::FactoryRegister(const std::string &type)
     {
         Factory<BaseType>::GetInstance()->template Register<SubType>(type);
     }
