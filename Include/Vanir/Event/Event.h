@@ -163,7 +163,7 @@ namespace Vanir
     class Event;
 
     template <class RetType, class... Args>
-    class Event<RetType(Args...) > : public EventType <RetType, Args...>
+    class Event<RetType(Args...)> : public EventType <RetType, Args...>
     {
 
     };

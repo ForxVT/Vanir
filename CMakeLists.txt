@@ -105,8 +105,6 @@ set(VANIR_SOURCES ${VANIR_SOURCES}
         Include/Vanir/Event/EventHandle.h
         Include/Vanir/Event/EventInternalData.h
         Include/Vanir/Factory/Factory.h
-        Include/Vanir/Factory/FactoryRegister.h
-        Include/Vanir/Factory/GenericFactory.h
         Include/Vanir/FileSystem/FileSystem.h
         Include/Vanir/JSON/JSONFile.h
         Include/Vanir/Logger/LogColor.h
