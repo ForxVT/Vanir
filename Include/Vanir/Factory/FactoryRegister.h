@@ -36,7 +36,7 @@ namespace Vanir
     class FactoryRegister 
     {
     public:
-        FactoryRegister(std::string type);
+        explicit FactoryRegister(std::string type);
     };
 
     template <class BaseType, class SubType>
