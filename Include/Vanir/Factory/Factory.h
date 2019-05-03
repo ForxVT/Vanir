@@ -33,9 +33,9 @@
 namespace Vanir
 {
     template <class BaseType, class SubType, typename ...Args>
-    static BaseType* GenericFactory(Args&&... args)
+    static std::unique_ptr<BaseType> GenericFactory(Args&&... args)
     {
-        return new SubType(args...);
+        return std::make_unique<SubType>(args...);
     }
     
     template <class BaseType>
@@ -52,7 +52,7 @@ namespace Vanir
         }
     
         template <typename ...Args>
-        static BaseType* Create(const std::string &type, Args&&... args)
+        static std::unique_ptr<BaseType> Create(const std::string &type, Args&&... args)
         {
             auto instance = GetInstance();
             
@@ -61,7 +61,7 @@ namespace Vanir
             if (constructor == instance->m_registry.end())
                 return nullptr;
         
-            typedef BaseType* (*create_type)(Args...);
+            typedef std::unique_ptr<BaseType> (*create_type)(Args...);
         
             auto func = reinterpret_cast<create_type>(constructor->second);
         
