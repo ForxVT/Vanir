@@ -114,6 +114,7 @@ set(VANIR_SOURCES ${VANIR_SOURCES}
         Include/Vanir/Math/Random.h
         Include/Vanir/Math/Xorshift.h
         Include/Vanir/String/String.h
+        Include/Vanir/Utility/NonCopyable.h
         Include/Vanir/Utility/Timer.h
         Include/Vanir/Utility/Utils.h
         Sources/CLI/Argument.cpp
