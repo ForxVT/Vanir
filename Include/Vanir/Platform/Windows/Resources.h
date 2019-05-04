@@ -25,56 +25,11 @@
 //                                                                                  //
 //==================================================================================//
 
-#include "Resources.h"
-
-#define MAKE_STR(x) _MAKE_STR(x)
-#define _MAKE_STR(x) #x
-
-#define APSTUDIO_READONLY_SYMBOLS
-#include "winresrc.h"
-#undef APSTUDIO_READONLY_SYMBOLS
-
-#if !defined(AFX_RESOURCE_DLL)
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-
-VS_VERSION_INFO VERSIONINFO
- FILEVERSION VANIR_VERSION_MAJOR,VANIR_VERSION_MINOR,VANIR_VERSION_PATCH,0
- PRODUCTVERSION VANIR_VERSION_MAJOR,VANIR_VERSION_MINOR,VANIR_VERSION_PATCH,0
- FILEFLAGSMASK 0x3fL
-#ifdef _DEBUG
- FILEFLAGS 0x1L
-#else
- FILEFLAGS 0x0L
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        102
+#define _APS_NEXT_COMMAND_VALUE         40001
+#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_SYMED_VALUE           101
 #endif
- FILEOS 0x40004L
- FILETYPE 0x2L
- FILESUBTYPE 0x0L
-BEGIN
-    BLOCK "StringFileInfo"
-    BEGIN
-        BLOCK "040904b0"
-        BEGIN
-            VALUE "CompanyName", "Hugo Kindel"
-            VALUE "FileDescription", "Vanir"
-            VALUE "FileVersion", MAKE_STR(VANIR_VERSION)
-            VALUE "InternalName", "Vanir.exe"
-            VALUE "LegalCopyright", "Copyright (c) 2019 Hugo Kindel"
-#if _MSC_VER && !__INTEL_COMPILER
-            VALUE "OriginalFilename", "Vanir.dll\0"
-#else
-            VALUE "OriginalFilename", "libVanir.dll\0"
 #endif
-            VALUE "ProductName", "Vanir"
-            VALUE "ProductVersion", MAKE_STR(VANIR_VERSION)
-        END
-    END
-    BLOCK "VarFileInfo"
-    BEGIN
-        VALUE "Translation", 0x409, 1200
-    END
-END
-
-#endif
-
-#ifndef APSTUDIO_INVOKED
-#endif    // not APSTUDIO_INVOKED

@@ -89,7 +89,9 @@ if (VANIR_BUILD_PROFILER)
 endif()
 
 if (WIN32)
-    set(VANIR_SOURCES ${VANIR_SOURCES} Include/Vanir/Platform/Windows/Version.rc)
+    set(VANIR_SOURCES ${VANIR_SOURCES}
+            Include/Vanir/Platform/Windows/Resources.h
+            Include/Vanir/Platform/Windows/Version.rc)
 endif()
 
 set(VANIR_SOURCES ${VANIR_SOURCES}
