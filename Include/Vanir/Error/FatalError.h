@@ -1,6 +1,6 @@
 //==================================================================================//
 //                                                                                  //
-//  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           //
+//  Copyright (c) 2019 Hugo Kindel <kindelhugo.pro@gmail.com>                       //
 //                                                                                  //
 //  This file is part of the Vanir project.                                         //
 //  Licensed under MIT License:                                                     //
@@ -32,7 +32,7 @@
 
 namespace Vanir
 {
-    class VANIR_EXPORT FatalError
+    class FatalError
     {
     public:
         static void Terminate();

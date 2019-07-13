@@ -1,6 +1,6 @@
 //==================================================================================//
 //                                                                                  //
-//  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           //
+//  Copyright (c) 2019 Hugo Kindel <kindelhugo.pro@gmail.com>                       //
 //                                                                                  //
 //  This file is part of the Vanir project.                                         //
 //  Licensed under MIT License:                                                     //
@@ -32,7 +32,7 @@
 
 namespace Vanir
 {
-    class VANIR_EXPORT Utils
+    class Utils
     {
     public:
         static void Sleep(uint32_t duration);

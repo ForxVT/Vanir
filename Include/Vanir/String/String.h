@@ -1,6 +1,6 @@
 //==================================================================================//
 //                                                                                  //
-//  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           //
+//  Copyright (c) 2019 Hugo Kindel <kindelhugo.pro@gmail.com>                       //
 //                                                                                  //
 //  This file is part of the Vanir project.                                         //
 //  Licensed under MIT License:                                                     //
@@ -37,7 +37,7 @@
 namespace Vanir
 {
     /// Class containing various string utility methods.
-    class VANIR_EXPORT String
+    class String
     {
     public:
         /// Generate an UUID.

@@ -1,6 +1,6 @@
 //==================================================================================//
 //                                                                                  //
-//  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           //
+//  Copyright (c) 2019 Hugo Kindel <kindelhugo.pro@gmail.com>                       //
 //                                                                                  //
 //  This file is part of the Vanir project.                                         //
 //  Licensed under MIT License:                                                     //
@@ -39,7 +39,7 @@ namespace Vanir
     }
     
     template <class BaseType>
-    class VANIR_EXPORT Factory
+    class Factory
     {
     public:
         template<class SubType, typename ...Args>
@@ -80,7 +80,7 @@ namespace Vanir
     };
     
     template<class BaseType, class SubType, typename ...Args>
-    class VANIR_EXPORT FactoryRegister
+    class FactoryRegister
     {
     public:
         explicit FactoryRegister(const std::string &typeName)

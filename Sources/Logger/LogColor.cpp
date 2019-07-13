@@ -1,6 +1,6 @@
 //==================================================================================//
 //                                                                                  //
-//  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           //
+//  Copyright (c) 2019 Hugo Kindel <kindelhugo.pro@gmail.com>                       //
 //                                                                                  //
 //  This file is part of the Vanir project.                                         //
 //  Licensed under MIT License:                                                     //
@@ -36,7 +36,7 @@ namespace Vanir
 
     }
 
-    VANIR_EXPORT std::ostream &operator<<(std::ostream &os, const LogColor &loggerColor)
+    std::ostream &operator<<(std::ostream &os, const LogColor &loggerColor)
     {
         if (!Logger::IsWritingToFile())
         {
@@ -78,7 +78,7 @@ namespace Vanir
         }
     }
 
-    VANIR_EXPORT std::basic_ostream<wchar_t> &operator<<(std::basic_ostream<wchar_t> &os, const LogColor &loggerColor)
+    std::basic_ostream<wchar_t> &operator<<(std::basic_ostream<wchar_t> &os, const LogColor &loggerColor)
     {
         if (!Logger::IsWritingToFile())
         {

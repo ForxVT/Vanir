@@ -1,6 +1,6 @@
 //==================================================================================//
 //                                                                                  //
-//  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           //
+//  Copyright (c) 2019 Hugo Kindel <kindelhugo.pro@gmail.com>                       //
 //                                                                                  //
 //  This file is part of the Vanir project.                                         //
 //  Licensed under MIT License:                                                     //
@@ -28,7 +28,7 @@
 #ifdef VANIR_BUILD_JSON
 
 #include <Vanir/JSON/JSONFile.h>
-#include <Vanir/File/FileUtils.h>
+#include <Vanir/FileSystem/FileSystem.h>
 #include <iomanip>
 #include <fstream>
 
@@ -38,8 +38,8 @@ namespace Vanir
     {
         m_filepath = filepath;
 
-        if (!Vanir::FileUtils::FileExist(m_filepath))
-            Vanir::FileUtils::AddFile(m_filepath, "{}\n");
+        if (!Vanir::FileSystem::FileExist(m_filepath))
+            Vanir::FileSystem::AddFile(m_filepath, "{}\n");
 
         std::ifstream fileStream(m_filepath, std::ifstream::in);
 

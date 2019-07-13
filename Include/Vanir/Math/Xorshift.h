@@ -1,6 +1,6 @@
 //==================================================================================//
 //                                                                                  //
-//  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           //
+//  Copyright (c) 2019 Hugo Kindel <kindelhugo.pro@gmail.com>                       //
 //                                                                                  //
 //  This file is part of the Vanir project.                                         //
 //  Licensed under MIT License:                                                     //
@@ -34,7 +34,7 @@
 namespace Vanir
 {
     /// Class to use the pseudorandom number generators Xorshift.
-    class VANIR_EXPORT Xorshift
+    class Xorshift
     {
     public:
         using result_type = uint32_t;

@@ -1,6 +1,6 @@
 //==================================================================================//
 //                                                                                  //
-//  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           //
+//  Copyright (c) 2019 Hugo Kindel <kindelhugo.pro@gmail.com>                       //
 //                                                                                  //
 //  This file is part of the Vanir project.                                         //
 //  Licensed under MIT License:                                                     //
@@ -33,7 +33,7 @@
 namespace Vanir
 {
     /// Class containing various mathematic utility methods.
-    class VANIR_EXPORT Math
+    class Math
     {
     public:
         /// Return if a given integer is odd.

@@ -1,6 +1,6 @@
 //==================================================================================//
 //                                                                                  //
-//  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           //
+//  Copyright (c) 2019 Hugo Kindel <kindelhugo.pro@gmail.com>                       //
 //                                                                                  //
 //  This file is part of the Vanir project.                                         //
 //  Licensed under MIT License:                                                     //
@@ -35,36 +35,8 @@
 #include <unordered_map>
 #include <memory>
 
-// DLL export.
-#if _WIN32
-    #if _MSC_VER && !__INTEL_COMPILER
-        #if VANIR_LIB_STATIC
-            #define VANIR_EXPORT
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __declspec(dllimport)
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #else
-        #if VANIR_LIB_SHARED
-            #define VANIR_EXPORT __attribute__((dllexport))
-        #else
-            #if VANIR_LIB_IMPORT
-                #define VANIR_EXPORT __attribute__((dllimport))
-            #else
-                #define VANIR_EXPORT
-            #endif
-        #endif
-    #endif
-#else
-    #define VANIR_EXPORT __attribute__((visibility ("default")))
-#endif
-
 #if VANIR_BUILD_PROFILER
 #include <easy/profiler.h>
-
 #define PROFILER_ENABLE EASY_PROFILER_ENABLE
 #define PROFILER_DUMP(NAME) profiler::dumpBlocksToFile(NAME)
 #define PROFILER_LISTEN profiler::startListen()

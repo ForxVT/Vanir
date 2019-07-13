@@ -1,6 +1,6 @@
 #==================================================================================#
 #                                                                                  #
-#  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           #
+#  Copyright (c) 2019 Hugo Kindel <kindelhugo.pro@gmail.com>                       #
 #                                                                                  #
 #  This file is part of the Vanir project.                                         #
 #  Licensed under MIT License:                                                     #
@@ -25,41 +25,40 @@
 #                                                                                  #
 #==================================================================================#
 
-#===--------- Vanir Build System -----------------------------------------------===#
-#                                                                                  #
-# CMake build file for Vanir.                                                      #
-#                                                                                  #
-#==================================================================================#
-
-# TODO: Better CMake handling, with install.
 cmake_minimum_required(VERSION 3.14)
 
 project(Vanir LANGUAGES CXX)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-include(Config)
+set(VANIR_VERSION_MAJOR 1)
+set(VANIR_VERSION_MINOR 0)
+set(VANIR_VERSION_PATCH 0)
+set(VANIR_VERSION_BUILD 0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-option(VANIR_SHARED "Enable this to build Vanir as a shared library (static otherwise)" ON)
-option(VANIR_BUILD_JSON "Enable this to build the JSON utilities" OFF)
+option(VANIR_BUILD_JSON "Enable this to build the JSON utilities" ON)
 option(VANIR_BUILD_PROFILER "Enable this to build the profiling macros" ON)
-
-if (VANIR_BUILD_JSON)
-    find_package(nlohmann_json 3.2.0 REQUIRED)
-endif()
 
 set(VANIR_INCLUDES ${VANIR_INCLUDES} Include/)
 
 if (VANIR_BUILD_PROFILER)
-    if (NOT VANIR_EASYPROFILER_INCLUDES)
+    if (NOT VANIR_PROFILER_INCLUDES)
         message(FATAL_ERROR "You need to specify a EasyProfiler include path")
     endif()
 
-    set(VANIR_INCLUDES ${VANIR_INCLUDES} ${VANIR_EASYPROFILER_INCLUDES})
+    set(VANIR_INCLUDES ${VANIR_INCLUDES} ${VANIR_PROFILER_INCLUDES})
+endif()
+
+if (VANIR_BUILD_JSON)
+    if (NOT VANIR_JSON_INCLUDES)
+        message(FATAL_ERROR "You need to specify a nlhomann JSON include path")
+    endif()
+
+    set(VANIR_INCLUDES ${VANIR_INCLUDES} ${VANIR_JSON_INCLUDES})
 endif()
 
 if(WIN32)
@@ -76,22 +75,14 @@ set(VANIR_COMPILEDEFINITIONS
         VANIR_VERSION_MAJOR=${VANIR_VERSION_MAJOR}
         VANIR_VERSION_MINOR=${VANIR_VERSION_MINOR}
         VANIR_VERSION_PATCH=${VANIR_VERSION_PATCH}
-        VANIR_VERSION="${VANIR_VERSION_MAJOR}.${VANIR_VERSION_MINOR}.${VANIR_VERSION_PATCH}\\0")
+        VANIR_VERSION_BUILD=${VANIR_VERSION_BUILD}
+        VANIR_VERSION="${VANIR_VERSION_MAJOR}.${VANIR_VERSION_MINOR}.${VANIR_VERSION_PATCH}.${VANIR_VERSION_BUILD}")
 
-if (VANIR_SHARED)
-    set(VANIR_COMPILEDEFINITIONS ${VANIR_COMPILEDEFINITIONS} VANIR_LIB_SHARED)
-endif()
 if (VANIR_BUILD_JSON)
     set(VANIR_COMPILEDEFINITIONS ${VANIR_COMPILEDEFINITIONS} VANIR_BUILD_JSON)
 endif()
 if (VANIR_BUILD_PROFILER)
     set(VANIR_COMPILEDEFINITIONS ${VANIR_COMPILEDEFINITIONS} BUILD_WITH_EASY_PROFILER VANIR_BUILD_PROFILER)
-endif()
-
-if (WIN32)
-    set(VANIR_SOURCES ${VANIR_SOURCES}
-            Include/Vanir/Platform/Windows/Resources.h
-            Include/Vanir/Platform/Windows/Version.rc)
 endif()
 
 set(VANIR_SOURCES ${VANIR_SOURCES}
@@ -137,12 +128,7 @@ set(VANIR_SOURCES ${VANIR_SOURCES}
         Sources/Utility/Timer.cpp
         Sources/Utility/Utils.cpp)
 
-if (VANIR_SHARED)
-    add_library(Vanir SHARED ${VANIR_SOURCES})
-else()
-    add_library(Vanir ${VANIR_SOURCES})
-endif()
-
+add_library(Vanir ${VANIR_SOURCES})
 target_compile_definitions(Vanir PRIVATE ${VANIR_COMPILEDEFINITIONS})
 target_include_directories(Vanir PRIVATE ${VANIR_INCLUDES})
 target_link_libraries(Vanir PRIVATE ${VANIR_LIBRARIES})

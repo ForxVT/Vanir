@@ -1,6 +1,6 @@
 //==================================================================================//
 //                                                                                  //
-//  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           //
+//  Copyright (c) 2019 Hugo Kindel <kindelhugo.pro@gmail.com>                       //
 //                                                                                  //
 //  This file is part of the Vanir project.                                         //
 //  Licensed under MIT License:                                                     //
@@ -159,7 +159,9 @@ namespace Vanir
 
     std::string FileSystem::ReadFileToMemory(const std::string &path)
     {
-        return std::__cxx11::string();
+        std::ifstream stream(path);
+    
+        return static_cast<std::stringstream const&>(std::stringstream() << stream.rdbuf()).str();
     }
 
 } /* Namespace Vanir. */

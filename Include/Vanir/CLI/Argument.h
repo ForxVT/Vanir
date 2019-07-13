@@ -1,6 +1,6 @@
 //==================================================================================//
 //                                                                                  //
-//  Copyright (c) 2019 Hugo Kindel <kindelhugo@gmail.com>                           //
+//  Copyright (c) 2019 Hugo Kindel <kindelhugo.pro@gmail.com>                       //
 //                                                                                  //
 //  This file is part of the Vanir project.                                         //
 //  Licensed under MIT License:                                                     //
@@ -33,7 +33,7 @@
 
 namespace Vanir
 {
-    struct VANIR_EXPORT Argument
+    struct Argument
     {
         explicit Argument(std::string  name = std::string(),
                 std::vector<std::string> description = std::vector<std::string>(),
