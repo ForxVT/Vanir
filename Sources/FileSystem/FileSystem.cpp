@@ -159,9 +159,30 @@ namespace Vanir
 
     std::string FileSystem::ReadFileToMemory(const std::string &path)
     {
-        std::ifstream stream(path);
+        auto close_file = [](FILE* f) { fclose(f); };
     
-        return static_cast<std::stringstream const&>(std::stringstream() << stream.rdbuf()).str();
+        auto holder = std::unique_ptr<FILE, decltype(close_file)>(fopen(path.c_str(), "rb"), close_file);
+        if (!holder)
+            return "";
+    
+        FILE* f = holder.get();
+    
+        if (fseek(f, 0, SEEK_END) < 0)
+            return "";
+    
+        const long size = ftell(f);
+        if (size < 0)
+            return "";
+    
+        if (fseek(f, 0, SEEK_SET) < 0)
+            return "";
+    
+        std::string res;
+        res.resize(size);
+    
+        fread(const_cast<char*>(res.data()), 1, size, f);
+    
+        return res;
     }
 
 } /* Namespace Vanir. */
