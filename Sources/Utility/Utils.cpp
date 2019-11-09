@@ -27,23 +27,13 @@
 
 
 #include <Vanir/Utility/Utils.h>
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#elif defined(__unix__)
-#include <zconf.h>
-#endif
+#include <thread>
+#include <chrono>
 
 namespace Vanir
 {
     void Utils::Sleep(uint32_t duration)
     {
-#ifdef _WIN32
-        ::Sleep((DWORD)duration);
-#elif defined(__unix__)
-        usleep(duration * 1000);
-#else
-        Sleep(duration * 1000);
-#endif
+        std::this_thread::sleep_for(std::chrono::milliseconds(duration));
     }
 }
