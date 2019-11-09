@@ -37,6 +37,8 @@
 #elif defined(__unix__)
 #include <experimental/filesystem>
 #include <zconf.h>
+#else
+#include <unistd.h>
 #endif
 
 namespace Vanir

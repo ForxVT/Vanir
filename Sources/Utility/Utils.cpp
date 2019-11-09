@@ -40,8 +40,10 @@ namespace Vanir
     {
 #ifdef _WIN32
         ::Sleep((DWORD)duration);
-#else
+#elif defined(__unix__)
         usleep(duration * 1000);
+#else
+        Sleep(duration * 1000);
 #endif
     }
 }

@@ -30,6 +30,7 @@
 
 #include <Vanir/Common.h>
 #include <iomanip>
+#include <sstream>
 #ifdef _WIN32
 #include <combaseapi.h>
 #endif
