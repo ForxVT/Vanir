@@ -28,9 +28,6 @@
 #ifndef VANIR_LOGGER_H
 #define VANIR_LOGGER_H
 
-#include <Vanir/Common.h>
-#include <Vanir/Logger/LogColor.h>
-#include <Vanir/String/String.h>
 #include <fstream>
 #include <iostream>
 #ifdef _WIN32
@@ -43,6 +40,9 @@
 #include <iomanip>
 #include <algorithm>
 #endif
+#include <Vanir/Common.h>
+#include <Vanir/Logger/LogColor.h>
+#include <Vanir/String/String.h>
 
 namespace Vanir
 {
@@ -111,12 +111,21 @@ namespace Vanir
 
 } /* Namespace Vanir. */
 
+/* Utility macro to reset logger counters. */
+#define LOG_RESETCOUNTERS() ::Vanir::Logger::ResetCounters();
+
+/* Logs utility macros. */
 #define LOG(...) ::Vanir::Logger::Log(__VA_ARGS__);
 #if defined(_DEBUG)
 #define LOG_INFO(...) \
 { \
     ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("INFO", __PRETTY_FUNCTION__, __LINE__), __VA_ARGS__); \
     ::Vanir::Logger::InfoCount += 1; \
+}
+#define LOG_VERBOSE(...) \
+{ \
+    ::Vanir::Logger::Log(::Vanir::LogColor(::Vanir::TerminalColor_Bright_Blue), ::Vanir::Logger::LogHeader("VERBOSE", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::WarningCount += 1; \
 }
 #define LOG_WARNING(...) \
 { \
@@ -134,6 +143,11 @@ namespace Vanir
     ::Vanir::Logger::Log(::Vanir::Logger::LogHeader("INFO"), __VA_ARGS__); \
     ::Vanir::Logger::InfoCount += 1; \
 }
+#define LOG_VERBOSE(...) \
+{ \
+    ::Vanir::Logger::Log(::Vanir::LogColor(::Vanir::TerminalColor_Bright_Blue), ::Vanir::Logger::LogHeader("VERBOSE"), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::WarningCount += 1; \
+}
 #define LOG_WARNING(...) \
 { \
     ::Vanir::Logger::Log(::Vanir::LogColor(::Vanir::TerminalColor_Yellow), ::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
@@ -146,6 +160,7 @@ namespace Vanir
 }
 #endif
 
+/* Unicode logs utility macros. */
 #ifdef _WIN32
 #define ULOG(...) ::Vanir::Logger::ULog(__VA_ARGS__);
 #if defined(_DEBUG)
@@ -153,6 +168,11 @@ namespace Vanir
 { \
     ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("INFO", __PRETTY_FUNCTION__, __LINE__), __VA_ARGS__); \
     ::Vanir::Logger::InfoCount += 1; \
+}
+#define ULOG_VERBOSE(...) \
+{ \
+    ::Vanir::Logger::ULog(::Vanir::LogColor(::Vanir::TerminalColor_Bright_Blue), ::Vanir::Logger::LogHeader("VERBOSE", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::WarningCount += 1; \
 }
 #define ULOG_WARNING(...) \
 { \
@@ -170,6 +190,11 @@ namespace Vanir
     ::Vanir::Logger::ULog(::Vanir::Logger::LogHeader("INFO"), __VA_ARGS__); \
     ::Vanir::Logger::InfoCount += 1; \
 }
+#define ULOG_VERBOSE(...) \
+{ \
+    ::Vanir::Logger::ULog(::Vanir::LogColor(::Vanir::TerminalColor_Bright_Blue), ::Vanir::Logger::LogHeader("VERBOSE"), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::WarningCount += 1; \
+}
 #define ULOG_WARNING(...) \
 { \
     ::Vanir::Logger::ULog(::Vanir::LogColor(::Vanir::TerminalColor_Yellow), ::Vanir::Logger::LogHeader("WARNING"), __VA_ARGS__); \
@@ -184,6 +209,7 @@ namespace Vanir
 #else
 #define ULOG(...) LOG(__VA_ARGS__)
 #define ULOG_INFO(...) LOG_INFO(__VA_ARGS__)
+#define ULOG_VERBOSE(...) LOG_VERBOSE(__VA_ARGS__)
 #define ULOG_WARNING(...) LOG_WARNING(__VA_ARGS__)
 #define ULOG_ERROR(...) LOG_ERROR(__VA_ARGS__)
 #endif

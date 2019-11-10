@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#include <Vanir/Math/Xorshift.h>
 #include <iostream>
+#include <Vanir/Math/Xorshift.h>
 
 namespace Vanir
 {

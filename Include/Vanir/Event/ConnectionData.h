@@ -28,8 +28,8 @@
 #ifndef VANIR_CONNECTIONDATA_H
 #define VANIR_CONNECTIONDATA_H
 
-#include <Vanir/Common.h>
 #include <assert.h>
+#include <Vanir/Common.h>
 
 namespace Vanir
 {

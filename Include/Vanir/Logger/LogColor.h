@@ -28,9 +28,9 @@
 #ifndef VANIR_LOGCOLOR_H
 #define VANIR_LOGCOLOR_H
 
+#include <ostream>
 #include <Vanir/Common.h>
 #include <Vanir/Logger/TerminalColor.h>
-#include <ostream>
 
 namespace Vanir
 {

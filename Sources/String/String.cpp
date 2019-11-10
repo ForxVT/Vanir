@@ -25,14 +25,14 @@
 //                                                                                  //
 //==================================================================================//
 
-#include <Vanir/String/String.h>
-#include <Vanir/Math/Random.h>
 #include <locale>
 #include <codecvt>
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
 #include <iostream>
+#include <Vanir/String/String.h>
+#include <Vanir/Math/Random.h>
 
 namespace Vanir
 {

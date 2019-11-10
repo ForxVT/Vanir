@@ -28,12 +28,12 @@
 #ifndef VANIR_STRING_H
 #define VANIR_STRING_H
 
-#include <Vanir/Common.h>
 #include <iomanip>
 #include <sstream>
 #ifdef _WIN32
 #include <combaseapi.h>
 #endif
+#include <Vanir/Common.h>
 
 namespace Vanir
 {

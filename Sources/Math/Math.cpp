@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#include <Vanir/Math/Math.h>
 #include <math.h>
+#include <Vanir/Math/Math.h>
 
 namespace Vanir
 {

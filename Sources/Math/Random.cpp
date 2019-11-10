@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#include <Vanir/Math/Random.h>
 #include <chrono>
+#include <Vanir/Math/Random.h>
 
 namespace Vanir
 {

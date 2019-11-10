@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#include <Vanir/CLI/Argument.h>
 #include <utility>
+#include <Vanir/CLI/Argument.h>
 
 namespace Vanir
 {

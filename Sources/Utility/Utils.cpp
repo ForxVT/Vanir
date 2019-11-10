@@ -25,10 +25,9 @@
 //                                                                                  //
 //==================================================================================//
 
-
-#include <Vanir/Utility/Utils.h>
 #include <thread>
 #include <chrono>
+#include <Vanir/Utility/Utils.h>
 
 namespace Vanir
 {

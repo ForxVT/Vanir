@@ -28,9 +28,9 @@
 #ifndef VANIR_EVENT_H
 #define VANIR_EVENT_H
 
+#include <functional>
 #include <Vanir/Common.h>
 #include <Vanir/Event/EventHandle.h>
-#include <functional>
 
 namespace Vanir
 {

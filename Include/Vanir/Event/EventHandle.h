@@ -28,10 +28,10 @@
 #ifndef VANIR_EVENTHANDLE_H
 #define VANIR_EVENTHANDLE_H
 
+#include <memory>
 #include <Vanir/Common.h>
 #include <Vanir/Event/ConnectionData.h>
 #include <Vanir/Event/EventInternalData.h>
-#include <memory>
 
 namespace Vanir
 {

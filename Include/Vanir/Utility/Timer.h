@@ -28,8 +28,8 @@
 #ifndef VANIR_TIMER_H
 #define VANIR_TIMER_H
 
-#include <Vanir/Common.h>
 #include <chrono>
+#include <Vanir/Common.h>
 
 namespace Vanir
 {

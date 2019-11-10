@@ -25,11 +25,11 @@
 //                                                                                  //
 //==================================================================================//
 
-#include <Vanir/Logger/Logger.h>
-#include <Vanir/FileSystem/FileSystem.h>
 #include <cstdarg>
 #include <time.h>
 #include <iostream>
+#include <Vanir/Logger/Logger.h>
+#include <Vanir/FileSystem/FileSystem.h>
 
 namespace Vanir
 {

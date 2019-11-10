@@ -1,5 +1,3 @@
-#include <utility>
-
 //==================================================================================//
 //                                                                                  //
 //  Copyright (c) 2019 Hugo Kindel <kindelhugo.pro@gmail.com>                       //
@@ -28,7 +26,6 @@
 //==================================================================================//
 
 #include <Vanir/Error/Exception.h>
-#include <sstream>
 
 namespace Vanir
 {

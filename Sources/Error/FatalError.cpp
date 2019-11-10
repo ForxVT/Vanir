@@ -25,11 +25,11 @@
 //                                                                                  //
 //==================================================================================//
 
-#include <Vanir/Error/FatalError.h>
-#include <Vanir/String/String.h>
 #ifdef _WIN32
 #include <iphlpapi.h>
+#include <Vanir/String/String.h>
 #endif
+#include <Vanir/Error/FatalError.h>
 
 namespace Vanir
 {

@@ -29,8 +29,6 @@
 
 namespace Vanir
 {
-
-
     ConnectionData::~ConnectionData()
     {
         assert(!HandleLinks && !IsActive);

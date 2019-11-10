@@ -30,8 +30,8 @@
 #ifndef VANIR_JSONFILE_H
 #define VANIR_JSONFILE_H
 
-#include <Vanir/Common.h>
 #include <nlohmann/json.hpp>
+#include <Vanir/Common.h>
 
 namespace Vanir
 {

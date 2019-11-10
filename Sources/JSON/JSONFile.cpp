@@ -27,10 +27,10 @@
 
 #ifdef VANIR_BUILD_JSON
 
-#include <Vanir/JSON/JSONFile.h>
-#include <Vanir/FileSystem/FileSystem.h>
 #include <iomanip>
 #include <fstream>
+#include <Vanir/JSON/JSONFile.h>
+#include <Vanir/FileSystem/FileSystem.h>
 
 namespace Vanir
 {

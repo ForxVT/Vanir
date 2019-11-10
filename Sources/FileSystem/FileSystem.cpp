@@ -25,8 +25,6 @@
 //                                                                                  //
 //==================================================================================//
 
-#include <Vanir/FileSystem/FileSystem.h>
-#include <Vanir/String/String.h>
 #include <fstream>
 #include <sstream>
 #include <stdio.h>
@@ -34,12 +32,14 @@
 #ifdef _WIN32
 // TODO: VANIR: FILE: Remove workaround when bug fixed: https://sourceforge.net/p/mingw-w64/bugs/737/
 #include <direct.h>
+#include <Vanir/String/String.h>
 #elif defined(__unix__)
 #include <experimental/filesystem>
 #include <zconf.h>
 #else
 #include <unistd.h>
 #endif
+#include <Vanir/FileSystem/FileSystem.h>
 
 namespace Vanir
 {

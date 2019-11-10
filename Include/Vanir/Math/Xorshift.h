@@ -28,8 +28,8 @@
 #ifndef VANIR_XORSHIFT_H
 #define VANIR_XORSHIFT_H
 
-#include <Vanir/Common.h>
 #include <random>
+#include <Vanir/Common.h>
 
 namespace Vanir
 {
