@@ -41,6 +41,8 @@ namespace Vanir
     class String
     {
     public:
+        /// Return if a string starts with a specific string.
+        static bool StartsWith(const std::string& text, const std::string& start);
         /// Generate an UUID.
         static std::string GenerateUUID();
         /// Convert an integer to his hexadecimal representation.

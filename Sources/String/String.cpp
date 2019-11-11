@@ -36,6 +36,10 @@
 
 namespace Vanir
 {
+    bool String::StartsWith(const std::string& text,  const std::string& start) {
+        return text.rfind(start, 0) == 0;
+    }
+    
     std::string String::GenerateUUID()
     {
 #ifdef _WIN32

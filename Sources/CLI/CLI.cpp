@@ -33,55 +33,119 @@
 #include <Vanir/Logger/Logger.h>
 
 namespace Vanir {
-    std::string CLI::ParseArguments(const int argc, char **argv, const std::vector<Vanir::Argument>& arguments, bool log) {
-        std::string tempArgv;
+    std::string CLI::ParseArguments(const int argc, char **argv, const std::vector<Vanir::Argument>& options, bool log) {
+        std::string currentArgument;
+        std::string lastArgument;
+        std::vector<std::string> optionNotFound = std::vector<std::string>();
         
         for (int i = 1; i < argc; i++) {
-            tempArgv = argv[i];
-            bool found = false;
-
-            for (const auto& y : arguments) {
-                if (y.Type == Vanir::ArgumentType_Argument) {
-                    for (const auto& w : y.Names) {
-                        if (!strcmp(tempArgv.c_str(), w.c_str())) {
-                            y.FunctionToCall(GetValueFromPassedArgument(tempArgv));
-        
-                            found = true;
-        
-                            break;
-                        }
-                    }
+            currentArgument = argv[i];
+            lastArgument = currentArgument;
+            
+            if (!Vanir::String::StartsWith(currentArgument, "--") && !Vanir::String::StartsWith(currentArgument, "-")) {
+                if (log) {
+                    PrintNotFound(optionNotFound, options);
                 }
-                else {
-                    for (const auto& w : y.Names) {
-                        if (tempArgv.rfind(w + "=", 0) == 0) {
-                            if (tempArgv.size() > w.size() + 1) {
-                                y.FunctionToCall(GetValueFromPassedArgument(tempArgv));
+                
+                return argv[i];
+            }
             
-                                found = true;
-            
+            bool argumentFound = false;
+            bool errorOccured = false;
+    
+            if (Vanir::String::StartsWith(currentArgument, "--")) {
+                if (currentArgument.size() > 2) {
+                    for (const auto& j : options) {
+                        for (const auto& k : j.Names) {
+                            if (j.Type == Vanir::ArgumentType_Argument &&
+                                currentArgument == k) {
+                                j.FunctionToCall("");
+                    
+                                argumentFound = true;
+                    
                                 break;
-                            }
-                            else {
-                                if (log) {
-                                    ULOG_WARNING("Empty value passed for argument '", w, "'")
+                            } else if (Vanir::String::StartsWith(currentArgument, k + "=")) {
+                                if (currentArgument.size() > k.size() + 1) {
+                                    j.FunctionToCall(currentArgument.substr(currentArgument.find('=') + 1));
+                        
+                                    argumentFound = true;
+                        
+                                    break;
+                                } else {
+                                    errorOccured = true;
+                        
+                                    if (log) {
+                                        ULOG_WARNING("Empty value passed for argument '", k, "'.")
+                                    }
                                 }
                             }
                         }
                     }
+    
+                    if (!argumentFound && !errorOccured) {
+                        optionNotFound.emplace_back(lastArgument);
+                    }
+                } else {
+                    errorOccured = true;
+    
+                    if (log) {
+                        ULOG_WARNING("Empty option double hyphen.");
+                    }
                 }
-            }
-
-            if (!found && log) {
-                if (std::string(argv[i]).rfind('-', 0) == 0) {
-                    ULOG_WARNING("Cannot find argument '", tempArgv, "'")
-                    ULOG_WARNING("Did you mean '", FindNearestArgument(tempArgv, arguments), "' ?")
+            } else {
+                if (currentArgument.size() > 1) {
+                    for (int l = 1; l < currentArgument.size(); l++) {
+                        std::string argument = "-" + currentArgument.substr(l, 1);
+                        lastArgument = argument;
+    
+                        for (const auto& j : options) {
+                            for (const auto& k : j.Names) {
+                                if (j.Type == Vanir::ArgumentType_Argument &&
+                                    argument == k) {
+                                    j.FunctionToCall("");
+    
+                                    argumentFound = true;
+    
+                                    break;
+                                } else if (argument == k) {
+                                    std::string nextArg = (i + 1 < argc ? argv[i + 1] : std::string());
+                                    
+                                    if (!nextArg.empty() &&
+                                        nextArg.rfind("--", 0) != 0 &&
+                                        nextArg.rfind('-', 0) != 0) {
+                                        j.FunctionToCall(nextArg);
+                                        ++i;
+        
+                                        argumentFound = true;
+        
+                                        break;
+                                    } else {
+                                        errorOccured = true;
+        
+                                        if (log) {
+                                            ULOG_WARNING("Empty value passed for argument '", k, "'.")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+    
+                        if (!argumentFound && !errorOccured) {
+                            optionNotFound.emplace_back(lastArgument);
+                        }
+                    }
+                } else {
+                    errorOccured = true;
+    
+                    if (log) {
+                        ULOG_WARNING("Empty option hyphen.");
+                    }
                 }
             }
         }
-        
-        if (argc >= 2 && std::string(argv[argc - 1]).rfind('-', 0) != 0) {
-            return argv[argc - 1];
+    
+        if (log) {
+            PrintNotFound(optionNotFound, options);
         }
         
         return std::string();
@@ -109,6 +173,16 @@ namespace Vanir {
         
             if (lenghts.at(i) > longuestLength) {
                 longuestLength = lenghts.at(i);
+            }
+        }
+    
+        for (const auto & option : options) {
+            for (int j = 0; j < option.SubOptions.size(); j++) {
+                int length = (int)(option.SubOptions[j].Names[0].size() + option.Supplement.size() + 5);
+                
+                if (length > longuestLength) {
+                    longuestLength = length;
+                }
             }
         }
         
@@ -143,28 +217,34 @@ namespace Vanir {
     
                 output.emplace_back(line);
             }
+            
+            std::string supplementSpaces = std::string();
     
-            for (const auto& subOption : options[i].SubOptions) {
-                difference = longuestLength - (int)(subOption.Names[0].size() + 1);
+            for (int j = 0; j < options[i].Supplement.size(); j++) {
+                supplementSpaces += " ";
+            }
+    
+            for (int j = 0; j < options[i].SubOptions.size(); j++) {
+                difference = longuestLength - (int)(options[i].SubOptions[j].Names[0].size() + options[i].Supplement.size() + 3);
                 space = std::string();
-                line = "    =";
+                line = "    ";
     
-                for (int j = 0; j < difference + 2; j++) {
+                for (int k = 0; k < difference + 2; k++) {
                     space += " ";
                 }
                 
-                line += subOption.Names[0] + space + subOption.Description[0];
+                line += (j == 0 ? options[i].Supplement : supplementSpaces) + " = " + options[i].SubOptions[j].Names[0] + space + options[i].SubOptions[j].Description[0];
                 
                 output.emplace_back(line);
                 space = std::string();
                 line = "    ";
     
-                for (int j = 0; j < difference + (int)(subOption.Names[0].size() + 1) + 2; j++) {
+                for (int k = 0; k < difference + (int)(options[i].SubOptions[j].Names[0].size() + options[i].Supplement.size() + 3) + 2; k++) {
                     space += " ";
                 }
     
-                for (int j = 1; j < subOption.Description.size(); j++) {
-                    line += space + subOption.Description[j];
+                for (int k = 1; k < options[i].SubOptions[j].Description.size(); k++) {
+                    line += space + options[i].SubOptions[j].Description[k];
     
                     output.emplace_back(line);
                 }
@@ -176,22 +256,32 @@ namespace Vanir {
 
     std::string CLI::GetValueFromPassedArgument(const std::string &argument)
     {
-        auto optionName = argument.substr(0, argument.find('=') + 1);
-        auto result = argument.substr(argument.find('=') + 1);
-
-        if (result.empty())
+        std::string result = std::string();
+    
+        if (argument.rfind("--", 0) == 0) {
+            if (argument.rfind('=') != std::string::npos) {
+                result = argument.substr(argument.find('=') + 1);
+            }
+        } else {
+            if (argument.rfind(' ') != std::string::npos) {
+                result = argument.substr(argument.find(' ') + 1);
+            }
+        }
+        
+        if (result.empty()) {
             return std::string();
+        }
         
         return result;
     }
 
     
-    std::string CLI::FindNearestArgument(const std::string &argument, const std::vector<Vanir::Argument>& arguments)
+    std::string CLI::FindNearestArgument(const std::string &argument, const std::vector<Vanir::Argument>& options)
     {
         int distance = -1;
         std::string nearest = std::string();
 
-        for (const auto& y : arguments)
+        for (const auto& y : options)
         {
             for (const auto& w : y.Names) {
                 auto optionDistance = String::CalculateLevenshteinDistance(w, argument);
@@ -206,5 +296,15 @@ namespace Vanir {
 
         return nearest;
     }
-
+    
+    void CLI::PrintNotFound(const std::vector<std::string>& notFounds, const std::vector<Vanir::Argument>& options) {
+        for (const auto& argument : notFounds) {
+            ULOG_WARNING("Cannot find argument '", argument, "'.");
+            
+            if (argument.size() > 2) {
+                ULOG_WARNING("Did you mean '", FindNearestArgument(argument, options), "'?");
+            }
+        }
+    }
+    
 } /* Namespace Vanir. */
