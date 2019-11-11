@@ -36,10 +36,10 @@ namespace Vanir
     class CLI
     {
     public:
-        static void ParseArguments(const int argc, char *argv[], std::vector<Vanir::Argument> arguments, bool log = true);
-        static std::vector<std::string> DrawOptions(std::vector<Vanir::Argument> options);
+        static std::string ParseArguments(const int argc, char *argv[], const std::vector<Vanir::Argument>& arguments, bool log = true);
+        static std::vector<std::string> DrawOptions(const std::vector<Vanir::Argument>& options);
         static std::string GetValueFromPassedArgument(const std::string &argument);
-        static std::string FindNearestArgument(const std::string &argument, std::vector<Vanir::Argument> arguments);
+        static std::string FindNearestArgument(const std::string &argument, const std::vector<Vanir::Argument>& arguments);
     };
 
 } /* Namespace Vanir. */

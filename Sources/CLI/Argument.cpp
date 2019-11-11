@@ -30,13 +30,13 @@
 
 namespace Vanir
 {
-    Argument::Argument(std::string name,
+    Argument::Argument(std::vector<std::string> names,
             std::vector<std::string> description,
             void (*functionToCall)(const std::string&),
             ArgumentType type,
             std::string supplement,
             std::vector<Argument> subOptions) :
-        Name(std::move(name)),
+        Names(std::move(names)),
         Description(std::move(description)),
         FunctionToCall(functionToCall),
         Type(type),

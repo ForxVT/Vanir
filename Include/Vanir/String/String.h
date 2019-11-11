@@ -75,7 +75,7 @@ namespace Vanir
         /// Implementation of a Levenshtein distance algorithm.
         /// Source from: https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
         template<typename T>
-        constexpr static unsigned int CalculateLevensteinDistance(
+        constexpr static unsigned int CalculateLevenshteinDistance(
                 const T &source,
                 const T &target,
                 typename T::size_type insert_cost = 1,
@@ -83,7 +83,7 @@ namespace Vanir
                 typename T::size_type replace_cost = 1)
         {
             if (source.size() > target.size())
-                return CalculateLevensteinDistance(target, source, delete_cost, insert_cost, replace_cost);
+                return CalculateLevenshteinDistance(target, source, delete_cost, insert_cost, replace_cost);
 
             using TSizeType = typename T::size_type;
             const TSizeType min_size = source.size(), max_size = target.size();

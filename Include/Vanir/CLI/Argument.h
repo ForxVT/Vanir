@@ -35,14 +35,14 @@ namespace Vanir
 {
     struct Argument
     {
-        explicit Argument(std::string  name = std::string(),
+        explicit Argument(std::vector<std::string> names = std::vector<std::string>(),
                 std::vector<std::string> description = std::vector<std::string>(),
                 void (*functionToCall)(const std::string&) = nullptr,
                 ArgumentType type = ArgumentType_Argument,
                 std::string  supplement = std::string(),
                 std::vector<Argument> subOptions = std::vector<Argument>());
 
-        std::string Name;
+        std::vector<std::string> Names;
         std::vector<std::string> Description;
         void (*FunctionToCall)(const std::string&);
         ArgumentType Type;
