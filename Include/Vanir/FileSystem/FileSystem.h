@@ -30,11 +30,9 @@
 
 #include <Vanir/Common.h>
 
-namespace Vanir
-{
+namespace Vanir {
     /// Class containing various file utility methods.
-    class FileSystem
-    {
+    class FileSystem {
     public:
         /// Get the root directory of the executable where this was used.
         static std::string GetRootDirectory();

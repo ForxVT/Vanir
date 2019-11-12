@@ -25,40 +25,27 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_EVENTHANDLE_H
-#define VANIR_EVENTHANDLE_H
+#ifndef VANIR_CLI_CLIOPTION_H
+#define VANIR_CLI_CLIOPTION_H
 
-#include <memory>
 #include <Vanir/Common.h>
-#include <Vanir/Event/ConnectionData.h>
-#include <Vanir/Event/EventInternalData.h>
+#include <Vanir/CLI/CLIOptionType.h>
 
-namespace Vanir
-{
-    class EventHandle
-    {
-    public:
-        EventHandle() = default;
+namespace Vanir {
+    struct CLIOption {
+        explicit CLIOption(std::vector<std::string> names = std::vector<std::string>(),
+            std::vector<std::string> description = std::vector<std::string>(),
+            void (*functionToCall)(const std::string&) = nullptr, CLIOptionType type = CLIOptionType_Option,
+            std::string  supplement = std::string(), std::vector<CLIOption> subOptions = std::vector<CLIOption>());
 
-        explicit EventHandle(std::shared_ptr<EventInternalData> eventData, ConnectionData* connection);
-        ~EventHandle();
-
-        void Disconnect();
-
-        EventHandle& operator=(const EventHandle& rhs);
-
-        struct Boolean
-        {
-            int Member;
-        };
-
-        explicit operator int Boolean::*() const;
-
-    private:
-        std::shared_ptr<EventInternalData> m_eventData;
-        ConnectionData* m_connection = nullptr;
+        std::vector<std::string> names;
+        std::vector<std::string> descriptionLines;
+        void (*function)(const std::string&);
+        CLIOptionType Type;
+        std::string Supplement;
+        std::vector<CLIOption> SubOptions;
     };
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_EVENTHANDLE_H. */
+#endif /* VANIR_CLI_CLIOPTION_H. */

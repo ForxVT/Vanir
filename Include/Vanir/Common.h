@@ -35,6 +35,7 @@
 #include <unordered_map>
 #include <memory>
 
+// Include EasyProfiler if enabled.
 #if VANIR_BUILD_PROFILER
 #include <easy/profiler.h>
 #define PROFILER_ENABLE EASY_PROFILER_ENABLE

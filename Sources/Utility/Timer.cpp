@@ -27,22 +27,18 @@
 
 #include <Vanir/Utility/Timer.h>
 
-namespace Vanir
-{
-    Timer::Timer()
-    {
+namespace Vanir {
+    Timer::Timer() {
         Reset();
     }
 
     Timer::~Timer() = default;
 
-    void Timer::Reset()
-    {
+    void Timer::Reset() {
         m_startTime = std::chrono::high_resolution_clock::now();
     }
 
-    uint64_t Timer::GetTimeInS() const
-    {
+    uint64_t Timer::GetTimeInS() const {
         auto currentTime = std::chrono::high_resolution_clock::now();
 
         std::chrono::duration<double> duration = currentTime - m_startTime;
@@ -50,8 +46,7 @@ namespace Vanir
         return std::chrono::duration_cast<std::chrono::seconds>(duration).count();
     }
 
-    uint64_t Timer::GetTimeInMS() const
-    {
+    uint64_t Timer::GetTimeInMS() const {
         auto currentTime = std::chrono::high_resolution_clock::now();
 
         std::chrono::duration<double> duration = currentTime - m_startTime;
@@ -59,8 +54,7 @@ namespace Vanir
         return std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
     }
 
-    uint64_t Timer::GetTimeInUS() const
-    {
+    uint64_t Timer::GetTimeInUS() const {
         auto currentTime = std::chrono::high_resolution_clock::now();
 
         std::chrono::duration<double> duration = currentTime - m_startTime;
@@ -68,22 +62,19 @@ namespace Vanir
         return std::chrono::duration_cast<std::chrono::microseconds>(duration).count();
     }
 
-    uint64_t Timer::GetStartTimeInS() const
-    {
+    uint64_t Timer::GetStartTimeInS() const {
         std::chrono::nanoseconds startTimeNS = m_startTime.time_since_epoch();
 
         return std::chrono::duration_cast<std::chrono::seconds>(startTimeNS).count();
     }
 
-    uint64_t Timer::GetStartTimeInMS() const
-    {
+    uint64_t Timer::GetStartTimeInMS() const {
         std::chrono::nanoseconds startTimeNS = m_startTime.time_since_epoch();
 
         return std::chrono::duration_cast<std::chrono::milliseconds>(startTimeNS).count();
     }
 
-    uint64_t Timer::GetStartTimeInUS() const
-    {
+    uint64_t Timer::GetStartTimeInUS() const {
         std::chrono::nanoseconds startTimeNS = m_startTime.time_since_epoch();
 
         return std::chrono::duration_cast<std::chrono::microseconds>(startTimeNS).count();

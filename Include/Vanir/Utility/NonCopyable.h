@@ -30,10 +30,8 @@
 
 #include <Vanir/Common.h>
 
-namespace Vanir
-{
-    class NonCopyable
-    {
+namespace Vanir {
+    class NonCopyable {
     protected:
         NonCopyable() = default;
         NonCopyable(const NonCopyable &nonCopyable) = delete;

@@ -28,30 +28,24 @@
 #include <math.h>
 #include <Vanir/Math/Math.h>
 
-namespace Vanir
-{
-    bool Math::IsOdd(int32_t number)
-    {
+namespace Vanir {
+    bool Math::IsOdd(int32_t number) {
         return number % 2 != 0;
     }
 
-    bool Math::IsEven(int32_t number)
-    {
+    bool Math::IsEven(int32_t number) {
         return number % 2 == 0;
     }
 
-    float Math::ToDegree(float radiant)
-    {
+    float Math::ToDegree(float radiant) {
         return radiant * RAD2DEG;
     }
 
-    float Math::ToRadiant(float degree)
-    {
+    float Math::ToRadiant(float degree) {
         return degree * DEG2RAD;
     }
 
-    float Math::Lerp(float alpha, float a, float b)
-    {
+    float Math::Lerp(float alpha, float a, float b) {
         return (1.0f - alpha) * a + alpha * b;
     }
 

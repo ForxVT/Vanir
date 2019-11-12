@@ -31,10 +31,8 @@
 #include <Vanir/Common.h>
 #include <Vanir/Logger/Logger.h>
 
-namespace Vanir
-{
-    class Exception : public std::exception
-    {
+namespace Vanir {
+    class Exception : public std::exception {
     public:
         template <typename... Args>
         Exception(const std::string &type, const std::string &source, const std::string &file, int line, Args&&... args);
@@ -47,8 +45,7 @@ namespace Vanir
     };
 
     template <typename... Args>
-    Exception::Exception(const std::string &type, const std::string &source, const std::string &file, int line, Args&&... args)
-    {
+    Exception::Exception(const std::string &type, const std::string &source, const std::string &file, int line, Args&&... args) {
         std::stringstream error;
 
         error << "FATAL ERROR !\n\n";
@@ -63,20 +60,16 @@ namespace Vanir
 
 } /* Namespace Vanir. */
 
-#define THROW_EXCEPTION(type, ...) \
-{ \
+#define THROW_EXCEPTION(type, ...) { \
     ULOG_ERROR("EXCEPTION - ", type, ": ", ##__VA_ARGS__); \
     throw ::Vanir::Exception(type, __PRETTY_FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__); \
 }
 
-#define THROW_ERROR(type, ...) \
-{ \
-    try \
-    { \
+#define THROW_ERROR(type, ...) \ { \
+    try \ { \
         ULOG_ERROR("EXCEPTION - ", type, ": ", ##__VA_ARGS__); \
         throw ::Vanir::Exception(type, __PRETTY_FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__); \
-    } catch(Exception const& e) \
-    { \
+    } catch(Exception const& e) \ { \
         \
     } \
 }

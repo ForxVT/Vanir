@@ -34,14 +34,12 @@
 #include <Vanir/String/String.h>
 #include <Vanir/Math/Random.h>
 
-namespace Vanir
-{
+namespace Vanir {
     bool String::StartsWith(const std::string& text,  const std::string& start) {
         return text.rfind(start, 0) == 0;
     }
     
-    std::string String::GenerateUUID()
-    {
+    std::string String::GenerateUUID() {
 #ifdef _WIN32
         UUID uuid;
 
@@ -77,19 +75,18 @@ namespace Vanir
         return result;
     }
 
-    std::vector<std::string> String::SplitString(const std::string& text, const std::string& delimitation)
-    {
+    std::vector<std::string> String::SplitString(const std::string& text, const std::string& delimitation) {
         std::vector<std::string> result;
         std::string::size_type startPos = 0;
         std::string::size_type endPos;
 
-        do
-        {
+        do {
             endPos = text.find_first_of(delimitation, startPos);
             const auto length = endPos - startPos;
 
-            if (length != 0)
+            if (length != 0) {
                 result.push_back(text.substr(startPos, length));
+            }
 
             startPos = endPos + 1;
         } while (endPos != std::string::npos);
@@ -97,49 +94,43 @@ namespace Vanir
         return result;
     }
 
-    std::vector<std::string> String::SplitString(const std::string& text, const char delimitation)
-    {
+    std::vector<std::string> String::SplitString(const std::string& text, const char delimitation) {
         return SplitString(text, std::string(1, delimitation));
     }
 
-    std::wstring String::StringToWString(const std::string& text)
-    {
+    std::wstring String::StringToWString(const std::string& text) {
         std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
         return converter.from_bytes(text);
     }
 
-    std::string String::WStringToString(const std::wstring& text)
-    {
+    std::string String::WStringToString(const std::wstring& text) {
         std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
         return converter.to_bytes(text);
     }
 
 #ifdef _WIN32
-    std::wstring String::StringToBSTR(const std::string& text)
-    {
+    std::wstring String::StringToBSTR(const std::string& text) {
         std::wstring ret;
 
-        if (const auto cwch = MultiByteToWideChar(CP_ACP, 0, text.c_str(), -1, nullptr, 0))
-        {
+        if (const auto cwch = MultiByteToWideChar(CP_ACP, 0, text.c_str(), -1, nullptr, 0)) {
             ret.resize(cwch - 1);
 
-            if (!MultiByteToWideChar(CP_ACP, 0, text.c_str(), -1, &ret[0], static_cast<int>(ret.size())))
-                if (ERROR_INSUFFICIENT_BUFFER == GetLastError())
-                    return ret;
+            if (!MultiByteToWideChar(CP_ACP, 0, text.c_str(), -1, &ret[0], static_cast<int>(ret.size())) &&
+                ERROR_INSUFFICIENT_BUFFER == GetLastError()) {
+                return ret;
+            }
         }
 
         return ret;
     }
 
-    std::string String::BSTRToString(BSTR text)
-    {
+    std::string String::BSTRToString(BSTR text) {
         const auto src_len = SysStringLen(text);
         std::string ret;
 
-        if (const auto len = WideCharToMultiByte(CP_ACP, 0, text, src_len + 1, nullptr, 0, nullptr, nullptr))
-        {
+        if (const auto len = WideCharToMultiByte(CP_ACP, 0, text, src_len + 1, nullptr, 0, nullptr, nullptr)) {
             ret.resize(len + 1, '\0');
 
             if (!WideCharToMultiByte(CP_ACP, 0, text, src_len + 1, &ret[0], len, nullptr, nullptr))
@@ -149,39 +140,33 @@ namespace Vanir
     }
 #endif
 
-    void String::ReverseString(std::string& text)
-    {
+    void String::ReverseString(std::string& text) {
         const auto textLength = text.length();
 
         for (auto i = 0; i < int(textLength) / 2; i++)
             std::swap(text[i], text[textLength - i - 1]);
     }
 
-    void String::ReverseWString(std::wstring& text)
-    {
+    void String::ReverseWString(std::wstring& text) {
         const auto textLength = text.length();
 
         for (auto i = 0; i < int(textLength) / 2; i++)
             std::swap(text[i], text[textLength - i - 1]);
     }
 
-    std::string String::BoolToString(const bool value)
-    {
+    std::string String::BoolToString(const bool value) {
         return value ? "true" : "false";
     }
 
-    void String::ToUppercase(std::string &text)
-    {
+    void String::ToUppercase(std::string &text) {
         std::transform(text.begin(), text.end(), text.begin(), ::toupper);
     }
 
-    void String::ToLowercase(std::string &text)
-    {
+    void String::ToLowercase(std::string &text) {
         std::transform(text.begin(), text.end(), text.begin(), ::tolower);
     }
 
-    bool String::StringEndsWith(const std::string& value, const std::string& ending)
-    {
+    bool String::StringEndsWith(const std::string& value, const std::string& ending) {
         if (ending.size() > value.size())
             return false;
 

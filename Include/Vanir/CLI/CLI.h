@@ -25,26 +25,27 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_CLI_H
-#define VANIR_CLI_H
+#ifndef VANIR_CLI_CLI_H
+#define VANIR_CLI_CLI_H
 
 #include <Vanir/Common.h>
-#include <Vanir/CLI/Argument.h>
+#include <Vanir/CLI/CLIOption.h>
+#include <Vanir/CLI/CLIParsingResult.h>
 
-namespace Vanir
-{
-    class CLI
-    {
+namespace Vanir {
+    class CLI {
     public:
-        static std::string ParseArguments(const int argc, char *argv[], const std::vector<Vanir::Argument>& options, bool log = true);
-        static std::vector<std::string> DrawOptions(const std::vector<Vanir::Argument>& options);
-        static std::string GetValueFromPassedArgument(const std::string &argument);
-        static std::string FindNearestArgument(const std::string &argument, const std::vector<Vanir::Argument>& options);
-        
+        static CLIParsingResult parse(const int argc, char *argv[],
+        	const std::vector<Vanir::CLIOption>& optionsList, bool logErrors = true);
+        static std::vector<std::string> getOptionsDescriptionList(const std::vector<Vanir::CLIOption>& optionsList);
+        static std::string findClosestOption(const std::string &option,
+        	const std::vector<Vanir::CLIOption>& optionsList);
+
     private:
-        static void PrintNotFound(const std::vector<std::string>& notFounds, const std::vector<Vanir::Argument>& options);
+        static void printUnknownOptions(const std::vector<std::string>& unknownOptions,
+        	const std::vector<Vanir::CLIOption>& optionsList);
     };
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_CLI_H. */
+#endif /* VANIR_CLI_CLI_H. */

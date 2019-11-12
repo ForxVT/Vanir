@@ -25,18 +25,22 @@
 //                                                                                  //
 //==================================================================================//
 
-#include <Vanir/Event/ConnectionData.h>
+#include <Vanir/CLI/CLIParsingResult.h>
 
-namespace Vanir
-{
-    ConnectionData::~ConnectionData()
-    {
-        assert(!HandleLinks && !IsActive);
+namespace Vanir {
+    CLIParsingResult::CLIParsingResult(const std::string &result, std::vector<CLIParsingError> errors) :
+        result(result), errors(errors) {
+        
     }
-
-    void ConnectionData::Deactivate()
-    {
-        IsActive = false;
+    
+    const std::string &CLIParsingResult::errorToString(CLIParsingError error) {
+        switch (error) {
+            case CLIParsingError_OptionEmptyArgument:
+                return "empty argument passed in option";
+            case CLIParsingError_Unknown:
+            default:
+                return "unknown";
+        }
     }
-
+    
 } /* Namespace Vanir. */

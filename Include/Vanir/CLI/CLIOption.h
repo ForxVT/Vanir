@@ -25,28 +25,27 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_CONNECTIONDATA_H
-#define VANIR_CONNECTIONDATA_H
+#ifndef VANIR_CLI_CLIOPTION_H
+#define VANIR_CLI_CLIOPTION_H
 
-#include <assert.h>
 #include <Vanir/Common.h>
+#include <Vanir/CLI/CLIOptionType.h>
 
-namespace Vanir
-{
-    class ConnectionData
-    {
-    public:
-        ConnectionData() = default;
+namespace Vanir {
+    struct CLIOption {
+        explicit CLIOption(std::vector<std::string> names = std::vector<std::string>(),
+            std::vector<std::string> description = std::vector<std::string>(),
+            void (*functionToCall)(const std::string&) = nullptr, CLIOptionType type = CLIOptionType_Option,
+            std::string  supplement = std::string(), std::vector<CLIOption> subOptions = std::vector<CLIOption>());
 
-        virtual ~ConnectionData();
-        virtual void Deactivate();
-
-        ConnectionData* Previous = nullptr;
-        ConnectionData* Next = nullptr;
-        bool IsActive = true;
-        uint32_t HandleLinks = 0;
+        std::vector<std::string> names;
+        std::vector<std::string> descriptionLines;
+        void (*function)(const std::string&);
+        CLIOptionType Type;
+        std::string Supplement;
+        std::vector<CLIOption> SubOptions;
     };
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_CONNECTIONDATA_H. */
+#endif /* VANIR_CLI_CLIOPTION_H. */

@@ -41,10 +41,8 @@
 #endif
 #include <Vanir/FileSystem/FileSystem.h>
 
-namespace Vanir
-{
-    std::string FileSystem::GetRootDirectory()
-    {
+namespace Vanir {
+    std::string FileSystem::GetRootDirectory() {
         char buff[FILENAME_MAX];
 
 #ifdef _WIN32
@@ -58,8 +56,7 @@ namespace Vanir
         return currentWorkingDirectory;
     }
 
-    std::string FileSystem::GetExtensionFromFilePath(const std::string &name)
-    {
+    std::string FileSystem::GetExtensionFromFilePath(const std::string &name) {
         const auto loc = name.find_last_of('.');
 
         if (loc != std::string::npos)
@@ -68,8 +65,7 @@ namespace Vanir
         return std::string();
     }
 
-    std::string FileSystem::GetDirectoryPathFromFilePath(const std::string &path)
-    {
+    std::string FileSystem::GetDirectoryPathFromFilePath(const std::string &path) {
         std::string directoryPath = std::string();
         std::string separator = "\\";
 
@@ -84,8 +80,7 @@ namespace Vanir
         return directoryPath;
     }
 
-    std::string FileSystem::GetPathWithoutExtension(const std::string &name)
-    {
+    std::string FileSystem::GetPathWithoutExtension(const std::string &name) {
         const auto loc = name.find_last_of('.');
 
         if (loc != std::string::npos)
@@ -94,8 +89,7 @@ namespace Vanir
         return name;
     }
 
-    bool FileSystem::DirectoryExist(const std::string &path)
-    {
+    bool FileSystem::DirectoryExist(const std::string &path) {
 #ifdef _WIN32
         DWORD fileAttributes = ::GetFileAttributesA(path.c_str());
 
@@ -105,15 +99,13 @@ namespace Vanir
 #endif
     }
 
-    bool FileSystem::FileExist(const std::string &path)
-    {
+    bool FileSystem::FileExist(const std::string &path) {
         std::ifstream file(path);
 
         return file.good();
     }
 
-    void FileSystem::AddDirectory(const std::string &path)
-    {
+    void FileSystem::AddDirectory(const std::string &path) {
 #ifdef _WIN32
         ::CreateDirectoryA(path.c_str(), nullptr);
 #elif __unix__
@@ -121,12 +113,10 @@ namespace Vanir
 #endif
     }
 
-    void FileSystem::AddFile(const std::string &path, const std::string &text)
-    {
+    void FileSystem::AddFile(const std::string &path, const std::string &text) {
         auto dir = Vanir::FileSystem::GetDirectoryPathFromFilePath(path);
 
-        if (!dir.empty())
-        {
+        if (!dir.empty()) {
             if (!Vanir::FileSystem::DirectoryExist(dir))
                 Vanir::FileSystem::AddDirectory(dir);
         }
@@ -138,20 +128,17 @@ namespace Vanir
         fs.close();
     }
 
-    void FileSystem::AddFile(const std::string &path, std::vector<std::string> text)
-    {
+    void FileSystem::AddFile(const std::string &path, std::vector<std::string> text) {
         auto dir = Vanir::FileSystem::GetDirectoryPathFromFilePath(path);
     
-        if (!dir.empty())
-        {
+        if (!dir.empty()) {
             if (!Vanir::FileSystem::DirectoryExist(dir))
                 Vanir::FileSystem::AddDirectory(dir);
         }
         
         std::ofstream fs(path, std::ios::out);
 
-        for (auto& i : text)
-        {
+        for (auto& i : text) {
             if (!i.empty())
                 fs << i << "\n";
         }
@@ -159,8 +146,7 @@ namespace Vanir
         fs.close();
     }
 
-    std::string FileSystem::ReadFileToMemory(const std::string &path)
-    {
+    std::string FileSystem::ReadFileToMemory(const std::string &path) {
         auto close_file = [](FILE* f) { fclose(f); };
     
         auto holder = std::unique_ptr<FILE, decltype(close_file)>(fopen(path.c_str(), "rb"), close_file);

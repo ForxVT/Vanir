@@ -30,10 +30,8 @@
 
 #include <Vanir/Common.h>
 
-namespace Vanir
-{
-    class FatalError
-    {
+namespace Vanir {
+    class FatalError {
     public:
         static void Terminate();
         static void Popup(const std::string& message);
@@ -41,8 +39,7 @@ namespace Vanir
 
 } /* Namespace Vanir. */
 
-#define THROW_FATALERROR(type, ...) \
-{ \
+#define THROW_FATALERROR(type, ...) { \
     ULOG_ERROR("EXCEPTION - ", type, ": ", ##__VA_ARGS__); \
     ::Vanir::FatalError::Popup(::Vanir::Exception(type, __PRETTY_FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__).what()); \
     ::Vanir::FatalError::Terminate(); \

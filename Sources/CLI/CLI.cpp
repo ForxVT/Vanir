@@ -25,15 +25,14 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifdef __unix
-#include <cstring>
-#endif
 #include <Vanir/CLI/CLI.h>
 #include <Vanir/String/String.h>
 #include <Vanir/Logger/Logger.h>
 
 namespace Vanir {
-    std::string CLI::ParseArguments(const int argc, char **argv, const std::vector<Vanir::Argument>& options, bool log) {
+    CLIParsingResult CLI::parse(const int argc, char **argv,
+        const std::vector<Vanir::CLIOption>& optionsList, bool logErrors) {
+        CLIParsingResult result;
         std::string currentArgument;
         std::string lastArgument;
         std::vector<std::string> optionNotFound = std::vector<std::string>();
@@ -43,11 +42,13 @@ namespace Vanir {
             lastArgument = currentArgument;
             
             if (!Vanir::String::StartsWith(currentArgument, "--") && !Vanir::String::StartsWith(currentArgument, "-")) {
-                if (log) {
-                    PrintNotFound(optionNotFound, options);
+                if (logErrors) {
+                    printUnknownOptions(optionNotFound, optionsList);
                 }
+    
+                result.result = argv[i];
                 
-                return argv[i];
+                return result;
             }
             
             bool argumentFound = false;
@@ -55,9 +56,9 @@ namespace Vanir {
     
             if (Vanir::String::StartsWith(currentArgument, "--")) {
                 if (currentArgument.size() > 2) {
-                    for (const auto& j : options) {
+                    for (const auto& j : optionsList) {
                         for (const auto& k : j.Names) {
-                            if (j.Type == Vanir::ArgumentType_Argument &&
+                            if (j.Type == Vanir::CLIOptionType_Option &&
                                 currentArgument == k) {
                                 j.FunctionToCall("");
                     
@@ -73,8 +74,9 @@ namespace Vanir {
                                     break;
                                 } else {
                                     errorOccured = true;
+                                    result.errors.emplace_back(CLIParsingError_OptionEmptyArgument);
                         
-                                    if (log) {
+                                    if (logErrors) {
                                         ULOG_WARNING("Empty value passed for argument '", k, "'.")
                                     }
                                 }
@@ -87,8 +89,9 @@ namespace Vanir {
                     }
                 } else {
                     errorOccured = true;
+                    result.errors.emplace_back(CLIParsingError_OptionEmptyDoubleHyphen);
     
-                    if (log) {
+                    if (logErrors) {
                         ULOG_WARNING("Empty option double hyphen.");
                     }
                 }
@@ -98,9 +101,9 @@ namespace Vanir {
                         std::string argument = "-" + currentArgument.substr(l, 1);
                         lastArgument = argument;
     
-                        for (const auto& j : options) {
+                        for (const auto& j : optionsList) {
                             for (const auto& k : j.Names) {
-                                if (j.Type == Vanir::ArgumentType_Argument &&
+                                if (j.Type == Vanir::CLIOptionType_Option &&
                                     argument == k) {
                                     j.FunctionToCall("");
     
@@ -121,8 +124,9 @@ namespace Vanir {
                                         break;
                                     } else {
                                         errorOccured = true;
+                                        result.errors.emplace_back(CLIParsingError_OptionEmptyArgument);
         
-                                        if (log) {
+                                        if (logErrors) {
                                             ULOG_WARNING("Empty value passed for argument '", k, "'.")
                                         }
                                     }
@@ -136,47 +140,48 @@ namespace Vanir {
                     }
                 } else {
                     errorOccured = true;
+                    result.errors.emplace_back(CLIParsingError_OptionEmptyHyphen);
     
-                    if (log) {
+                    if (logErrors) {
                         ULOG_WARNING("Empty option hyphen.");
                     }
                 }
             }
         }
     
-        if (log) {
-            PrintNotFound(optionNotFound, options);
+        if (logErrors) {
+            printUnknownOptions(optionNotFound, optionsList);
         }
         
-        return std::string();
+        return result;
     }
 
-    std::vector<std::string> CLI::DrawOptions(const std::vector<Vanir::Argument>& options) {
+    std::vector<std::string> CLI::getOptionsDescriptionList(const std::vector<Vanir::CLIOption>& optionsList) {
         int longuestLength = 0;
         std::vector<int> lenghts = std::vector<int>();
         std::vector<std::string> output = std::vector<std::string>();
     
         output.emplace_back("Options:");
     
-        for (int i = 0; i < options.size(); i++) {
+        for (int i = 0; i < optionsList.size(); i++) {
             int nameLengths = 0;
         
-            for (const auto&j : options[i].Names) {
+            for (const auto&j : optionsList[i].Names) {
                 nameLengths += j.size();
             }
     
             lenghts.emplace_back(static_cast<int>(
                 nameLengths +
-                (!options[i].Supplement.empty() ? options[i].Names.size() +
-                    options[i].Names.size() * options[i].Supplement.size() : 0) +
-                (options[i].Names.size() > 1 ? (options[i].Names.size() - 1) * 2 : 0)));
+                (!optionsList[i].Supplement.empty() ? optionsList[i].Names.size() +
+                    optionsList[i].Names.size() * optionsList[i].Supplement.size() : 0) +
+                (optionsList[i].Names.size() > 1 ? (optionsList[i].Names.size() - 1) * 2 : 0)));
         
             if (lenghts.at(i) > longuestLength) {
                 longuestLength = lenghts.at(i);
             }
         }
     
-        for (const auto & option : options) {
+        for (const auto & option : optionsList) {
             for (int j = 0; j < option.SubOptions.size(); j++) {
                 int length = (int)(option.SubOptions[j].Names[0].size() + option.Supplement.size() + 5);
                 
@@ -186,7 +191,7 @@ namespace Vanir {
             }
         }
         
-        for (int i = 0; i < options.size(); i++) {
+        for (int i = 0; i < optionsList.size(); i++) {
             int difference = longuestLength - lenghts.at(i);
             std::string space = std::string();
             std::string line = std::string();
@@ -195,12 +200,14 @@ namespace Vanir {
                 space += " ";
             }
             
-            for (int j = 0; j < options[i].Names.size(); j++) {
+            for (int j = 0; j < optionsList[i].Names.size(); j++) {
                 line += (j == 0 ? "  " : ", ") +
-                    options[i].Names[j] + (!options[i].Supplement.empty() ? (options[i].Names[j].rfind("--", 0) == 0 ? "=" : " ") + options[i].Supplement : "");
+                    optionsList[i].Names[j] +
+                    (!optionsList[i].Supplement.empty() ?
+                        (optionsList[i].Names[j].rfind("--", 0) == 0 ? "=" : " ") +optionsList[i].Supplement : "");
     
-                if (j == options[i].Names.size() - 1) {
-                    line += space + options[i].Description[0];
+                if (j == optionsList[i].Names.size() - 1) {
+                    line += space + optionsList[i].Description[0];
                 }
             }
             
@@ -212,20 +219,21 @@ namespace Vanir {
                 space += " ";
             }
             
-            for (int j = 1; j < options[i].Description.size(); j++) {
-                line += space + options[i].Description[j];
+            for (int j = 1; j < optionsList[i].Description.size(); j++) {
+                line += space + optionsList[i].Description[j];
     
                 output.emplace_back(line);
             }
             
             std::string supplementSpaces = std::string();
     
-            for (int j = 0; j < options[i].Supplement.size(); j++) {
+            for (int j = 0; j < optionsList[i].Supplement.size(); j++) {
                 supplementSpaces += " ";
             }
     
-            for (int j = 0; j < options[i].SubOptions.size(); j++) {
-                difference = longuestLength - (int)(options[i].SubOptions[j].Names[0].size() + options[i].Supplement.size() + 3);
+            for (int j = 0; j < optionsList[i].SubOptions.size(); j++) {
+                difference = longuestLength -
+                    (int)(optionsList[i].SubOptions[j].Names[0].size() + optionsList[i].Supplement.size() + 3);
                 space = std::string();
                 line = "    ";
     
@@ -233,18 +241,22 @@ namespace Vanir {
                     space += " ";
                 }
                 
-                line += (j == 0 ? options[i].Supplement : supplementSpaces) + " = " + options[i].SubOptions[j].Names[0] + space + options[i].SubOptions[j].Description[0];
+                line += (j == 0 ?
+                    optionsList[i].Supplement :
+                    supplementSpaces) + " = " + optionsList[i].SubOptions[j].Names[0] +
+                        space + optionsList[i].SubOptions[j].Description[0];
                 
                 output.emplace_back(line);
                 space = std::string();
                 line = "    ";
     
-                for (int k = 0; k < difference + (int)(options[i].SubOptions[j].Names[0].size() + options[i].Supplement.size() + 3) + 2; k++) {
+                for (int k = 0;k < difference + (int)(optionsList[i].SubOptions[j].Names[0].size() +
+                    optionsList[i].Supplement.size() + 3) + 2; k++) {
                     space += " ";
                 }
     
-                for (int k = 1; k < options[i].SubOptions[j].Description.size(); k++) {
-                    line += space + options[i].SubOptions[j].Description[k];
+                for (int k = 1; k < optionsList[i].SubOptions[j].Description.size(); k++) {
+                    line += space + optionsList[i].SubOptions[j].Description[k];
     
                     output.emplace_back(line);
                 }
@@ -253,41 +265,16 @@ namespace Vanir {
 
         return output;
     }
-
-    std::string CLI::GetValueFromPassedArgument(const std::string &argument)
-    {
-        std::string result = std::string();
     
-        if (argument.rfind("--", 0) == 0) {
-            if (argument.rfind('=') != std::string::npos) {
-                result = argument.substr(argument.find('=') + 1);
-            }
-        } else {
-            if (argument.rfind(' ') != std::string::npos) {
-                result = argument.substr(argument.find(' ') + 1);
-            }
-        }
-        
-        if (result.empty()) {
-            return std::string();
-        }
-        
-        return result;
-    }
-
-    
-    std::string CLI::FindNearestArgument(const std::string &argument, const std::vector<Vanir::Argument>& options)
-    {
+    std::string CLI::findClosestOption(const std::string &option, const std::vector<Vanir::CLIOption>& optionsList) {
         int distance = -1;
         std::string nearest = std::string();
 
-        for (const auto& y : options)
-        {
+        for (const auto& y : optionsList) {
             for (const auto& w : y.Names) {
-                auto optionDistance = String::CalculateLevenshteinDistance(w, argument);
+                auto optionDistance = String::CalculateLevenshteinDistance(w, option);
     
-                if (optionDistance < distance || distance == -1)
-                {
+                if (optionDistance < distance || distance == -1) {
                     distance = optionDistance;
                     nearest = w;
                 }
@@ -297,12 +284,12 @@ namespace Vanir {
         return nearest;
     }
     
-    void CLI::PrintNotFound(const std::vector<std::string>& notFounds, const std::vector<Vanir::Argument>& options) {
-        for (const auto& argument : notFounds) {
+    void CLI::printUnknownOptions(const std::vector<std::string>& unknownOptions, const std::vector<Vanir::CLIOption>& optionsList) {
+        for (const auto& argument : unknownOptions) {
             ULOG_WARNING("Cannot find argument '", argument, "'.");
             
             if (argument.size() > 2) {
-                ULOG_WARNING("Did you mean '", FindNearestArgument(argument, options), "'?");
+                ULOG_WARNING("Did you mean '", findClosestOption(argument, optionsList), "'?");
             }
         }
     }

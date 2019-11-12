@@ -25,33 +25,19 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_EVENTINTERNALDATA_H
-#define VANIR_EVENTINTERNALDATA_H
+#ifndef VANIR_CLI_CLIPARSINGERROR_H
+#define VANIR_CLI_CLIPARSINGERROR_H
 
 #include <Vanir/Common.h>
-#include <Vanir/Event/ConnectionData.h>
 
-namespace Vanir
-{
-    struct EventInternalData
-    {
-        EventInternalData() = default;
-        ~EventInternalData();
-
-        void Connect(ConnectionData* conn);
-        void Disconnect(ConnectionData* conn);
-        void Clear();
-        void FreeHandle(ConnectionData* conn);
-        void Free(ConnectionData* conn);
-
-        ConnectionData* Connections = nullptr;
-        ConnectionData* LastConnection = nullptr;
-        ConnectionData* FreeConnections = nullptr;
-        ConnectionData* NewConnections = nullptr;
-
-        bool IsCurrentlyTriggering = false;
+namespace Vanir {
+    enum CLIParsingError {
+        CLIParsingError_Unknown,
+        CLIParsingError_OptionEmptyArgument,
+        CLIParsingError_OptionEmptyHyphen,
+        CLIParsingError_OptionEmptyDoubleHyphen
     };
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_EVENTINTERNALDATA_H. */
+#endif /* VANIR_CLI_CLIPARSINGERROR_H. */

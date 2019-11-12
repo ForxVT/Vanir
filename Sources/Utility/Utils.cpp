@@ -29,10 +29,8 @@
 #include <chrono>
 #include <Vanir/Utility/Utils.h>
 
-namespace Vanir
-{
-    void Utils::Sleep(uint32_t duration)
-    {
+namespace Vanir {
+    void Utils::Sleep(uint32_t duration) {
         std::this_thread::sleep_for(std::chrono::milliseconds(duration));
     }
 }

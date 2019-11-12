@@ -87,16 +87,14 @@ endif()
 
 set(VANIR_SOURCES ${VANIR_SOURCES}
         Include/Vanir/Common.h
-        Include/Vanir/CLI/Argument.h
-        Include/Vanir/CLI/ArgumentType.h
         Include/Vanir/CLI/CLI.h
+        Include/Vanir/CLI/CLIOption.h
+        Include/Vanir/CLI/CLIOptionType.h
+        Include/Vanir/CLI/CLIParsingError.h
+        Include/Vanir/CLI/CLIParsingResult.h
         Include/Vanir/Error/Error.h
         Include/Vanir/Error/Exception.h
         Include/Vanir/Error/FatalError.h
-        Include/Vanir/Event/ConnectionData.h
-        Include/Vanir/Event/Event.h
-        Include/Vanir/Event/EventHandle.h
-        Include/Vanir/Event/EventInternalData.h
         Include/Vanir/Factory/Factory.h
         Include/Vanir/FileSystem/FileSystem.h
         Include/Vanir/JSON/JSONFile.h
@@ -111,13 +109,11 @@ set(VANIR_SOURCES ${VANIR_SOURCES}
         Include/Vanir/Utility/NonCopyable.h
         Include/Vanir/Utility/Timer.h
         Include/Vanir/Utility/Utils.h
-        Sources/CLI/Argument.cpp
         Sources/CLI/CLI.cpp
+        Sources/CLI/CLIOption.cpp
+        Sources/CLI/CLIParsingResult.cpp
         Sources/Error/Exception.cpp
         Sources/Error/FatalError.cpp
-        Sources/Event/ConnectionData.cpp
-        Sources/Event/EventHandle.cpp
-        Sources/Event/EventInternalData.cpp
         Sources/FileSystem/FileSystem.cpp
         Sources/JSON/JSONFile.cpp
         Sources/Logger/LogColor.cpp

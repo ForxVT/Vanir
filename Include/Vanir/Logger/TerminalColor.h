@@ -30,11 +30,9 @@
 
 #include <Vanir/Common.h>
 
-namespace Vanir
-{
+namespace Vanir {
     /// List of colors used by terminals.
-    enum TerminalColor
-    {
+    enum TerminalColor {
 #ifdef _WIN32
         TerminalColor_Black,
         TerminalColor_Blue,

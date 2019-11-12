@@ -32,10 +32,8 @@
 #include <Vanir/Common.h>
 #include <Vanir/Logger/TerminalColor.h>
 
-namespace Vanir
-{
-    class LogColor
-    {
+namespace Vanir {
+    class LogColor {
     public:
         explicit LogColor(TerminalColor foregroundColor = TerminalColor_Default,
                              TerminalColor backgroundColor = TerminalColor_Default);

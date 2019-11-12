@@ -30,10 +30,8 @@
 
 #include <Vanir/Common.h>
 
-namespace Vanir
-{
-    class Utils
-    {
+namespace Vanir {
+    class Utils {
     public:
         static void Sleep(uint32_t duration);
     };

@@ -31,10 +31,8 @@
 #include <Vanir/Common.h>
 #include <Vanir/Math/Xorshift.h>
 
-namespace Vanir
-{
-    class Random
-    {
+namespace Vanir {
+    class Random {
     public:
         Random();
         Random(uint64_t seed);

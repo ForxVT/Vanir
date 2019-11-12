@@ -31,11 +31,9 @@
 #include <chrono>
 #include <Vanir/Common.h>
 
-namespace Vanir
-{
+namespace Vanir {
     /// Create a timer for querying high precision timers.
-    class Timer
-    {
+    class Timer {
     public:
         /// Constructor.
         Timer();

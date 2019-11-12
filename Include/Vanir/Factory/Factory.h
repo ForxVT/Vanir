@@ -30,21 +30,17 @@
 
 #include <Vanir/Common.h>
 
-namespace Vanir
-{
+namespace Vanir {
     template <class BaseType, class SubType, typename ...Args>
-    static std::unique_ptr<BaseType> GenericFactory(Args&&... args)
-    {
+    static std::unique_ptr<BaseType> GenericFactory(Args&&... args) {
         return std::make_unique<SubType>(args...);
     }
     
     template <class BaseType>
-    class Factory
-    {
+    class Factory {
     public:
         template<class SubType, typename ...Args>
-        static void Register(const std::string &typeName)
-        {
+        static void Register(const std::string &typeName) {
             auto instance = GetInstance();
             
             if (instance->m_registry.find(typeName) == instance->m_registry.end())
@@ -52,8 +48,7 @@ namespace Vanir
         }
     
         template <typename ...Args>
-        static std::unique_ptr<BaseType> Create(const std::string &type, Args&&... args)
-        {
+        static std::unique_ptr<BaseType> Create(const std::string &type, Args&&... args) {
             auto instance = GetInstance();
             
             auto constructor = instance->m_registry.find(type);
@@ -69,8 +64,7 @@ namespace Vanir
         }
         
     private:
-        static std::shared_ptr<Factory<BaseType>> GetInstance()
-        {
+        static std::shared_ptr<Factory<BaseType>> GetInstance() {
             static std::shared_ptr<Factory<BaseType>> factory = std::make_shared<Factory<BaseType>>();
         
             return factory;
@@ -80,11 +74,9 @@ namespace Vanir
     };
     
     template<class BaseType, class SubType, typename ...Args>
-    class FactoryRegister
-    {
+    class FactoryRegister {
     public:
-        explicit FactoryRegister(const std::string &typeName)
-        {
+        explicit FactoryRegister(const std::string &typeName) {
             Factory<BaseType>::template Register<SubType, Args...>(typeName);
         }
     };

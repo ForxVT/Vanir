@@ -35,11 +35,9 @@
 #endif
 #include <Vanir/Common.h>
 
-namespace Vanir
-{
+namespace Vanir {
     /// Class containing various string utility methods.
-    class String
-    {
+    class String {
     public:
         /// Return if a string starts with a specific string.
         static bool StartsWith(const std::string& text, const std::string& start);
@@ -82,8 +80,7 @@ namespace Vanir
                 const T &target,
                 typename T::size_type insert_cost = 1,
                 typename T::size_type delete_cost = 1,
-                typename T::size_type replace_cost = 1)
-        {
+                typename T::size_type replace_cost = 1) {
             if (source.size() > target.size())
                 return CalculateLevenshteinDistance(target, source, delete_cost, insert_cost, replace_cost);
 
@@ -95,13 +92,11 @@ namespace Vanir
             for (TSizeType i = 1; i <= min_size; ++i)
                 lev_dist[i] = lev_dist[i - 1] + delete_cost;
 
-            for (TSizeType j = 1; j <= max_size; ++j)
-            {
+            for (TSizeType j = 1; j <= max_size; ++j) {
                 TSizeType previous_diagonal = lev_dist[0], previous_diagonal_save;
                 lev_dist[0] += insert_cost;
 
-                for (TSizeType i = 1; i <= min_size; ++i)
-                {
+                for (TSizeType i = 1; i <= min_size; ++i) {
                     previous_diagonal_save = lev_dist[i];
 
                     if (source[i - 1] == target[j - 1])
@@ -118,8 +113,7 @@ namespace Vanir
     };
 
     template< typename T >
-    std::string String::IntegerToHexadecimal(T integer, bool showFullLength)
-    {
+    std::string String::IntegerToHexadecimal(T integer, bool showFullLength) {
         std::stringstream stream;
 
         if (showFullLength)

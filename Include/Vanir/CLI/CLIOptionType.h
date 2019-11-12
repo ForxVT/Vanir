@@ -25,31 +25,17 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_ARGUMENT_H
-#define VANIR_ARGUMENT_H
+#ifndef VANIR_CLI_CLIOPTIONTYPE_H
+#define VANIR_CLI_CLIOPTIONTYPE_H
 
 #include <Vanir/Common.h>
-#include <Vanir/CLI/ArgumentType.h>
 
-namespace Vanir
-{
-    struct Argument
-    {
-        explicit Argument(std::vector<std::string> names = std::vector<std::string>(),
-                std::vector<std::string> description = std::vector<std::string>(),
-                void (*functionToCall)(const std::string&) = nullptr,
-                ArgumentType type = ArgumentType_Argument,
-                std::string  supplement = std::string(),
-                std::vector<Argument> subOptions = std::vector<Argument>());
-
-        std::vector<std::string> Names;
-        std::vector<std::string> Description;
-        void (*FunctionToCall)(const std::string&);
-        ArgumentType Type;
-        std::string Supplement;
-        std::vector<Argument> SubOptions;
+namespace Vanir {
+    enum CLIOptionType {
+        CLIOptionType_Option,
+        CLIOptionType_OptionWithArgument
     };
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_ARGUMENT_H. */
+#endif /* VANIR_CLI_CLIOPTIONTYPE_H. */

@@ -33,11 +33,9 @@
 #include <nlohmann/json.hpp>
 #include <Vanir/Common.h>
 
-namespace Vanir
-{
+namespace Vanir {
     /// Class to load JSON file to memory.
-    class JSONFile
-    {
+    class JSONFile {
     public:
         /// Load a JSON file to memory.
         void Load(const std::string& filepath);

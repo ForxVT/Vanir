@@ -25,25 +25,21 @@
 //                                                                                  //
 //==================================================================================//
 
-#include <utility>
-#include <Vanir/CLI/Argument.h>
+#ifndef VANIR_CLI_CLIPARSINGRESULT_H
+#define VANIR_CLI_CLIPARSINGRESULT_H
 
-namespace Vanir
-{
-    Argument::Argument(std::vector<std::string> names,
-            std::vector<std::string> description,
-            void (*functionToCall)(const std::string&),
-            ArgumentType type,
-            std::string supplement,
-            std::vector<Argument> subOptions) :
-        Names(std::move(names)),
-        Description(std::move(description)),
-        FunctionToCall(functionToCall),
-        Type(type),
-        Supplement(std::move(supplement)),
-        SubOptions(std::move(subOptions))
-    {
+#include <Vanir/Common.h>
+#include <Vanir/CLI/CLIParsingError.h>
 
-    }
-
+namespace Vanir {
+    struct CLIParsingResult {
+        explicit CLIParsingResult(const std::string& result = std::string(), std::vector<CLIParsingError> errors = std::vector<CLIParsingError>());
+    
+        static const std::string& errorToString(CLIParsingError error);
+        
+        std::string result;
+        std::vector<CLIParsingError> errors;
+    };
 } /* Namespace Vanir. */
+
+#endif /* VANIR_CLI_CLIPARSINGRESULT_H. */

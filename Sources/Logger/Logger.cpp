@@ -31,8 +31,7 @@
 #include <Vanir/Logger/Logger.h>
 #include <Vanir/FileSystem/FileSystem.h>
 
-namespace Vanir
-{
+namespace Vanir {
     std::ofstream Logger::m_file = std::ofstream();
     bool Logger::m_writingToFile = false;
     time_t Logger::m_time;
@@ -42,53 +41,42 @@ namespace Vanir
     int Logger::WarningCount = 0;
     int Logger::InfoCount = 0;
 
-    void Logger::Start(const std::string& filepath)
-    {
+    void Logger::Start(const std::string& filepath) {
         std::cout << LogColor();
 
         if (filepath.empty())
             m_log = false;
 
-        if (m_log)
-        {
+        if (m_log) {
             auto dir = Vanir::FileSystem::GetDirectoryPathFromFilePath(filepath);
 
-            if (!dir.empty())
-            {
-                if (!Vanir::FileSystem::DirectoryExist(dir))
-                    Vanir::FileSystem::AddDirectory(dir);
+            if (!dir.empty() && !Vanir::FileSystem::DirectoryExist(dir)) {
+                Vanir::FileSystem::AddDirectory(dir);
             }
 
             m_file.open(filepath, std::ofstream::out | std::ofstream::trunc);
-
             m_fileOpened = true;
         }
     }
 
-    void Logger::StartNoLog()
-    {
+    void Logger::StartNoLog() {
         Start(std::string());
     }
 
-    void Logger::Stop()
-    {
-        if (m_log)
-        {
+    void Logger::Stop() {
+        if (m_log) {
             m_file.close();
-
             m_fileOpened = false;
         }
     }
 
-    void Logger::ResetCounters()
-    {
+    void Logger::ResetCounters() {
         ErrorCount = 0;
         WarningCount = 0;
         InfoCount = 0;
     }
 
-    std::string Logger::LogHeader(const std::string &message, const std::string &function, int line)
-    {
+    std::string Logger::LogHeader(const std::string &message, const std::string &function, int line) {
         m_time = time(nullptr);
 
         auto time = localtime(&m_time);
@@ -96,17 +84,16 @@ namespace Vanir
         auto minutes = std::to_string(time->tm_min);
         auto seconds = std::to_string(time->tm_sec);
         auto infoText = "[" + message + " | " +
-                        (function.empty() ? "" : function + " | ") +
-                        (line == -1 ? "" : "Line " + std::to_string(line) + " | ") +
-                        (hours.length() == 1 ? "0" + hours : hours) + ":" +
-                        (minutes.length() == 1 ? "0" + minutes : minutes) + ":" +
-                        (seconds.length() == 1 ? "0" + seconds : seconds) + "] ";
+            (function.empty() ? "" : function + " | ") +
+            (line == -1 ? "" : "Line " + std::to_string(line) + " | ") +
+            (hours.length() == 1 ? "0" + hours : hours) + ":" +
+            (minutes.length() == 1 ? "0" + minutes : minutes) + ":" +
+            (seconds.length() == 1 ? "0" + seconds : seconds) + "] ";
 
         return infoText;
     }
 
-    bool Logger::IsWritingToFile()
-    {
+    bool Logger::IsWritingToFile() {
         return m_writingToFile;
     }
 

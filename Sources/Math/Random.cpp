@@ -28,50 +28,41 @@
 #include <chrono>
 #include <Vanir/Math/Random.h>
 
-namespace Vanir
-{
-    Random::Random()
-    {
+namespace Vanir {
+    Random::Random() {
         SetSeed(static_cast<long unsigned int>(std::chrono::high_resolution_clock::now().time_since_epoch().count()));
     }
 
-    Random::Random(uint64_t seed)
-    {
+    Random::Random(uint64_t seed) {
         SetSeed(seed);
     }
 
     Random::~Random() = default;
 
-    void Random::SetSeed(uint64_t seed)
-    {
+    void Random::SetSeed(uint64_t seed) {
         m_seed = seed;
         m_generator = Xorshift(m_seed);
     }
 
-    uint64_t Random::GetSeed()
-    {
+    uint64_t Random::GetSeed() {
         return m_seed;
     }
 
-    uint32_t Random::Generate()
-    {
+    uint32_t Random::Generate() {
         return Generate(0, UINT32_MAX);
     }
 
-    uint32_t Random::Generate(uint32_t max)
-    {
+    uint32_t Random::Generate(uint32_t max) {
         return Generate(0, max);
     }
 
-    uint32_t Random::Generate(uint32_t min, uint32_t max)
-    {
+    uint32_t Random::Generate(uint32_t min, uint32_t max) {
         std::uniform_int_distribution<> distributor(min, max);
 
         return distributor(m_generator);
     }
 
-    void Random::Reset()
-    {
+    void Random::Reset() {
         SetSeed(m_seed);
     }
 

@@ -27,10 +27,8 @@
 
 #include <Vanir/Error/Exception.h>
 
-namespace Vanir
-{
-    const char *Exception::what() const noexcept
-    {
+namespace Vanir {
+    const char *Exception::what() const noexcept {
         return m_error.c_str();
     }
 

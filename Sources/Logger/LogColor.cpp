@@ -28,18 +28,14 @@
 #include <Vanir/Logger/LogColor.h>
 #include <Vanir/Logger/Logger.h>
 
-namespace Vanir
-{
+namespace Vanir {
     LogColor::LogColor(TerminalColor foregroundColor, TerminalColor backgroundColor) :
-            m_foregroundColor(foregroundColor), m_backgroundColor(backgroundColor)
-    {
+            m_foregroundColor(foregroundColor), m_backgroundColor(backgroundColor) {
 
     }
 
-    std::ostream &operator<<(std::ostream &os, const LogColor &loggerColor)
-    {
-        if (!Logger::IsWritingToFile())
-        {
+    std::ostream &operator<<(std::ostream &os, const LogColor &loggerColor) {
+        if (!Logger::IsWritingToFile()) {
 #ifdef _WIN32
             HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -72,16 +68,13 @@ namespace Vanir
             return os << "\u001b[0;" + std::to_string(foregroundColor) + ";" + std::to_string(backgroundColor) + "m";
 #endif
         }
-        else
-        {
+        else {
             return os;
         }
     }
 
-    std::basic_ostream<wchar_t> &operator<<(std::basic_ostream<wchar_t> &os, const LogColor &loggerColor)
-    {
-        if (!Logger::IsWritingToFile())
-        {
+    std::basic_ostream<wchar_t> &operator<<(std::basic_ostream<wchar_t> &os, const LogColor &loggerColor) {
+        if (!Logger::IsWritingToFile()) {
 #ifdef _WIN32
             HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
             SetConsoleTextAttribute(hStdout, loggerColor.m_foregroundColor + loggerColor.m_backgroundColor);
@@ -100,8 +93,7 @@ namespace Vanir
             return os;
 #endif
         }
-        else
-        {
+        else {
             return os;
         }
     }

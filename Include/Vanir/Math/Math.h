@@ -30,11 +30,9 @@
 
 #include <Vanir/Common.h>
 
-namespace Vanir
-{
+namespace Vanir {
     /// Class containing various mathematic utility methods.
-    class Math
-    {
+    class Math {
     public:
         /// Return if a given integer is odd.
         static bool IsOdd(int32_t number);
@@ -48,8 +46,7 @@ namespace Vanir
         static float Lerp(float alpha, float a, float b);
         /// Return a divided number rounded up (only working on positive numbers).
         template<class T>
-        static constexpr T DivideAndRoundUp(T n, T d)
-        {
+        static constexpr T DivideAndRoundUp(T n, T d) {
             return (n + d - 1) / d;
         }
 

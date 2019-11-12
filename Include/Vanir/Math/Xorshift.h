@@ -31,11 +31,9 @@
 #include <random>
 #include <Vanir/Common.h>
 
-namespace Vanir
-{
+namespace Vanir {
     /// Class to use the pseudorandom number generators Xorshift.
-    class Xorshift
-    {
+    class Xorshift {
     public:
         using result_type = uint32_t;
 
@@ -58,13 +56,11 @@ namespace Vanir
         /// Compares two distribution objects inequality.
         friend bool operator!=(Xorshift const &lhs, Xorshift const &rhs);
         /// Returns the minimum potentially generated value
-        static constexpr result_type (min)()
-        {
+        static constexpr result_type (min)() {
             return 0;
         }
         /// Returns the maximum potentially generated value
-        static constexpr result_type (max)()
-        {
+        static constexpr result_type (max)() {
             return UINT32_MAX;
         }
 

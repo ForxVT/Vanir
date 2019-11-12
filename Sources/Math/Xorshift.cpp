@@ -28,41 +28,33 @@
 #include <iostream>
 #include <Vanir/Math/Xorshift.h>
 
-namespace Vanir
-{
-    Xorshift::Xorshift() : m_seed(0xc1f651c67c62c6e0ull)
-    {
+namespace Vanir {
+    Xorshift::Xorshift() : m_seed(0xc1f651c67c62c6e0ull) {
 
     }
 
-    Xorshift::Xorshift(std::random_device &_seed)
-    {
+    Xorshift::Xorshift(std::random_device &_seed) {
         seed(_seed);
     }
 
-    Xorshift::Xorshift(uint32_t _seed)
-    {
+    Xorshift::Xorshift(uint32_t _seed) {
         seed(_seed);
     }
 
-    void Xorshift::seed(std::random_device &rd)
-    {
+    void Xorshift::seed(std::random_device &rd) {
         m_seed = uint64_t(rd()) << 31 | uint64_t(rd());
     }
 
-    void Xorshift::seed(uint32_t seed)
-    {
+    void Xorshift::seed(uint32_t seed) {
         m_seed = seed;
     }
 
-    void Xorshift::discard(unsigned long long n)
-    {
+    void Xorshift::discard(unsigned long long n) {
         for (unsigned long long i = 0; i < n; ++i)
             operator()();
     }
 
-    uint32_t Xorshift::operator()()
-    {
+    uint32_t Xorshift::operator()() {
         uint64_t result = m_seed * 0xd989bcacc137dcd5ull;
 
         m_seed ^= m_seed >> 11;
@@ -72,13 +64,11 @@ namespace Vanir
         return result_type(result >> 32ull);
     }
 
-    bool operator==(Xorshift const &lhs, Xorshift const &rhs)
-    {
+    bool operator==(Xorshift const &lhs, Xorshift const &rhs) {
         return lhs.m_seed == rhs.m_seed;
     }
 
-    bool operator!=(Xorshift const &lhs, Xorshift const &rhs)
-    {
+    bool operator!=(Xorshift const &lhs, Xorshift const &rhs) {
         return lhs.m_seed != rhs.m_seed;
     }
 
