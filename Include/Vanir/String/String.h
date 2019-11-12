@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_STRING_H
-#define VANIR_STRING_H
+#ifndef VANIR_STRING_STRING_H
+#define VANIR_STRING_STRING_H
 
 #include <iomanip>
 #include <sstream>
@@ -126,4 +126,4 @@ namespace Vanir {
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_STRING_H. */
+#endif /* VANIR_STRING_STRING_H. */

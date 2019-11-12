@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_TIMER_H
-#define VANIR_TIMER_H
+#ifndef VANIR_UTILITY_TIMER_H
+#define VANIR_UTILITY_TIMER_H
 
 #include <chrono>
 #include <Vanir/Common.h>
@@ -61,4 +61,4 @@ namespace Vanir {
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_TIMER_H. */
+#endif /* VANIR_UTILITY_TIMER_H. */

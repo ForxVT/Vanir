@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_RANDOM_H
-#define VANIR_RANDOM_H
+#ifndef VANIR_MATH_RANDOM_H
+#define VANIR_MATH_RANDOM_H
 
 #include <Vanir/Common.h>
 #include <Vanir/Math/Xorshift.h>
@@ -52,4 +52,4 @@ namespace Vanir {
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_RANDOM_H. */
+#endif /* VANIR_MATH_RANDOM_H. */

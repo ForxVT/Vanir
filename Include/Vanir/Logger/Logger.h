@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_LOGGER_H
-#define VANIR_LOGGER_H
+#ifndef VANIR_LOGGER_LOGGER_H
+#define VANIR_LOGGER_LOGGER_H
 
 #include <fstream>
 #include <iostream>
@@ -191,4 +191,4 @@ namespace Vanir {
 #define ULOG_ERROR(...) LOG_ERROR(__VA_ARGS__)
 #endif
 
-#endif /* VANIR_LOGGER_H. */
+#endif /* VANIR_LOGGER_LOGGER_H. */

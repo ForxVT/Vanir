@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_MODULE_H
-#define VANIR_MODULE_H
+#ifndef VANIR_MODULE_MODULE_H
+#define VANIR_MODULE_MODULE_H
 
 #include <Vanir/Error/Error.h>
 
@@ -172,4 +172,4 @@ namespace Vanir {
     
 } /* Namespace Vanir. */
 
-#endif /* VANIR_MODULE_H. */
+#endif /* VANIR_MODULE_MODULE_H. */

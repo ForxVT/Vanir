@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_MATH_H
-#define VANIR_MATH_H
+#ifndef VANIR_MAHT_MATH_H
+#define VANIR_MAHT_MATH_H
 
 #include <Vanir/Common.h>
 
@@ -60,4 +60,4 @@ namespace Vanir {
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_MATH_H. */
+#endif /* VANIR_MAHT_MATH_H. */

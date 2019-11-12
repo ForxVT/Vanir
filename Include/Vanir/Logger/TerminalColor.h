@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_TERMINALCOLOR_H
-#define VANIR_TERMINALCOLOR_H
+#ifndef VANIR_LOGGER_TERMINALCOLOR_H
+#define VANIR_LOGGER_TERMINALCOLOR_H
 
 #include <Vanir/Common.h>
 
@@ -74,4 +74,4 @@ namespace Vanir {
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_TERMINALCOLOR_H. */
+#endif /* VANIR_LOGGER_TERMINALCOLOR_H. */

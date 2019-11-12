@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_UTILS_H
-#define VANIR_UTILS_H
+#ifndef VANIR_UTILS_UTILS_H
+#define VANIR_UTILS_UTILS_H
 
 #include <Vanir/Common.h>
 
@@ -38,4 +38,4 @@ namespace Vanir {
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_UTILS_H. */
+#endif /* VANIR_UTILS_UTILS_H. */

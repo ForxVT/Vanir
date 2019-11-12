@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_FILESYSTEM_H
-#define VANIR_FILESYSTEM_H
+#ifndef VANIR_FILESYSTEM_FILESYSTEM_H
+#define VANIR_FILESYSTEM_FILESYSTEM_H
 
 #include <Vanir/Common.h>
 
@@ -58,4 +58,4 @@ namespace Vanir {
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_FILESYSTEM_H. */
+#endif /* VANIR_FILESYSTEM_FILESYSTEM_H. */

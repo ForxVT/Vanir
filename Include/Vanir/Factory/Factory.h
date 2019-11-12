@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_FACTORY_H
-#define VANIR_FACTORY_H
+#ifndef VANIR_FACTORY_FACTORY_H
+#define VANIR_FACTORY_FACTORY_H
 
 #include <Vanir/Common.h>
 
@@ -86,4 +86,4 @@ static ::Vanir::FactoryRegister<BASETYPE, SUBTYPE, ##__VA_ARGS__> factoryRegistr
     
 } /* Namespace Vanir. */
 
-#endif /* VANIR_FACTORY_H.*/
+#endif /* VANIR_FACTORY_FACTORY_H.*/

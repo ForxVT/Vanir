@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_EXCEPTION_H
-#define VANIR_EXCEPTION_H
+#ifndef VANIR_ERROR_EXCEPTION_H
+#define VANIR_ERROR_EXCEPTION_H
 
 #include <Vanir/Common.h>
 #include <Vanir/Logger/Logger.h>
@@ -65,13 +65,13 @@ namespace Vanir {
     throw ::Vanir::Exception(type, __PRETTY_FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__); \
 }
 
-#define THROW_ERROR(type, ...) \ { \
-    try \ { \
+#define THROW_ERROR(type, ...) { \
+    try { \
         ULOG_ERROR("EXCEPTION - ", type, ": ", ##__VA_ARGS__); \
         throw ::Vanir::Exception(type, __PRETTY_FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__); \
-    } catch(Exception const& e) \ { \
+    } catch(Exception const& e) { \
         \
     } \
 }
 
-#endif /* VANIR_EXCEPTION_H. */
+#endif /* VANIR_ERROR_EXCEPTION_H. */

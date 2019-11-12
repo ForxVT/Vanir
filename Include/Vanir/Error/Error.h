@@ -25,10 +25,10 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_ERROR_H
-#define VANIR_ERROR_H
+#ifndef VANIR_ERROR_ERROR_H
+#define VANIR_ERROR_ERROR_H
 
 #include <Vanir/Error/Exception.h>
 #include <Vanir/Error/FatalError.h>
 
-#endif /* VANIR_ERROR_H. */
+#endif /* VANIR_ERROR_ERROR_H. */

@@ -35,7 +35,7 @@
 namespace Vanir {
     class CLI {
     public:
-        static CLIParsingResult parse(const int argc, char *argv[],
+        static CLIParsingResult parse(int argc, char *argv[],
         	const std::vector<Vanir::CLIOption>& optionsList, bool logErrors = true);
         static std::vector<std::string> getOptionsDescriptionList(const std::vector<Vanir::CLIOption>& optionsList);
         static std::string findClosestOption(const std::string &option,

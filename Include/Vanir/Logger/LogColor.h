@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_LOGCOLOR_H
-#define VANIR_LOGCOLOR_H
+#ifndef VANIR_LOGGER_LOGCOLOR_H
+#define VANIR_LOGGER_LOGCOLOR_H
 
 #include <ostream>
 #include <Vanir/Common.h>
@@ -48,4 +48,4 @@ namespace Vanir {
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_LOGCOLOR_H. */
+#endif /* VANIR_LOGGER_LOGCOLOR_H. */

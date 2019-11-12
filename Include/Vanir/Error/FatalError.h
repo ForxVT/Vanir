@@ -25,8 +25,8 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_FATALERROR_H
-#define VANIR_FATALERROR_H
+#ifndef VANIR_ERROR_FATALERROR_H
+#define VANIR_ERROR_FATALERROR_H
 
 #include <Vanir/Common.h>
 
@@ -45,4 +45,4 @@ namespace Vanir {
     ::Vanir::FatalError::Terminate(); \
 }
 
-#endif /* VANIR_FATALERROR_H. */
+#endif /* VANIR_ERROR_FATALERROR_H. */

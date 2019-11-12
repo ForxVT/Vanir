@@ -27,8 +27,8 @@
 
 #ifdef VANIR_BUILD_JSON
 
-#ifndef VANIR_JSONFILE_H
-#define VANIR_JSONFILE_H
+#ifndef VANIR_JSON_JSONFILE_H
+#define VANIR_JSON_JSONFILE_H
 
 #include <nlohmann/json.hpp>
 #include <Vanir/Common.h>
@@ -53,6 +53,6 @@ namespace Vanir {
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_JSONFILE_H. */
+#endif /* VANIR_JSON_JSONFILE_H. */
 
 #endif
