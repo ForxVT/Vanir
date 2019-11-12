@@ -28,22 +28,26 @@
 #ifndef VANIR_CLI_CLIOPTION_H
 #define VANIR_CLI_CLIOPTION_H
 
+#include <string>
 #include <Vanir/Common.h>
 #include <Vanir/CLI/CLIOptionType.h>
+#include <Vanir/CLI/CLIArgument.h>
 
 namespace Vanir {
     struct CLIOption {
-        explicit CLIOption(std::vector<std::string> names = std::vector<std::string>(),
-            std::vector<std::string> description = std::vector<std::string>(),
-            void (*functionToCall)(const std::string&) = nullptr, CLIOptionType type = CLIOptionType_Option,
-            std::string  supplement = std::string(), std::vector<CLIOption> subOptions = std::vector<CLIOption>());
+        explicit CLIOption(std::vector<std::string> names,
+            void (*function)(const std::string&),
+            std::vector<std::string> descriptionLines = std::vector<std::string>(),
+            CLIOptionType type = CLIOptionType_Option,
+            std::string argumentName = std::string(),
+            std::vector<CLIArgument> arguments = std::vector<CLIArgument>());
 
         std::vector<std::string> names;
-        std::vector<std::string> descriptionLines;
         void (*function)(const std::string&);
-        CLIOptionType Type;
-        std::string Supplement;
-        std::vector<CLIOption> SubOptions;
+        std::vector<std::string> descriptionLines;
+        CLIOptionType type;
+        std::string argumentName;
+        std::vector<CLIArgument> arguments;
     };
 
 } /* Namespace Vanir. */

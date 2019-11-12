@@ -25,17 +25,18 @@
 //                                                                                  //
 //==================================================================================//
 
-#ifndef VANIR_CLI_CLIOPTIONTYPE_H
-#define VANIR_CLI_CLIOPTIONTYPE_H
+#ifndef VANIR_CLI_OPTIONTYPE_H
+#define VANIR_CLI_OPTIONTYPE_H
 
-#include <Vanir/Common.h>
-
-namespace Vanir {
-    enum CLIOptionType {
+namespace Vanir
+{
+    enum CLIOptionType
+    {
         CLIOptionType_Option,
-        CLIOptionType_OptionWithArgument
+        CLIOptionType_OptionWithValue
     };
 
 } /* Namespace Vanir. */
 
-#endif /* VANIR_CLI_CLIOPTIONTYPE_H. */
+#endif /* VANIR_CLI_OPTIONTYPE_H. */
+    

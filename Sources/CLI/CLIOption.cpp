@@ -29,18 +29,11 @@
 #include <Vanir/CLI/CLIOption.h>
 
 namespace Vanir {
-    CLIOption::CLIOption(std::vector<std::string> names,
-                         std::vector<std::string> description,
-                         void (*functionToCall)(const std::string&),
-                         CLIOptionType type,
-                         std::string supplement,
-                         std::vector<CLIOption> subOptions) :
-        Names(std::move(names)),
-        Description(std::move(description)),
-        FunctionToCall(functionToCall),
-        Type(type),
-        Supplement(std::move(supplement)),
-        SubOptions(std::move(subOptions)) {
+    CLIOption::CLIOption(std::vector<std::string> names, void (*function)(const std::string&),
+            std::vector<std::string> descriptionLines, CLIOptionType type, std::string argumentName,
+            std::vector<CLIArgument> arguments) :
+            names(std::move(names)), function(function), descriptionLines(std::move(descriptionLines)),
+            type(type), argumentName(std::move(argumentName)), arguments(std::move(arguments))  {
 
     }
 

@@ -88,6 +88,7 @@ endif()
 set(VANIR_SOURCES ${VANIR_SOURCES}
         Include/Vanir/Common.h
         Include/Vanir/CLI/CLI.h
+        Include/Vanir/CLI/CLIArgument.h
         Include/Vanir/CLI/CLIOption.h
         Include/Vanir/CLI/CLIOptionType.h
         Include/Vanir/CLI/CLIParsingError.h
@@ -110,6 +111,7 @@ set(VANIR_SOURCES ${VANIR_SOURCES}
         Include/Vanir/Utility/Timer.h
         Include/Vanir/Utility/Utils.h
         Sources/CLI/CLI.cpp
+        Sources/CLI/CLIArgument.cpp
         Sources/CLI/CLIOption.cpp
         Sources/CLI/CLIParsingResult.cpp
         Sources/Error/Exception.cpp

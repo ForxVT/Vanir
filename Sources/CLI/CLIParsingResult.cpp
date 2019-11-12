@@ -27,20 +27,25 @@
 
 #include <Vanir/CLI/CLIParsingResult.h>
 
+#include <utility>
+
+#include <utility>
+
 namespace Vanir {
-    CLIParsingResult::CLIParsingResult(const std::string &result, std::vector<CLIParsingError> errors) :
-        result(result), errors(errors) {
+    CLIParsingResult::CLIParsingResult(std::string result, std::vector<CLIParsingError> errors) :
+        result(std::move(result)), errors(std::move(errors)) {
         
     }
     
     const std::string &CLIParsingResult::errorToString(CLIParsingError error) {
-        switch (error) {
-            case CLIParsingError_OptionEmptyArgument:
-                return "empty argument passed in option";
-            case CLIParsingError_Unknown:
-            default:
-                return "unknown";
-        }
+        static std::string cliParsingErrorStrings[] = {
+            "unknown",
+            "option called without his needed argument",
+            "empty option called (only an hyphen)",
+            "empty option called (only a double hyphen)"
+        };
+        
+        return cliParsingErrorStrings[(int)error];
     }
     
 } /* Namespace Vanir. */
