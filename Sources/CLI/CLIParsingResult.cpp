@@ -37,15 +37,18 @@ namespace Vanir {
         
     }
     
-    const std::string &CLIParsingResult::errorToString(CLIParsingError error) {
-        static std::string cliParsingErrorStrings[] = {
-            "unknown",
-            "option called without his needed argument",
-            "empty option called (only an hyphen)",
-            "empty option called (only a double hyphen)"
-        };
-        
-        return cliParsingErrorStrings[(int)error];
+    std::string CLIParsingResult::errorToString(CLIParsingError error) {
+        switch (error) {
+            case CLIParsingError_OptionEmptyArgument:
+                return "option called without his needed argument";
+            case CLIParsingError_OptionEmptyHyphen:
+                return "empty option called (only an hyphen)";
+            case CLIParsingError_OptionEmptyDoubleHyphen:
+                return "empty option called (only a double hyphen)";
+            case CLIParsingError_Unknown:
+            default:
+                return "unknown";
+        }
     }
     
 } /* Namespace Vanir. */

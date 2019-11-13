@@ -26,7 +26,7 @@
 //==================================================================================//
 
 #include <utility>
-#include <Vanir/CLI/CLIOption.h>
+#include <Vanir/CLI/Argument.h>
 
 namespace Vanir {
     CLIOption::CLIOption(std::vector<std::string> names, void (*function)(const std::string&),

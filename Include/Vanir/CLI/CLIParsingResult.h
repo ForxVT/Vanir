@@ -35,7 +35,7 @@ namespace Vanir {
     struct CLIParsingResult {
         explicit CLIParsingResult(std::string  result = std::string(), std::vector<CLIParsingError> errors = std::vector<CLIParsingError>());
     
-        static const std::string& errorToString(CLIParsingError error);
+        static std::string errorToString(CLIParsingError error);
         
         std::string result;
         std::vector<CLIParsingError> errors;
