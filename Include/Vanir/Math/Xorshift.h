@@ -40,9 +40,9 @@ namespace Vanir {
         /// Constructor.
         Xorshift();
         /// Constructor using std::random_device.
-        Xorshift(std::random_device &seed);
+        explicit Xorshift(std::random_device &seed);
         /// Constructor using uint3_t.
-        Xorshift(uint32_t seed);
+        explicit Xorshift(uint32_t seed);
         /// Define the seed to use for the distribution.
         void seed(std::random_device &seed);
         /// Define the seed to use for the distribution.

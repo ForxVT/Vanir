@@ -32,7 +32,7 @@
 #include <Vanir/Error/FatalError.h>
 
 namespace Vanir {
-    void FatalError::Terminate() {
+    void FatalError::terminate() {
 #ifdef _WIN32
         ::TerminateProcess(::GetCurrentProcess(), 0);
 #else
@@ -40,7 +40,7 @@ namespace Vanir {
 #endif
     }
 
-    void FatalError::Popup(const std::string &message) {
+    void FatalError::popup(const std::string &message) {
 #ifdef _WIN32
         ::MessageBoxW(nullptr, String::StringToWString(message).c_str(), L"FATAL ERROR", MB_OK | MB_ICONERROR);
 #endif

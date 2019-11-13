@@ -40,21 +40,22 @@ namespace Vanir {
     class Factory {
     public:
         template<class SubType, typename ...Args>
-        static void Register(const std::string &typeName) {
-            auto instance = GetInstance();
+        static void registerType(const std::string &typeName) {
+            auto instance = getInstance();
             
             if (instance->m_registry.find(typeName) == instance->m_registry.end())
                 instance->m_registry[typeName] = reinterpret_cast<void*>(GenericFactory<BaseType, SubType, Args...>);
         }
     
         template <typename ...Args>
-        static std::unique_ptr<BaseType> Create(const std::string &type, Args&&... args) {
-            auto instance = GetInstance();
+        static std::unique_ptr<BaseType> create(const std::string &type, Args&&... args) {
+            auto instance = getInstance();
             
             auto constructor = instance->m_registry.find(type);
         
-            if (constructor == instance->m_registry.end())
+            if (constructor == instance->m_registry.end()) {
                 return nullptr;
+            }
         
             typedef std::unique_ptr<BaseType> (*create_type)(Args...);
         
@@ -64,7 +65,7 @@ namespace Vanir {
         }
         
     private:
-        static std::shared_ptr<Factory<BaseType>> GetInstance() {
+        static std::shared_ptr<Factory<BaseType>> getInstance() {
             static std::shared_ptr<Factory<BaseType>> factory = std::make_shared<Factory<BaseType>>();
         
             return factory;
@@ -77,7 +78,7 @@ namespace Vanir {
     class FactoryRegister {
     public:
         explicit FactoryRegister(const std::string &typeName) {
-            Factory<BaseType>::template Register<SubType, Args...>(typeName);
+            Factory<BaseType>::template registerType<SubType, Args...>(typeName);
         }
     };
     

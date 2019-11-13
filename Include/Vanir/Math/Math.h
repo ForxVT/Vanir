@@ -34,19 +34,17 @@ namespace Vanir {
     /// Class containing various mathematic utility methods.
     class Math {
     public:
-        /// Return if a given integer is odd.
-        static bool IsOdd(int32_t number);
         /// Return if a given integer is even.
-        static bool IsEven(int32_t number);
+        static bool isEven(int32_t number);
         /// Return a converted float from radiant to degree.
-        static float ToDegree(float radiant);
+        static float toDegree(float radiant);
         /// Return a converted float from degree to radiant.
-        static float ToRadiant(float degree);
+        static float toRadiant(float degree);
         /// Return the interpolation of two values by an alpha (0 meaning value A, 1 meaning value B).
-        static float Lerp(float alpha, float a, float b);
+        static float lerp(float alpha, float a, float b);
         /// Return a divided number rounded up (only working on positive numbers).
         template<class T>
-        static constexpr T DivideAndRoundUp(T n, T d) {
+        static constexpr T divideAndRoundUp(T n, T d) {
             return (n + d - 1) / d;
         }
 

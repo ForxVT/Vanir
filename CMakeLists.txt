@@ -101,7 +101,6 @@ set(VANIR_SOURCES ${VANIR_SOURCES}
         Include/Vanir/JSON/JSONFile.h
         Include/Vanir/Logger/LogColor.h
         Include/Vanir/Logger/Logger.h
-        Include/Vanir/Logger/TerminalColor.h
         Include/Vanir/Math/Math.h
         Include/Vanir/Math/Random.h
         Include/Vanir/Math/Xorshift.h

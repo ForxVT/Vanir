@@ -41,19 +41,19 @@ namespace Vanir {
         ~Timer();
 
         /// Reset the time.
-        void Reset();
+        void reset();
         /// Return the current time in seconds.
-        uint64_t GetTimeInS() const;
+        uint64_t getTimeInS() const;
         /// Return the current time in milliseconds.
-        uint64_t GetTimeInMS() const;
+        uint64_t getTimeInMS() const;
         /// Return the current time in microseconds.
-        uint64_t GetTimeInUS() const;
+        uint64_t getTimeInUS() const;
         /// Return the start time in seconds.
-        uint64_t GetStartTimeInS() const;
+        uint64_t getStartTimeInS() const;
         /// Return the start time in milliseconds.
-        uint64_t GetStartTimeInMS() const;
+        uint64_t getStartTimeInMS() const;
         /// Return the start time in microseconds.
-        uint64_t GetStartTimeInUS() const;
+        uint64_t getStartTimeInUS() const;
 
     private:
         std::chrono::time_point<std::chrono::high_resolution_clock> m_startTime;

@@ -29,16 +29,16 @@
 
 namespace Vanir {
     Timer::Timer() {
-        Reset();
+        reset();
     }
 
     Timer::~Timer() = default;
 
-    void Timer::Reset() {
+    void Timer::reset() {
         m_startTime = std::chrono::high_resolution_clock::now();
     }
 
-    uint64_t Timer::GetTimeInS() const {
+    uint64_t Timer::getTimeInS() const {
         auto currentTime = std::chrono::high_resolution_clock::now();
 
         std::chrono::duration<double> duration = currentTime - m_startTime;
@@ -46,7 +46,7 @@ namespace Vanir {
         return std::chrono::duration_cast<std::chrono::seconds>(duration).count();
     }
 
-    uint64_t Timer::GetTimeInMS() const {
+    uint64_t Timer::getTimeInMS() const {
         auto currentTime = std::chrono::high_resolution_clock::now();
 
         std::chrono::duration<double> duration = currentTime - m_startTime;
@@ -54,7 +54,7 @@ namespace Vanir {
         return std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
     }
 
-    uint64_t Timer::GetTimeInUS() const {
+    uint64_t Timer::getTimeInUS() const {
         auto currentTime = std::chrono::high_resolution_clock::now();
 
         std::chrono::duration<double> duration = currentTime - m_startTime;
@@ -62,19 +62,19 @@ namespace Vanir {
         return std::chrono::duration_cast<std::chrono::microseconds>(duration).count();
     }
 
-    uint64_t Timer::GetStartTimeInS() const {
+    uint64_t Timer::getStartTimeInS() const {
         std::chrono::nanoseconds startTimeNS = m_startTime.time_since_epoch();
 
         return std::chrono::duration_cast<std::chrono::seconds>(startTimeNS).count();
     }
 
-    uint64_t Timer::GetStartTimeInMS() const {
+    uint64_t Timer::getStartTimeInMS() const {
         std::chrono::nanoseconds startTimeNS = m_startTime.time_since_epoch();
 
         return std::chrono::duration_cast<std::chrono::milliseconds>(startTimeNS).count();
     }
 
-    uint64_t Timer::GetStartTimeInUS() const {
+    uint64_t Timer::getStartTimeInUS() const {
         std::chrono::nanoseconds startTimeNS = m_startTime.time_since_epoch();
 
         return std::chrono::duration_cast<std::chrono::microseconds>(startTimeNS).count();

@@ -30,40 +30,40 @@
 
 namespace Vanir {
     Random::Random() {
-        SetSeed(static_cast<long unsigned int>(std::chrono::high_resolution_clock::now().time_since_epoch().count()));
+        setSeed(static_cast<long unsigned int>(std::chrono::high_resolution_clock::now().time_since_epoch().count()));
     }
 
     Random::Random(uint64_t seed) {
-        SetSeed(seed);
+        setSeed(seed);
     }
 
     Random::~Random() = default;
 
-    void Random::SetSeed(uint64_t seed) {
+    void Random::setSeed(uint64_t seed) {
         m_seed = seed;
         m_generator = Xorshift(m_seed);
     }
 
-    uint64_t Random::GetSeed() {
+    uint64_t Random::getSeed() {
         return m_seed;
     }
 
-    uint32_t Random::Generate() {
-        return Generate(0, UINT32_MAX);
+    uint32_t Random::generate() {
+        return generate(0, UINT32_MAX);
     }
 
-    uint32_t Random::Generate(uint32_t max) {
-        return Generate(0, max);
+    uint32_t Random::generate(uint32_t max) {
+        return generate(0, max);
     }
 
-    uint32_t Random::Generate(uint32_t min, uint32_t max) {
+    uint32_t Random::generate(uint32_t min, uint32_t max) {
         std::uniform_int_distribution<> distributor(min, max);
 
         return distributor(m_generator);
     }
 
-    void Random::Reset() {
-        SetSeed(m_seed);
+    void Random::reset() {
+        setSeed(m_seed);
     }
 
 } /* Namespace Vanir. */

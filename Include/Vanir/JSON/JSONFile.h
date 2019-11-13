@@ -38,14 +38,14 @@ namespace Vanir {
     class JSONFile {
     public:
         /// Load a JSON file to memory.
-        void Load(const std::string& filepath);
+        void load(const std::string& filepath);
         /// Save a JSON file from memory.
-        void Save();
+        void save();
         /// Return the path of the loaded file.
-        const std::string& GetFilepath() const;
+        const std::string& getPath() const;
 
         /// Content of the JSON file has a nlohmann::json object.
-        nlohmann::json Content;
+        nlohmann::json content;
 
     private:
         std::string m_filepath;

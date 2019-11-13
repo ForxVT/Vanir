@@ -33,31 +33,31 @@
 #include <Vanir/FileSystem/FileSystem.h>
 
 namespace Vanir {
-    void JSONFile::Load(const std::string &filepath) {
+    void JSONFile::load(const std::string &filepath) {
         m_filepath = filepath;
 
-        if (!Vanir::FileSystem::FileExist(m_filepath))
-            Vanir::FileSystem::AddFile(m_filepath, "{}\n");
+        if (!Vanir::FileSystem::fileExist(m_filepath))
+            Vanir::FileSystem::addFile(m_filepath, "{}\n");
 
         std::ifstream fileStream(m_filepath, std::ifstream::in);
 
-        fileStream >> Content;
+        fileStream >> content;
 
         fileStream.close();
     }
 
-    void JSONFile::Save() {
+    void JSONFile::save() {
         if (!m_filepath.empty()) {
             std::ofstream fileStream(m_filepath, std::ofstream::trunc);
 
-            fileStream << std::setw(4) << Content << std::endl;
+            fileStream << std::setw(4) << content << std::endl;
             fileStream.close();
 
-            Content.clear();
+            content.clear();
         }
     }
 
-    const std::string &JSONFile::GetFilepath() const {
+    const std::string &JSONFile::getPath() const {
         return m_filepath;
     }
 

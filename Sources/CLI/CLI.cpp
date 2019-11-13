@@ -41,7 +41,7 @@ namespace Vanir {
             currentArgument = argv[i];
             lastArgument = currentArgument;
             
-            if (!Vanir::String::StartsWith(currentArgument, "--") && !Vanir::String::StartsWith(currentArgument, "-")) {
+            if (!Vanir::String::startsWith(currentArgument, "--") && !Vanir::String::startsWith(currentArgument, "-")) {
                 if (logErrors) {
                     printUnknownOptions(optionNotFound, optionsList);
                 }
@@ -53,7 +53,7 @@ namespace Vanir {
             
             bool argumentFound = false;
             
-            if (Vanir::String::StartsWith(currentArgument, "--")) {
+            if (Vanir::String::startsWith(currentArgument, "--")) {
                 if (currentArgument.size() > 2) {
                     for (const auto& j : optionsList) {
                         for (const auto& k : j.names) {
@@ -62,7 +62,7 @@ namespace Vanir {
                                 argumentFound = true;
                     
                                 break;
-                            } else if (Vanir::String::StartsWith(currentArgument, k + "=")) {
+                            } else if (Vanir::String::startsWith(currentArgument, k + "=")) {
                                 if (currentArgument.size() > k.size() + 1) {
                                     j.function(currentArgument.substr(currentArgument.find('=') + 1));
                                     argumentFound = true;
@@ -71,7 +71,7 @@ namespace Vanir {
                                 } else {
                                     detectError(CLIParsingError_OptionEmptyArgument, &result, logErrors);
                                 }
-                            } else if (Vanir::String::StartsWith(currentArgument, k) &&
+                            } else if (Vanir::String::startsWith(currentArgument, k) &&
                                 currentArgument.size() == k.size() && j.type == CLIOptionType_OptionWithValue) {
                                 detectError(CLIParsingError_OptionEmptyArgument, &result, logErrors);
                             }
@@ -246,7 +246,7 @@ namespace Vanir {
 
         for (const auto& y : optionsList) {
             for (const auto& w : y.names) {
-                auto optionDistance = String::CalculateLevenshteinDistance(w, option);
+                auto optionDistance = String::calculateLevenshteinDistance(w, option);
     
                 if (optionDistance < distance || distance == -1) {
                     distance = optionDistance;

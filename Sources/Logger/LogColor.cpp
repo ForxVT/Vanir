@@ -29,13 +29,13 @@
 #include <Vanir/Logger/Logger.h>
 
 namespace Vanir {
-    LogColor::LogColor(TerminalColor foregroundColor, TerminalColor backgroundColor) :
+    LogColor::LogColor(LogColorEnum foregroundColor, LogColorEnum backgroundColor) :
             m_foregroundColor(foregroundColor), m_backgroundColor(backgroundColor) {
 
     }
 
     std::ostream &operator<<(std::ostream &os, const LogColor &loggerColor) {
-        if (!Logger::IsWritingToFile()) {
+        if (!Logger::isWritingToFile()) {
 #ifdef _WIN32
             HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -74,7 +74,7 @@ namespace Vanir {
     }
 
     std::basic_ostream<wchar_t> &operator<<(std::basic_ostream<wchar_t> &os, const LogColor &loggerColor) {
-        if (!Logger::IsWritingToFile()) {
+        if (!Logger::isWritingToFile()) {
 #ifdef _WIN32
             HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
             SetConsoleTextAttribute(hStdout, loggerColor.m_foregroundColor + loggerColor.m_backgroundColor);

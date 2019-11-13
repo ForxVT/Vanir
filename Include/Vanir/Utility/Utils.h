@@ -33,7 +33,7 @@
 namespace Vanir {
     class Utils {
     public:
-        static void Sleep(uint32_t duration);
+        static void sleep(uint32_t duration);
     };
 
 } /* Namespace Vanir. */

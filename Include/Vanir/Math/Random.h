@@ -38,12 +38,12 @@ namespace Vanir {
         Random(uint64_t seed);
         ~Random();
 
-        void SetSeed(uint64_t seed);
-        uint64_t GetSeed();
-        uint32_t Generate();
-        uint32_t Generate(uint32_t max);
-        uint32_t Generate(uint32_t min, uint32_t max);
-        void Reset();
+        void setSeed(uint64_t seed);
+        uint64_t getSeed();
+        uint32_t generate();
+        uint32_t generate(uint32_t max);
+        uint32_t generate(uint32_t min, uint32_t max);
+        void reset();
 
     private:
         Xorshift m_generator;

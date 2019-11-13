@@ -35,25 +35,25 @@ namespace Vanir {
     class FileSystem {
     public:
         /// Get the root directory of the executable where this was used.
-        static std::string GetRootDirectory();
+        static std::string getProcessPath();
         /// Return the extension of a path.
-        static std::string GetExtensionFromFilePath(const std::string& path);
-        /// Return the directory path from a file path.
-        static std::string GetDirectoryPathFromFilePath(const std::string& path);
+        static std::string getExtension(const std::string& path);
         /// Return a path without his extension (if he has one).
-        static std::string GetPathWithoutExtension(const std::string& name);
+        static std::string getFilePath(const std::string& name);
+        /// Return the directory path from a file path.
+        static std::string getDirectoryPath(const std::string& path);
         /// Return if a folder exist.
-        static bool DirectoryExist(const std::string& path);
+        static bool directoryExist(const std::string& path);
         /// Return if a file exist.
-        static bool FileExist(const std::string& path);
+        static bool fileExist(const std::string& path);
         /// Create a new folder.
-        static void AddDirectory(const std::string &path);
+        static void addDirectory(const std::string &path);
         /// Create a new file.
-        static void AddFile(const std::string& path, const std::string& text = "");
+        static void addFile(const std::string& path, const std::string& text = "");
         /// Create a new file with multiples lines.
-        static void AddFile(const std::string& path, std::vector<std::string> text);
+        static void addFile(const std::string& path, const std::vector<std::string>& text);
         /// Return the content of a file.
-        static std::string ReadFileToMemory(const std::string& path);
+        static std::string readFile(const std::string& path);
     };
 
 } /* Namespace Vanir. */

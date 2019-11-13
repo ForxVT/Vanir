@@ -33,16 +33,16 @@
 namespace Vanir {
     class FatalError {
     public:
-        static void Terminate();
-        static void Popup(const std::string& message);
+        static void terminate();
+        static void popup(const std::string& message);
     };
 
 } /* Namespace Vanir. */
 
 #define THROW_FATALERROR(type, ...) { \
     ULOG_ERROR("EXCEPTION - ", type, ": ", ##__VA_ARGS__); \
-    ::Vanir::FatalError::Popup(::Vanir::Exception(type, __PRETTY_FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__).what()); \
-    ::Vanir::FatalError::Terminate(); \
+    ::Vanir::FatalError::popup(::Vanir::Exception(type, __PRETTY_FUNCTION__, __FILE__, __LINE__, ##__VA_ARGS__).what()); \
+    ::Vanir::FatalError::terminate(); \
 }
 
 #endif /* VANIR_ERROR_FATALERROR_H. */

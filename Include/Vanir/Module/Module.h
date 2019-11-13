@@ -40,133 +40,137 @@ namespace Vanir {
         Module &operator=(Module &&) = delete;
         Module &operator=(const Module &) = delete;
         
-        static T &GetInstance();
-        static T *GetInstancePtr();
+        static T &getInstance();
+        static T *getInstancePtr();
         template<class ...Args>
-        static void Start(Args &&...args);
+        static void start(Args &&...args);
         template<class SubType, class ...Args>
-        static void Start(Args &&...args);
-        static void Shutdown();
-        static bool IsStarted();
-        static bool IsDestroyed();
+        static void start(Args &&...args);
+        static void shutdown();
+        static bool isStarted();
+        static bool isDestroyed();
     
     protected:
         Module() = default;
         virtual ~Module() = default;
-        virtual void OnStart();
-        virtual void OnShutdown();
-        static T *&GetInternalInstance();
-        static bool &InternalIsDestroyed();
-        static bool &InternalIsStarted();
+        
+        virtual void onStart();
+        virtual void onShutdown();
+        static T *&getInternalInstance();
+        static bool &internalIsDestroyed();
+        static bool &internalIsStarted();
     };
     
     template<class T>
-    T &Module<T>::GetInstance() {
-        if (!InternalIsStarted()) {
+    T &Module<T>::getInstance() {
+        if (!internalIsStarted()) {
             THROW_FATALERROR("FatalInternalException", "Trying to access a module but it hasn't been started up yet.")
         }
         
-        if (InternalIsDestroyed()) {
+        if (internalIsDestroyed()) {
             THROW_FATALERROR("FatalInternalException", "Trying to access a destroyed module.")
         }
         
-        return *GetInternalInstance();
+        return *getInternalInstance();
     }
     
     template<class T>
-    T *Module<T>::GetInstancePtr() {
-        if (!InternalIsStarted()) {
+    T *Module<T>::getInstancePtr() {
+        if (!internalIsStarted()) {
             THROW_FATALERROR("FatalInternalException", "Trying to access a module but it hasn't been started up yet.")
         }
         
-        if (InternalIsDestroyed()) {
+        if (internalIsDestroyed()) {
             THROW_FATALERROR("FatalInternalException", "Trying to access a destroyed module.")
         }
         
-        return GetInternalInstance();
+        return getInternalInstance();
     }
     
     template<class T>
     template<class... Args>
-    void Module<T>::Start(Args &&... args) {
-        if (InternalIsStarted()) {
+    void Module<T>::start(Args &&... args) {
+        if (internalIsStarted()) {
             THROW_FATALERROR("FatalInternalException", "Trying to start an already started module.")
         }
         
-        GetInternalInstance() = new T(std::forward<Args>(args)...);
-        InternalIsStarted() = true;
+        getInternalInstance() = new T(std::forward<Args>(args)...);
+        internalIsStarted() = true;
         
-        ((Module *) GetInternalInstance())->OnStart();
+        ((Module*)getInternalInstance())->onStart();
     }
     
     template<class T>
     template<class SubType, class... Args>
-    void Module<T>::Start(Args &&... args) {
+    void Module<T>::start(Args &&... args) {
         static_assert(std::is_base_of<T, SubType>::value,
                       "Provided type is not derived from type the module is initialized with.");
         
-        if (InternalIsStarted()) {
+        if (internalIsStarted()) {
             THROW_FATALERROR("FatalInternalException", "Trying to start an already started module.")
         }
         
-        GetInternalInstance() = new SubType(std::forward<Args>(args)...);
-        InternalIsStarted() = true;
+        getInternalInstance() = new SubType(std::forward<Args>(args)...);
+        internalIsStarted() = true;
         
-        ((Module *) GetInternalInstance())->OnStart();
+        ((Module*)getInternalInstance())->onStart();
     }
     
     template<class T>
-    void Module<T>::Shutdown() {
-        if (InternalIsDestroyed()) {
+    void Module<T>::shutdown() {
+        if (internalIsDestroyed()) {
             THROW_FATALERROR("FatalInternalException", "Trying to shutdown an already shutdown module.")
         }
         
-        if (!InternalIsStarted()) {
+        if (!internalIsStarted()) {
             THROW_FATALERROR("FatalInternalException", "Trying to shut down a module which was never started.")
         }
         
-        ((Module *) GetInternalInstance())->OnShutdown();
+        ((Module*)getInternalInstance())->onShutdown();
         
-        delete GetInternalInstance();
+        delete getInternalInstance();
         
-        InternalIsDestroyed() = true;
+        internalIsDestroyed() = true;
     }
     
     template<class T>
-    bool Module<T>::IsStarted() {
-        return InternalIsStarted() && !InternalIsDestroyed();
+    bool Module<T>::isStarted() {
+        return internalIsStarted() && !internalIsDestroyed();
     }
     
     template<class T>
-    bool Module<T>::IsDestroyed() {
-        return InternalIsStarted() && InternalIsDestroyed();
+    bool Module<T>::isDestroyed() {
+        return internalIsStarted() && internalIsDestroyed();
     }
     
     template<class T>
-    void Module<T>::OnStart() {
-    
-    }
-    
-    template<class T>
-    void Module<T>::OnShutdown() {
+    void Module<T>::onStart() {
     
     }
     
     template<class T>
-    T *&Module<T>::GetInternalInstance() {
+    void Module<T>::onShutdown() {
+    
+    }
+    
+    template<class T>
+    T *&Module<T>::getInternalInstance() {
         static T *inst = nullptr;
+        
         return inst;
     }
     
     template<class T>
-    bool &Module<T>::InternalIsDestroyed() {
+    bool &Module<T>::internalIsDestroyed() {
         static bool inst = false;
+        
         return inst;
     }
     
     template<class T>
-    bool &Module<T>::InternalIsStarted() {
+    bool &Module<T>::internalIsStarted() {
         static bool inst = false;
+        
         return inst;
     }
     

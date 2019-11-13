@@ -39,50 +39,50 @@ namespace Vanir {
     /// Class containing various string utility methods.
     class String {
     public:
-        /// Return if a string starts with a specific string.
-        static bool StartsWith(const std::string& text, const std::string& start);
         /// Generate an UUID.
-        static std::string GenerateUUID();
+        static std::string generateUUID();
         /// Convert an integer to his hexadecimal representation.
         template< typename T >
-        static std::string IntegerToHexadecimal(T integer, bool showFullLength = false);
+        static std::string integerToHexadecimal(T integer, bool showFullLength = false);
         /// Split a string in a vector of string by a string delimiter.
-        static std::vector<std::string> SplitString(const std::string& text, const std::string& delimitation);
+        static std::vector<std::string> split(const std::string& text, const std::string& delimitation);
         /// Split a string in a vector of string by a char delimiter.
-        static std::vector<std::string> SplitString(const std::string& text, char delimitation);
+        static std::vector<std::string> split(const std::string& text, char delimitation);
         /// Convert a string to a wide-string.
-        static std::wstring StringToWString(const std::string& text);
+        static std::wstring stringToWString(const std::string& text);
         /// Convert a wide-string to a string?
-        static std::string WStringToString(const std::wstring& text);
+        static std::string wstringToString(const std::wstring& text);
 #ifdef _WIN32
         /// Convert a string to a BSTR.
-        static std::wstring StringToBSTR(const std::string& text);
+        static std::wstring stringToBSTR(const std::string& text);
         /// Convert a BSTR to a string.
-        static std::string BSTRToString(BSTR text);
+        static std::string bstrToString(BSTR text);
 #endif
         /// Reverse the text order of a string.
-        static void ReverseString(std::string& text);
+        static void reverseString(std::string& text);
         /// Reverse the text order of a wide-string.
-        static void ReverseWString(std::wstring& text);
+        static void reverseWString(std::wstring& text);
         /// Convert a boolean to a string.
-        static std::string BoolToString(bool value);
+        static std::string boolToString(bool value);
         /// Convert a string to uppercase.
-        static void ToUppercase(std::string& text);
+        static void toUppercase(std::string& text);
         /// Convert a string to lowercase.
-        static void ToLowercase(std::string& text);
+        static void toLowercase(std::string& text);
+        /// Return if a string starts with a specific string.
+        static bool startsWith(const std::string& text, const std::string& start);
         /// Return if a value string ends with a specific string.
-        static bool StringEndsWith(const std::string& value, const std::string& ending);
+        static bool endsWith(const std::string& value, const std::string& ending);
         /// Implementation of a Levenshtein distance algorithm.
         /// Source from: https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
         template<typename T>
-        constexpr static unsigned int CalculateLevenshteinDistance(
+        constexpr static unsigned int calculateLevenshteinDistance(
                 const T &source,
                 const T &target,
                 typename T::size_type insert_cost = 1,
                 typename T::size_type delete_cost = 1,
                 typename T::size_type replace_cost = 1) {
             if (source.size() > target.size())
-                return CalculateLevenshteinDistance(target, source, delete_cost, insert_cost, replace_cost);
+                return calculateLevenshteinDistance(target, source, delete_cost, insert_cost, replace_cost);
 
             using TSizeType = typename T::size_type;
             const TSizeType min_size = source.size(), max_size = target.size();
@@ -113,7 +113,7 @@ namespace Vanir {
     };
 
     template< typename T >
-    std::string String::IntegerToHexadecimal(T integer, bool showFullLength) {
+    std::string String::integerToHexadecimal(T integer, bool showFullLength) {
         std::stringstream stream;
 
         if (showFullLength)

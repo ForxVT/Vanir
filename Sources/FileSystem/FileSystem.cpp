@@ -27,8 +27,7 @@
 
 #include <fstream>
 #include <sstream>
-#include <stdio.h>
-#include <iostream>
+#include <cstdio>
 #ifdef _WIN32
 // TODO: VANIR: FILE: Remove workaround when bug fixed: https://sourceforge.net/p/mingw-w64/bugs/737/
 #include <direct.h>
@@ -42,7 +41,7 @@
 #include <Vanir/FileSystem/FileSystem.h>
 
 namespace Vanir {
-    std::string FileSystem::GetRootDirectory() {
+    std::string FileSystem::getProcessPath() {
         char buff[FILENAME_MAX];
 
 #ifdef _WIN32
@@ -56,7 +55,7 @@ namespace Vanir {
         return currentWorkingDirectory;
     }
 
-    std::string FileSystem::GetExtensionFromFilePath(const std::string &name) {
+    std::string FileSystem::getExtension(const std::string &name) {
         const auto loc = name.find_last_of('.');
 
         if (loc != std::string::npos)
@@ -65,7 +64,7 @@ namespace Vanir {
         return std::string();
     }
 
-    std::string FileSystem::GetDirectoryPathFromFilePath(const std::string &path) {
+    std::string FileSystem::getFilePath(const std::string &path) {
         std::string directoryPath = std::string();
         std::string separator = "\\";
 
@@ -80,7 +79,7 @@ namespace Vanir {
         return directoryPath;
     }
 
-    std::string FileSystem::GetPathWithoutExtension(const std::string &name) {
+    std::string FileSystem::getDirectoryPath(const std::string &name) {
         const auto loc = name.find_last_of('.');
 
         if (loc != std::string::npos)
@@ -89,23 +88,25 @@ namespace Vanir {
         return name;
     }
 
-    bool FileSystem::DirectoryExist(const std::string &path) {
+    bool FileSystem::directoryExist(const std::string &path) {
 #ifdef _WIN32
         DWORD fileAttributes = ::GetFileAttributesA(path.c_str());
 
         return (fileAttributes != INVALID_FILE_ATTRIBUTES && fileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
 #elif __unix__
         return std::experimental::filesystem::exists(path);
+#else
+        return std::filesystem::exists(path);
 #endif
     }
 
-    bool FileSystem::FileExist(const std::string &path) {
+    bool FileSystem::fileExist(const std::string &path) {
         std::ifstream file(path);
 
         return file.good();
     }
 
-    void FileSystem::AddDirectory(const std::string &path) {
+    void FileSystem::addDirectory(const std::string &path) {
 #ifdef _WIN32
         ::CreateDirectoryA(path.c_str(), nullptr);
 #elif __unix__
@@ -113,12 +114,12 @@ namespace Vanir {
 #endif
     }
 
-    void FileSystem::AddFile(const std::string &path, const std::string &text) {
-        auto dir = Vanir::FileSystem::GetDirectoryPathFromFilePath(path);
+    void FileSystem::addFile(const std::string &path, const std::string &text) {
+        auto dir = Vanir::FileSystem::getDirectoryPath(path);
 
         if (!dir.empty()) {
-            if (!Vanir::FileSystem::DirectoryExist(dir))
-                Vanir::FileSystem::AddDirectory(dir);
+            if (!Vanir::FileSystem::directoryExist(dir))
+                Vanir::FileSystem::addDirectory(dir);
         }
 
         std::ofstream fs(path, std::ios::out);
@@ -128,12 +129,12 @@ namespace Vanir {
         fs.close();
     }
 
-    void FileSystem::AddFile(const std::string &path, std::vector<std::string> text) {
-        auto dir = Vanir::FileSystem::GetDirectoryPathFromFilePath(path);
+    void FileSystem::addFile(const std::string &path, const std::vector<std::string>& text) {
+        auto dir = Vanir::FileSystem::getDirectoryPath(path);
     
         if (!dir.empty()) {
-            if (!Vanir::FileSystem::DirectoryExist(dir))
-                Vanir::FileSystem::AddDirectory(dir);
+            if (!Vanir::FileSystem::directoryExist(dir))
+                Vanir::FileSystem::addDirectory(dir);
         }
         
         std::ofstream fs(path, std::ios::out);
@@ -146,7 +147,7 @@ namespace Vanir {
         fs.close();
     }
 
-    std::string FileSystem::ReadFileToMemory(const std::string &path) {
+    std::string FileSystem::readFile(const std::string &path) {
         auto close_file = [](FILE* f) { fclose(f); };
     
         auto holder = std::unique_ptr<FILE, decltype(close_file)>(fopen(path.c_str(), "rb"), close_file);

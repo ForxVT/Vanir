@@ -37,21 +37,21 @@ namespace Vanir {
     time_t Logger::m_time;
     bool Logger::m_fileOpened = false;
     bool Logger::m_log = true;
-    int Logger::ErrorCount = 0;
-    int Logger::WarningCount = 0;
-    int Logger::InfoCount = 0;
+    int Logger::errorCount = 0;
+    int Logger::warningCount = 0;
+    int Logger::infoCount = 0;
 
-    void Logger::Start(const std::string& filepath) {
+    void Logger::start(const std::string& filepath) {
         std::cout << LogColor();
 
         if (filepath.empty())
             m_log = false;
 
         if (m_log) {
-            auto dir = Vanir::FileSystem::GetDirectoryPathFromFilePath(filepath);
+            auto dir = Vanir::FileSystem::getDirectoryPath(filepath);
 
-            if (!dir.empty() && !Vanir::FileSystem::DirectoryExist(dir)) {
-                Vanir::FileSystem::AddDirectory(dir);
+            if (!dir.empty() && !Vanir::FileSystem::directoryExist(dir)) {
+                Vanir::FileSystem::addDirectory(dir);
             }
 
             m_file.open(filepath, std::ofstream::out | std::ofstream::trunc);
@@ -59,24 +59,24 @@ namespace Vanir {
         }
     }
 
-    void Logger::StartNoLog() {
-        Start(std::string());
+    void Logger::startNoLog() {
+        start(std::string());
     }
 
-    void Logger::Stop() {
+    void Logger::stop() {
         if (m_log) {
             m_file.close();
             m_fileOpened = false;
         }
     }
 
-    void Logger::ResetCounters() {
-        ErrorCount = 0;
-        WarningCount = 0;
-        InfoCount = 0;
+    void Logger::resetCounters() {
+        errorCount = 0;
+        warningCount = 0;
+        infoCount = 0;
     }
 
-    std::string Logger::LogHeader(const std::string &message, const std::string &function, int line) {
+    std::string Logger::logHeader(const std::string &message, const std::string &function, int line) {
         m_time = time(nullptr);
 
         auto time = localtime(&m_time);
@@ -93,7 +93,7 @@ namespace Vanir {
         return infoText;
     }
 
-    bool Logger::IsWritingToFile() {
+    bool Logger::isWritingToFile() {
         return m_writingToFile;
     }
 
