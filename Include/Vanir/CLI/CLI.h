@@ -29,7 +29,7 @@
 #define VANIR_CLI_CLI_H
 
 #include <Vanir/Common.h>
-#include <Vanir/CLI/Argument.h>
+#include <Vanir/CLI/CLIOption.h>
 #include <Vanir/CLI/CLIParsingResult.h>
 
 namespace Vanir {
