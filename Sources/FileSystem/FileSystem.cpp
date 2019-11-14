@@ -64,26 +64,29 @@ namespace Vanir {
         return std::string();
     }
 
-    std::string FileSystem::getFilePath(const std::string &path) {
+    std::string FileSystem::getDirectoryPath(const std::string &path) {
         std::string directoryPath = std::string();
         std::string separator = "\\";
 
-        if (path.find(separator) == std::string::npos)
+        if (path.find(separator) == std::string::npos) {
             separator = "/";
+        }
 
         const size_t i = path.rfind(separator);
 
-        if (i != std::string::npos)
+        if (i != std::string::npos) {
             directoryPath = path.substr(0, i);
+        }
 
         return directoryPath;
     }
 
-    std::string FileSystem::getDirectoryPath(const std::string &name) {
+    std::string FileSystem::getFilePath(const std::string &name) {
         const auto loc = name.find_last_of('.');
 
-        if (loc != std::string::npos)
+        if (loc != std::string::npos) {
             return name.substr(0, loc);
+        }
 
         return name;
     }

@@ -38,10 +38,10 @@ namespace Vanir {
         static std::string getProcessPath();
         /// Return the extension of a path.
         static std::string getExtension(const std::string& path);
-        /// Return a path without his extension (if he has one).
-        static std::string getFilePath(const std::string& name);
         /// Return the directory path from a file path.
         static std::string getDirectoryPath(const std::string& path);
+        /// Return a path without his extension (if he has one).
+        static std::string getFilePath(const std::string& name);
         /// Return if a folder exist.
         static bool directoryExist(const std::string& path);
         /// Return if a file exist.
