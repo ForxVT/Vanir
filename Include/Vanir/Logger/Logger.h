@@ -53,7 +53,7 @@ namespace Vanir {
         static void resetCounters();
         static std::string logHeader(const std::string& message, const std::string& function = std::string(), int line = -1);
         template <typename... Args>
-        static void log(Args&&... args) {
+        static void log(bool error, Args&&... args) {
             m_writingToFile = true;
 
             if (m_fileOpened)
@@ -61,22 +61,22 @@ namespace Vanir {
 
             m_writingToFile = false;
 
-            ((std::cout << std::forward<Args>(args)), ...) << LogColor() << std::endl;
+            (((error ? std::cerr : std::cout) << std::forward<Args>(args)), ...) << LogColor() << std::endl;
         }
         static bool isWritingToFile();
 #ifdef _WIN32
         template <class T>
-        static std::basic_ostream<wchar_t>& ULogConverter(T&& arg) {
-            return std::wcout << arg;
+        static std::basic_ostream<wchar_t>& ULogConverter(bool error, T&& arg) {
+            return (error ? std::wcerr : std::wcout) << arg;
         }
-        static std::basic_ostream<wchar_t>& ULogConverter(std::string arg) {
-            return std::wcout << ::Vanir::String::StringToWString(arg);
+        static std::basic_ostream<wchar_t>& ULogConverter(bool error, std::string arg) {
+            return (error ? std::wcerr : std::wcout) << ::Vanir::String::StringToWString(arg);
         }
-        static std::basic_ostream<wchar_t>& ULogConverter(const char* arg) {
-            return std::wcout << ::Vanir::String::StringToWString(arg);
+        static std::basic_ostream<wchar_t>& ULogConverter(bool error, const char* arg) {
+            return (error ? std::wcerr : std::wcout) << ::Vanir::String::StringToWString(arg);
         }
         template <typename... Args>
-        static void ulog(Args&&... args) {
+        static void ulog(bool error, Args&&... args) {
             m_writingToFile = true;
 
             if (m_fileOpened)
@@ -84,9 +84,9 @@ namespace Vanir {
 
             m_writingToFile = false;
 
-            _setmode(_fileno(stdout), _O_WTEXT);
+            _setmode(_fileno(error ? stderr : stdout), _O_WTEXT);
             ((ULogConverter(std::forward<Args>(args))), ...) << LogColor() << std::endl;
-            _setmode(_fileno(stdout), _O_TEXT);
+            _setmode(_fileno(error ? stderr : stdout), _O_TEXT);
         }
 #endif
 
@@ -108,39 +108,39 @@ namespace Vanir {
 #define LOG_RESETCOUNTERS() ::Vanir::Logger::resetCounters();
 
 /* Logs utility macros. */
-#define LOG(...) ::Vanir::Logger::log(__VA_ARGS__);
+#define LOG(...) ::Vanir::Logger::log(false, __VA_ARGS__);
 #if defined(_DEBUG)
 #define LOG_INFO(...) { \
-    ::Vanir::Logger::log(::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("INFO", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::log(false, ::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("INFO", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
     ::Vanir::Logger::infoCount += 1; \
 }
 #define LOG_VERBOSE(...) { \
-    ::Vanir::Logger::log(::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("VERBOSE", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::log(false, ::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("VERBOSE", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
     ::Vanir::Logger::warningCount += 1; \
 }
 #define LOG_WARNING(...) { \
-    ::Vanir::Logger::log(::Vanir::LogColor(::Vanir::LogColor_Yellow), ::Vanir::Logger::logHeader("WARNING", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::log(false, ::Vanir::LogColor(::Vanir::LogColor_Yellow), ::Vanir::Logger::logHeader("WARNING", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
     ::Vanir::Logger::warningCount += 1; \
 }
 #define LOG_ERROR(...) { \
-    ::Vanir::Logger::log(::Vanir::LogColor(::Vanir::LogColor_Red), ::Vanir::Logger::logHeader("ERROR", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::log(true, ::Vanir::LogColor(::Vanir::LogColor_Red), ::Vanir::Logger::logHeader("ERROR", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
     ::Vanir::Logger::errorCount += 1; \
 }
 #else
 #define LOG_INFO(...) { \
-    ::Vanir::Logger::log(::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("INFO"), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::log(false, ::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("INFO"), ::Vanir::LogColor(), __VA_ARGS__); \
     ::Vanir::Logger::infoCount += 1; \
 }
 #define LOG_VERBOSE(...) { \
-    ::Vanir::Logger::log(::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("VERBOSE"), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::log(false, ::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("VERBOSE"), ::Vanir::LogColor(), __VA_ARGS__); \
     ::Vanir::Logger::warningCount += 1; \
 }
 #define LOG_WARNING(...) { \
-    ::Vanir::Logger::log(::Vanir::LogColor(::Vanir::LogColor_Yellow), ::Vanir::Logger::logHeader("WARNING"), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::log(false, ::Vanir::LogColor(::Vanir::LogColor_Yellow), ::Vanir::Logger::logHeader("WARNING"), ::Vanir::LogColor(), __VA_ARGS__); \
     ::Vanir::Logger::warningCount += 1; \
 }
 #define LOG_ERROR(...) { \
-    ::Vanir::Logger::log(::Vanir::LogColor(::Vanir::LogColor_Red), ::Vanir::Logger::logHeader("ERROR"), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::log(true, ::Vanir::LogColor(::Vanir::LogColor_Red), ::Vanir::Logger::logHeader("ERROR"), ::Vanir::LogColor(), __VA_ARGS__); \
     ::Vanir::Logger::errorCount += 1; \
 }
 #endif
@@ -150,36 +150,36 @@ namespace Vanir {
 #define ULOG(...) ::Vanir::Logger::ulog(__VA_ARGS__);
 #if defined(_DEBUG)
 #define ULOG_INFO(...) { \
-    ::Vanir::Logger::ulog(::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("INFO", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::ulog(false, ::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("INFO", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
     ::Vanir::Logger::infoCount += 1; \
 }
 #define ULOG_VERBOSE(...) { \
-    ::Vanir::Logger::ulog(::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("VERBOSE", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::ulog(false, ::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("VERBOSE", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
     ::Vanir::Logger::warningCount += 1; \
 }
 #define ULOG_WARNING(...) { \
-    ::Vanir::Logger::ulog(::Vanir::LogColor(::Vanir::LogColor_Yellow), ::Vanir::Logger::logHeader("WARNING", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::ulog(false, ::Vanir::LogColor(::Vanir::LogColor_Yellow), ::Vanir::Logger::logHeader("WARNING", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
     ::Vanir::Logger::warningCount += 1; \
 }
 #define ULOG_ERROR(...) { \
-    ::Vanir::Logger::ulog(::Vanir::LogColor(::Vanir::LogColor_Red), ::Vanir::Logger::logHeader("ERROR", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::ulog(true, ::Vanir::LogColor(::Vanir::LogColor_Red), ::Vanir::Logger::logHeader("ERROR", __PRETTY_FUNCTION__, __LINE__), ::Vanir::LogColor(), __VA_ARGS__); \
     ::Vanir::Logger::errorCount += 1; \
 }
 #else
 #define ULOG_INFO(...) { \
-    ::Vanir::Logger::ulog(::Vanir::Logger::logHeader("INFO"), __VA_ARGS__); \
+    ::Vanir::Logger::ulog(false, ::Vanir::Logger::logHeader("INFO"), __VA_ARGS__); \
     ::Vanir::Logger::infoCount += 1; \
 }
 #define ULOG_VERBOSE(...) { \
-    ::Vanir::Logger::ulog(::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("VERBOSE"), ::Vanir::LogColor(), __VA_ARGS__); \
+    ::Vanir::Logger::ulog(false, ::Vanir::LogColor(::Vanir::LogColor_Bright_Blue), ::Vanir::Logger::logHeader("VERBOSE"), ::Vanir::LogColor(), __VA_ARGS__); \
     ::Vanir::Logger::warningCount += 1; \
 }
 #define ULOG_WARNING(...) { \
-    ::Vanir::Logger::ulog(::Vanir::LogColor(::Vanir::LogColor_Yellow), ::Vanir::Logger::logHeader("WARNING"), __VA_ARGS__); \
+    ::Vanir::Logger::ulog(false, ::Vanir::LogColor(::Vanir::LogColor_Yellow), ::Vanir::Logger::logHeader("WARNING"), __VA_ARGS__); \
     ::Vanir::Logger::warningCount += 1; \
 }
 #define ULOG_ERROR(...) { \
-    ::Vanir::Logger::ulog(::Vanir::LogColor(::Vanir::LogColor_Red), ::Vanir::Logger::logHeader("ERROR"), __VA_ARGS__); \
+    ::Vanir::Logger::ulog(true, ::Vanir::LogColor(::Vanir::LogColor_Red), ::Vanir::Logger::logHeader("ERROR"), __VA_ARGS__); \
     ::Vanir::Logger::errorCount += 1; \
 }
 #endif
